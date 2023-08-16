@@ -1,2 +1,6 @@
 .idea/
 .DS_Store
+.env
+__pycache__/
+static/
+organizator_api/__pycache__/
