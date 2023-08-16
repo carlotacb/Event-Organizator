@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: organizator_db
+    env_file:
+      - ./organizator_api/.env
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  api:
+    build: ./organizator_api
+    command: sh -c "python organizator_api/manage.py migrate && gunicorn --reload --pythonpath ./organizator_api organizator_api.wsgi --bind 0.0.0.0:8000"
+    container_name: organizator_api
+    env_file:
+      - ./organizator_api/.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - .:/code
+  web:
+    build: ./organizator
+    command: npm start
+    container_name: organizator
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
