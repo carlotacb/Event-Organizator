@@ -24,15 +24,15 @@ services:
     restart: unless-stopped
     volumes:
       - .:/code
-  web:
-    build: ./organizator
-    command: npm start
-    container_name: organizator
-    depends_on:
-      - api
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
+  #web:
+    #build: ./organizator
+    #command: npm start
+    #container_name: organizator
+    #depends_on:
+    #  - api
+    #ports:
+    #  - "3000:3000"
+    #restart: unless-stopped
 
 volumes:
   postgres_data:
