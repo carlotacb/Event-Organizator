@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from typing import Optional
 
 from app.events.domain.models.event import Event
 
@@ -20,7 +21,7 @@ class EventFactory:
         header_image: str = "https://hackupc.com/ogimage.png",
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
-        deleted_at: datetime = None,
+        deleted_at: Optional[datetime] = None,
     ) -> Event:
         return Event(
             id=uuid.uuid4(),

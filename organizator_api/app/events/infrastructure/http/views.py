@@ -32,6 +32,6 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         header_image=header_image,
     )
 
-    CreateEventUseCase.execute(event_data)
+    CreateEventUseCase().execute(event_data)
 
     return HttpResponse(status=201, content="Event created correctly")
