@@ -1,6 +1,38 @@
-.idea/
+# mac files
 .DS_Store
-.env
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
-static/
-organizator_api/__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.idea
+.vscode
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# pyenv
+.python-version
+
+# enviroments
+.env
+venv/
+
+# distribution / packaging
+.Python
+build/
+dist/
+node_modules
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+npm-debug.log
+
+# Docker
+data/
