@@ -12,6 +12,8 @@ from app.events.domain.use_cases.create_event_use_case import CreateEventUseCase
 def create_new_event(request: HttpRequest) -> HttpResponse:
     json_body = json.loads(request.body)
 
+    print(request)
+
     try:
         name = json_body["name"]
         url = json_body["url"]

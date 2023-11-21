@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+base_path: str = "organizator-api"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path(f"{base_path}/events/", include("app.events.infrastructure.http.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ] + staticfiles_urlpatterns()
