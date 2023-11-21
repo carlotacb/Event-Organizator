@@ -8,4 +8,6 @@ psycopg2==2.9.9
 # test
 coverage==7.3.2
 mypy==1.7.0
+mypy-extensions==1.0.0
 black==23.11.0
+django-stubs==4.2.6
