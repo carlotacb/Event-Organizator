@@ -36,3 +36,7 @@ npm-debug.log
 
 # Docker
 data/
+
+# Test API
+.coverage
+htmlcov/
