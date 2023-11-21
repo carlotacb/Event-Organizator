@@ -1,5 +1,7 @@
 from app.events.infrastructure.persistance.models.orm_event import ORMEvent
-from app.events.infrastructure.persistance.orm_event_repository import ORMEventRepository
+from app.events.infrastructure.persistance.orm_event_repository import (
+    ORMEventRepository,
+)
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 
