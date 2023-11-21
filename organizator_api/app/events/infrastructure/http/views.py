@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -26,8 +27,8 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         name=name,
         url=url,
         description=description,
-        start_date=start_date,
-        end_date=end_date,
+        start_date=datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ"),
+        end_date=datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%SZ"),
         location=location,
         header_image=header_image,
     )
