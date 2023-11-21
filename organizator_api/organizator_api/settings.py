@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import sys
 from pathlib import Path
 import os
 
@@ -26,8 +26,15 @@ SECRET_KEY = 'django-insecure-4w9iz9^-)9qk&t(_$ke18lrn=bzi-l!0@7n^ay0*z)o!9-a9b0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0"]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # Application definition
 
@@ -38,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'app'
 ]
 
@@ -86,6 +94,9 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 
 # Password validation
