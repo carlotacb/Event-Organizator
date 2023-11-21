@@ -22,22 +22,27 @@ class TestEventViews(ApiTests):
         self,
     ) -> None:
         # Given
-        body = {}
+        body = {}  # type: ignore
 
         # When
-        response = self.client.post("/organizator-api/events/new", json.dumps(body), content_type="application/json")
+        response = self.client.post(
+            "/organizator-api/events/new",
+            json.dumps(body),
+            content_type="application/json",
+        )
 
         # Then
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Unexpected body")
-
 
     def test__given_a_json_body_with_an_event__when_creat_event__then_the_event_is_created_and_stored_in_db(
         self,
     ) -> None:
         # When
         response = self.client.post(
-            "/organizator-api/events/new", json.dumps(self.request_body), content_type="application/json"
+            "/organizator-api/events/new",
+            json.dumps(self.request_body),
+            content_type="application/json",
         )
 
         # Then
@@ -53,4 +58,6 @@ class TestEventViews(ApiTests):
         self.assertEqual(event.start_date, datetime(2023, 11, 17, 21, 0))
         self.assertEqual(event.end_date, datetime(2023, 11, 18, 5, 0))
         self.assertEqual(event.location, "Aula d'estudis Campus Nord")
-        self.assertEqual(event.header_image, "https://www.hacknights.dev/images/hacknight.png")
+        self.assertEqual(
+            event.header_image, "https://www.hacknights.dev/images/hacknight.png"
+        )
