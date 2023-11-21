@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
   api:
     build: ./organizator_api
-    command: sh -c "python organizator_api/manage.py migrate && gunicorn --reload --pythonpath ./organizator_api organizator_api.wsgi --bind 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && gunicorn --reload --pythonpath . organizator_api.wsgi --bind 0.0.0.0:8000"
     container_name: organizator_api
     env_file:
       - ./organizator_api/.env
@@ -23,7 +23,7 @@ services:
       - "8000:8000"
     restart: unless-stopped
     volumes:
-      - .:/code
+      - ./organizator_api:/code
   #web:
     #build: ./organizator
     #command: npm start

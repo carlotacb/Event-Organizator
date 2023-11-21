@@ -22,9 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run type checks
-        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api mypy organizator_api/  --cache-dir=/dev/null
+        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api mypy . --cache-dir=/dev/null
       - name: Run linting
-        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api black organizator_api/ --check --verbose --extend-exclude=migrations
+        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api black . --check --verbose --extend-exclude=migrations
       - name: Remove running containers
         run: docker-compose -f ../docker-compose.yaml down
   test:
@@ -35,12 +35,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run dev migrations
-        run: docker-compose -f ../docker-compose.yaml run --rm api python organizator_api/manage.py migrate
+        run: docker-compose -f ../docker-compose.yaml run --rm api python manage.py migrate
       - name: Run tests
-        run: docker-compose -f ../docker-compose.yaml run --rm api coverage run --source='./app' organizator_api/manage.py test
+        run: docker-compose -f ../docker-compose.yaml run --rm api coverage run --source='./app' manage.py test
       - name: Generate test coverage xml
         run: |
-          docker-compose -f ../docker-compose.yaml run --rm --no-deps api coverage xml
+          docker-compose -f ../docker-compose.yaml run --rm --no-deps app coverage xml
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
       - name: Publish coverage report in PR comment
         uses: orgoro/coverage@v3
