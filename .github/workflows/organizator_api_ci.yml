@@ -40,7 +40,7 @@ jobs:
         run: docker-compose -f ../docker-compose.yaml run --rm api coverage run --source='./app' manage.py test
       - name: Generate test coverage xml
         run: |
-          docker-compose -f ../docker-compose.yaml run --rm --no-deps app coverage xml
+          docker-compose -f ../docker-compose.yaml run --rm --no-deps api coverage xml
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
       - name: Publish coverage report in PR comment
         uses: orgoro/coverage@v3
