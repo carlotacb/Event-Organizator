@@ -16,11 +16,11 @@ class ORMEventRepository(EventRepository):
     def delete(self, event_id: uuid.UUID) -> None:
         pass
 
-    def get(self, event_id: uuid.UUID) -> Event: # type: ignore
+    def get(self, event_id: uuid.UUID) -> Event:  # type: ignore
         pass
 
-    def get_all(self) -> List[Event]: # type: ignore
+    def get_all(self) -> List[Event]:  # type: ignore
         pass
 
-    def to_model(self, event: Event) -> ORMEvent: # type: ignore
+    def to_model(self, event: Event) -> ORMEvent:  # type: ignore
         pass

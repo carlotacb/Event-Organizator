@@ -10,7 +10,9 @@ class TestCreateEventUseCase(ApiTests):
         super().setUp()
         self.event_repository.clear()
 
-    def test__given_create_event_request__when_create_event__then_the_event_is_created(self) -> None:
+    def test__given_create_event_request__when_create_event__then_the_event_is_created(
+        self,
+    ) -> None:
         # Given
         event_data = CreateEventRequest(
             name="HackNight Ep.VI",
@@ -19,7 +21,7 @@ class TestCreateEventUseCase(ApiTests):
             start_date=datetime.strptime("2023-11-17T21:00:00Z", "%Y-%m-%dT%H:%M:%SZ"),
             end_date=datetime.strptime("2023-11-18T05:00:00Z", "%Y-%m-%dT%H:%M:%SZ"),
             location="Aula d'estudis Campus Nord",
-            header_image="https://www.hacknights.dev/images/hacknight.png"
+            header_image="https://www.hacknights.dev/images/hacknight.png",
         )
 
         # When
