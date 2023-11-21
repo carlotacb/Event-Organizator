@@ -1,0 +1,55 @@
+name: Organizator API CI
+
+defaults:
+  run:
+    working-directory: ./organizator_api/
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  DEBUG: 1
+  IMAGE_TAG: ${{ github.job }}-${{ github.sha }}
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run type checks
+        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps web mypy .  --cache-dir=/dev/null
+      - name: Run linting
+        run: docker-compose -f ../docker-compose.yaml run --rm --no-deps web black . --check --verbose --extend-exclude=migrations
+      - name: Remove running containers
+        run: docker-compose -f ../docker-compose.yaml down
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run dev migrations
+        run: docker-compose -f ../docker-compose.yaml run --rm web python manage.py migrate
+      - name: Run tests
+        run: docker-compose -f ../docker-compose.yaml run --rm web coverage run --source='./api' manage.py test
+      - name: Generate test coverage xml
+        run: |
+          docker-compose -f ./compose/docker-compose-ci.yml run --rm --no-deps web coverage xml
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+      - name: Publish coverage report in PR comment
+        uses: orgoro/coverage@v3
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          coverageFile: coverage.xml
+          thresholdAll: 0.9999
+          thresholdNew: 0.9999
+          thresholdModified: 0.9999
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Remove running containers
+        run: docker-compose -f ../docker-compose.yaml down
