@@ -14,7 +14,7 @@ class EventRepositoryMock(EventRepository):
         for e in self.events:
             if event.name == e.name:
                 raise EventAlreadyExists
-            
+
         self.events.append(event)
 
     def update(self, event: Event) -> None:

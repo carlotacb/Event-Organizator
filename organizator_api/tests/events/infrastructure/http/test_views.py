@@ -35,7 +35,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Unexpected body")
 
-    def test__given_a_event_with_the_same_name_as_one_already_created__when_create_event__then_returns_409(self) -> None:
+    def test__given_a_event_with_the_same_name_as_one_already_created__when_create_event__then_returns_409(
+        self,
+    ) -> None:
         # When
         self.client.post(
             "/organizator-api/events/new",
@@ -51,7 +53,6 @@ class TestEventViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.content, b"Event already exists")
-
 
     def test__given_a_json_body_with_an_event__when_creat_event__then_the_event_is_created_and_stored_in_db(
         self,
