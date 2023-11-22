@@ -1,5 +1,8 @@
 version: '3.9'
 
+networks:
+  common-net: {}
+
 services:
   db:
     container_name: organizator_db
@@ -14,6 +17,8 @@ services:
       interval: 20s
       timeout: 10s
       retries: 5
+    networks:
+      - common-net
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   api:
@@ -27,6 +32,8 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    networks:
+      - common-net
     volumes:
       - ./organizator_api:/code
   #web:
