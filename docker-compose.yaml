@@ -15,14 +15,14 @@ services:
       - 5432
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U admin -d postgres'"]
       interval: 20s
       timeout: 10s
       retries: 5
     networks:
       - common-net
-    #volumes:
-    #  - postgres_data:/var/lib/postgresql/data/
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
   api:
     build: ./organizator_api
     command: sh -c "gunicorn --reload --pythonpath . organizator_api.wsgi --bind 0.0.0.0:8000"
@@ -48,5 +48,5 @@ services:
     #  - "3000:3000"
     #restart: unless-stopped
 
-#volumes:
-#  postgres_data:
+volumes:
+  postgres_data:
