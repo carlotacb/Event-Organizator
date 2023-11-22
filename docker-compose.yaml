@@ -11,6 +11,8 @@ services:
     image: postgres:alpine
     ports:
       - "5432:5432"
+    expose:
+      - 5432
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
