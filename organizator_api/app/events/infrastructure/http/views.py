@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 
 from app.events.application.requests import CreateEventRequest
 from app.events.domain.use_cases.create_event_use_case import CreateEventUseCase
+from app.events.domain.exceptions import EventAlreadyExists
 
 
 @require_http_methods(["POST"])
@@ -35,6 +36,9 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         header_image=header_image,
     )
 
-    CreateEventUseCase().execute(event_data)
+    try:
+        CreateEventUseCase().execute(event_data)
+    except EventAlreadyExists:
+        return HttpResponse(status=409, content="Event already exists")
 
     return HttpResponse(status=201, content="Event created correctly")

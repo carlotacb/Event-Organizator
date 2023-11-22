@@ -1,14 +1,20 @@
 import uuid
 from typing import List
 
+from django.db import IntegrityError
+
 from app.events.domain.models.event import Event
 from app.events.domain.repositories import EventRepository
 from app.events.infrastructure.persistance.models.orm_event import ORMEvent
+from app.events.domain.exceptions import EventAlreadyExists
 
 
 class ORMEventRepository(EventRepository):
     def create(self, event: Event) -> None:
-        self._to_model(event).save()
+        try:
+            self._to_model(event).save()
+        except Exception as e:
+            raise EventAlreadyExists()
 
     def update(self, event: Event) -> None:
         pass  # pragma: no cover
