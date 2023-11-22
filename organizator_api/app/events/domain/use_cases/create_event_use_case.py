@@ -23,4 +23,5 @@ class CreateEventUseCase:
             updated_at=datetime.now(tz=timezone.utc),
             id=uuid.uuid4(),
         )
+
         self.event_repository.create(event)
