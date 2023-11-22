@@ -30,7 +30,9 @@ services:
     env_file:
       - ./organizator_api/.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
     ports:
       - "8000:8000"
     restart: unless-stopped
