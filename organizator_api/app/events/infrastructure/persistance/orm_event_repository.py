@@ -25,7 +25,7 @@ class ORMEventRepository(EventRepository):
     def get(self, event_id: uuid.UUID) -> Event:  # type: ignore
         pass  # pragma: no cover
 
-    def get_all(self) -> List[Event]:  # type: ignore
+    def get_all(self) -> List[Event]:
         return [self._to_domain_model(event) for event in ORMEvent.objects.all()]
 
     def _to_model(self, event: Event) -> ORMEvent:
