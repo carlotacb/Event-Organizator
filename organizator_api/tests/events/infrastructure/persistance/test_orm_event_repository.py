@@ -1,3 +1,5 @@
+import uuid
+
 from app.events.infrastructure.persistance.models.orm_event import ORMEvent
 from app.events.infrastructure.persistance.orm_event_repository import (
     ORMEventRepository,
@@ -19,7 +21,9 @@ class TestORMEventRepository(ApiTests):
         self,
     ) -> None:
         event = EventFactory().create()
-        event2 = EventFactory().create()
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88")
+        )
         ORMEventRepository().create(event=event)
 
         with self.assertRaises(EventAlreadyExists):
@@ -27,7 +31,10 @@ class TestORMEventRepository(ApiTests):
 
     def test__when_get_all__then_all_events_are_returned(self) -> None:
         event = EventFactory().create()
-        event2 = EventFactory().create(name="HackUPC 2022")
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
+            name="HackUPC 2022",
+        )
         ORMEventRepository().create(event=event)
         ORMEventRepository().create(event=event2)
 

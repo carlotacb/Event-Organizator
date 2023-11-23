@@ -8,6 +8,7 @@ from app.events.domain.models.event import Event
 class EventFactory:
     @staticmethod
     def create(
+        new_id: uuid.UUID = uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"),
         name: str = "HackUPC 2023",
         description: str = "The biggest student hackathon in Europe",
         url: str = "https://www.hackupc.com/",
@@ -24,7 +25,7 @@ class EventFactory:
         deleted_at: Optional[datetime] = None,
     ) -> Event:
         return Event(
-            id=uuid.uuid4(),
+            id=new_id,
             name=name,
             description=description,
             url=url,

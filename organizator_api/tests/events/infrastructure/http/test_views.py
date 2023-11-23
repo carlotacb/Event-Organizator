@@ -1,6 +1,8 @@
 import json
+import uuid
 from datetime import datetime
 
+from tests.events.domain.EventFactory import EventFactory
 from tests.api_tests import ApiTests
 
 
@@ -79,4 +81,36 @@ class TestEventViews(ApiTests):
         self.assertEqual(event.location, "Aula d'estudis Campus Nord")
         self.assertEqual(
             event.header_image, "https://www.hacknights.dev/images/hacknight.png"
+        )
+
+    def test__given_no_events_in_db__when_get_all_events__then_returns_empty_list(
+        self,
+    ) -> None:
+        # When
+        response = self.client.get("/organizator-api/events/")
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"[]")
+
+    def test__given_events_in_db__when_get_all_events__then_returns_the_events_list(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
+            name="HackUPC 2022",
+        )
+        self.event_repository.create(event)
+        self.event_repository.create(event2)
+
+        # When
+        response = self.client.get("/organizator-api/events/")
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2022", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
         )

@@ -7,6 +7,8 @@ from django.views.decorators.http import require_http_methods
 from app.events.application.requests import CreateEventRequest
 from app.events.domain.use_cases.create_event_use_case import CreateEventUseCase
 from app.events.domain.exceptions import EventAlreadyExists
+from app.events.domain.use_cases.get_all_events_use_case import GetAllEventsUseCase
+from app.events.application.response import EventResponse
 
 
 @require_http_methods(["POST"])
@@ -42,3 +44,16 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         return HttpResponse(status=409, content="Event already exists")
 
     return HttpResponse(status=201, content="Event created correctly")
+
+
+@require_http_methods(["GET"])
+def get_all_events(request: HttpRequest) -> HttpResponse:
+    all_events = GetAllEventsUseCase().execute()
+
+    events_response = []
+    for event in all_events:
+        events_response.append(EventResponse.from_event(event).to_dict())
+
+    return HttpResponse(
+        status=200, content=json.dumps(events_response), content_type="application/json"
+    )
