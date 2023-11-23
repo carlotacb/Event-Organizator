@@ -24,3 +24,21 @@ class TestORMEventRepository(ApiTests):
 
         with self.assertRaises(EventAlreadyExists):
             ORMEventRepository().create(event=event2)
+
+    def test__when_get_all__then_all_events_are_returned(self) -> None:
+        event = EventFactory().create()
+        event2 = EventFactory().create(name="HackUPC 2022")
+        ORMEventRepository().create(event=event)
+        ORMEventRepository().create(event=event2)
+
+        events = ORMEventRepository().get_all()
+
+        self.assertEqual(len(events), 2)
+        self.assertEqual(events[0].id, event.id)
+        self.assertEqual(events[0].name, event.name)
+        self.assertEqual(events[0].description, event.description)
+        self.assertEqual(events[0].url, event.url)
+        self.assertEqual(events[1].id, event2.id)
+        self.assertEqual(events[1].name, event2.name)
+        self.assertEqual(events[1].description, event2.description)
+        self.assertEqual(events[1].url, event2.url)

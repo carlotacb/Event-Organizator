@@ -13,7 +13,7 @@ class ORMEventRepository(EventRepository):
     def create(self, event: Event) -> None:
         try:
             self._to_model(event).save()
-        except Exception as e:
+        except IntegrityError:
             raise EventAlreadyExists()
 
     def update(self, event: Event) -> None:
@@ -26,10 +26,25 @@ class ORMEventRepository(EventRepository):
         pass  # pragma: no cover
 
     def get_all(self) -> List[Event]:  # type: ignore
-        pass  # pragma: no cover
+        return [self._to_domain_model(event) for event in ORMEvent.objects.all()]
 
     def _to_model(self, event: Event) -> ORMEvent:
         return ORMEvent(
+            id=event.id,
+            name=event.name,
+            description=event.description,
+            url=event.url,
+            start_date=event.start_date,
+            end_date=event.end_date,
+            location=event.location,
+            header_image=event.header_image,
+            created_at=event.created_at,
+            updated_at=event.updated_at,
+            deleted_at=event.deleted_at,
+        )
+
+    def _to_domain_model(self, event: ORMEvent) -> Event:
+        return Event(
             id=event.id,
             name=event.name,
             description=event.description,
