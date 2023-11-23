@@ -5,7 +5,7 @@ from app.events.domain.models.event import Event
 
 
 class GetAllEventsUseCase:
-    def __init__(self):
+    def __init__(self) -> None:
         self.event_repository = EventRepositoryFactory.create()
 
     def execute(self) -> List[Event]:
