@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from events.domain.use_cases.get_event_use_case import GetEventUseCase
+from app.events.domain.use_cases.get_event_use_case import GetEventUseCase
 from tests.events.domain.EventFactory import EventFactory
 from tests.api_tests import ApiTests
 
@@ -10,7 +10,9 @@ class TestGetEventUseCase(ApiTests):
     def setUp(self) -> None:
         super().setUp()
         self.event_repository.clear()
-        event = EventFactory().create(new_id=uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"))
+        event = EventFactory().create(
+            new_id=uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a")
+        )
         event2 = EventFactory().create(
             new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
             name="HackUPC 2022",
@@ -18,9 +20,13 @@ class TestGetEventUseCase(ApiTests):
         self.event_repository.create(event)
         self.event_repository.create(event2)
 
-    def test__given_events_in_the_database__when_get_an_event__then_all_the_events_are_returned(self) -> None:
+    def test__given_events_in_the_database__when_get_an_event__then_all_the_events_are_returned(
+        self,
+    ) -> None:
         # When
-        event = GetEventUseCase().execute(event_id=uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"))
+        event = GetEventUseCase().execute(
+            event_id=uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a")
+        )
 
         # Then
         self.assertEqual(event.id, uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"))
