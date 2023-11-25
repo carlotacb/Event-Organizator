@@ -6,7 +6,7 @@ from app.events.infrastructure.persistance.models.orm_event import ORMEvent
 from app.events.infrastructure.persistance.orm_event_repository import (
     ORMEventRepository,
 )
-from app.events.domain.exceptions import EventAlreadyExists
+from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 
@@ -61,3 +61,30 @@ class TestORMEventRepository(ApiTests):
         self.assertEqual(events[1].name, event2.name)
         self.assertEqual(events[1].description, event2.description)
         self.assertEqual(events[1].url, event2.url)
+
+    def test__given_a_event__when_get__then_event_is_returned(self) -> None:
+        event = EventFactory().create()
+        ORMEventRepository().create(event=event)
+
+        event = ORMEventRepository().get(event_id=event.id)
+
+        self.assertIsNotNone(event)
+        self.assertEqual(event.id, event.id)
+        self.assertEqual(type(event.id), uuid.UUID)
+        self.assertEqual(event.name, event.name)
+        self.assertEqual(type(event.name), str)
+        self.assertEqual(event.description, event.description)
+        self.assertEqual(type(event.description), str)
+        self.assertEqual(event.url, event.url)
+        self.assertEqual(type(event.url), str)
+        self.assertEqual(type(event.start_date), datetime)
+        self.assertEqual(type(event.end_date), datetime)
+        self.assertEqual(type(event.location), str)
+        self.assertEqual(type(event.header_image), str)
+        self.assertEqual(type(event.created_at), datetime)
+        self.assertEqual(type(event.updated_at), datetime)
+        self.assertEqual(event.deleted_at, None)
+
+    def test__when_get_a_non_existing_event__then_raise_event_not_found(self) -> None:
+        with self.assertRaises(EventNotFound):
+            ORMEventRepository().get(event_id=uuid.uuid4())

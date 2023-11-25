@@ -114,3 +114,37 @@ class TestEventViews(ApiTests):
             response.content,
             b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2022", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
         )
+
+    def test__given_events_in_db__when_get_event_by_id__then_returns_the_event(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+
+        # When
+        response = self.client.get(
+            "/organizator-api/events/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}',
+        )
+
+    def test__when_get_event_by_nonexistent_id__then_returns_the_event(
+        self,
+    ) -> None:
+        # When
+        response = self.client.get(
+            "/organizator-api/events/ef6f6fb3-ba12-43dd-a0da-95de8125b1c4"
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.content,
+            b"Event does not exist",
+        )
