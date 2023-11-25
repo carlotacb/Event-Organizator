@@ -146,5 +146,5 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
             response.content,
-            b'Event does not exist',
+            b"Event does not exist",
         )
