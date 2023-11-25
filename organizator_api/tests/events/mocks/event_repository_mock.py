@@ -21,6 +21,8 @@ class EventRepositoryMock(EventRepository):
         for e in self.events:
             if e.name == event.name and e.id != event.id:
                 raise EventAlreadyExists
+            if e.id == event.id:
+                return
 
         raise EventNotFound
 
