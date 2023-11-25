@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from app.events.domain.models.event import Event
 from app.events.domain.repositories import EventRepository
 from app.events.infrastructure.persistance.models.orm_event import ORMEvent
-from app.events.domain.exceptions import EventAlreadyExists
+from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 
 
 class ORMEventRepository(EventRepository):
@@ -23,7 +23,11 @@ class ORMEventRepository(EventRepository):
         pass  # pragma: no cover
 
     def get(self, event_id: uuid.UUID) -> Event:
-        return self._to_domain_model(ORMEvent.objects.get(id=event_id))
+        try:
+            event = self._to_domain_model(ORMEvent.objects.get(id=event_id))
+            return event
+        except ORMEvent.DoesNotExist:
+            raise EventNotFound
 
     def get_all(self) -> List[Event]:
         return [self._to_domain_model(event) for event in ORMEvent.objects.all()]

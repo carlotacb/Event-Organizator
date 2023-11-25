@@ -1,4 +1,5 @@
 import json
+import uuid
 from datetime import datetime
 
 from django.http import HttpRequest, HttpResponse
@@ -6,9 +7,10 @@ from django.views.decorators.http import require_http_methods
 
 from app.events.application.requests import CreateEventRequest
 from app.events.domain.use_cases.create_event_use_case import CreateEventUseCase
-from app.events.domain.exceptions import EventAlreadyExists
+from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 from app.events.domain.use_cases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.application.response import EventResponse
+from app.events.domain.use_cases.get_event_use_case import GetEventUseCase
 
 
 @require_http_methods(["POST"])
@@ -56,4 +58,18 @@ def get_all_events(request: HttpRequest) -> HttpResponse:
 
     return HttpResponse(
         status=200, content=json.dumps(events_response), content_type="application/json"
+    )
+
+
+@require_http_methods(["GET"])
+def get_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    try:
+        event = GetEventUseCase().execute(event_id=event_id)
+    except EventNotFound:
+        return HttpResponse(status=404, content="Event does not exist")
+
+    event_response = EventResponse.from_event(event).to_dict()
+
+    return HttpResponse(
+        status=200, content=json.dumps(event_response), content_type="application/json"
     )
