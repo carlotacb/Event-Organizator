@@ -88,3 +88,49 @@ class TestORMEventRepository(ApiTests):
     def test__when_get_a_non_existing_event__then_raise_event_not_found(self) -> None:
         with self.assertRaises(EventNotFound):
             ORMEventRepository().get(event_id=uuid.uuid4())
+
+    def test__given_a_event__when_update__then_event_is_updated(self) -> None:
+        # Given
+        event = EventFactory().create(name="HackUPC 2021")
+        ORMEventRepository().create(event=event)
+
+        # When
+        event.name = "HackUPC 2022"
+        ORMEventRepository().update(event=event)
+        event = ORMEventRepository().get(event_id=event.id)
+
+        # Then
+        self.assertEqual(event.name, "HackUPC 2022")
+        self.assertEqual(type(event.name), str)
+
+    def test__given_a_event__when_update_with_a_name_that_already_exists__then_it_raises_event_already_exists(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create(name="HackUPC 2021")
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
+            name="HackUPC 2022",
+        )
+        ORMEventRepository().create(event=event)
+        ORMEventRepository().create(event=event2)
+
+        # When
+        event.name = "HackUPC 2022"
+
+        # Then
+        with self.assertRaises(EventAlreadyExists):
+            ORMEventRepository().update(event=event)
+
+    def test__given_no_events_when_update_a_non_existing_event__then_it_raises_event_not_found(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create(name="HackUPC 2021")
+
+        # When
+        event.name = "HackUPC 2022"
+
+        # Then
+        with self.assertRaises(EventNotFound):
+            ORMEventRepository().update(event=event)
