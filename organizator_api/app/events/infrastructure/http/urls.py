@@ -4,7 +4,8 @@ from app.events.infrastructure.http.views import (
     create_new_event,
     get_all_events,
     get_event,
-    update_event, delete_event,
+    update_event,
+    delete_event,
 )
 
 urlpatterns = [

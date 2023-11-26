@@ -110,6 +110,7 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
 
     return HttpResponse(status=201, content="Event modified correctly")
 
+
 @require_http_methods(["POST"])
 def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     try:
