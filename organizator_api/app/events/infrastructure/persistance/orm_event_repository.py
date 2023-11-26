@@ -38,6 +38,7 @@ class ORMEventRepository(EventRepository):
         try:
             orm_event = ORMEvent.objects.get(id=event_id)
             orm_event.deleted_at = delete_time
+            orm_event.updated_at = delete_time
             orm_event.save()
         except ORMEvent.DoesNotExist:
             raise EventNotFound()

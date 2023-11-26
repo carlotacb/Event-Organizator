@@ -148,7 +148,9 @@ class TestORMEventRepository(ApiTests):
 
         # Then
         event = ORMEventRepository().get(event_id=event.id)
+        self.assertIsNotNone(event.deleted_at)
         self.assertEqual(event.deleted_at, delete_time)
+        self.assertEqual(event.updated_at, delete_time)
 
     def test__given_a_non_existing_event_in_the_db__when_delete__then_it_raises_event_not_found(
         self,
@@ -160,4 +162,3 @@ class TestORMEventRepository(ApiTests):
         # Then
         with self.assertRaises(EventNotFound):
             ORMEventRepository().delete(event_id=event.id, delete_time=delete_time)
-
