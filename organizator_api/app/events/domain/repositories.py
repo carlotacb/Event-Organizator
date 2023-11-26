@@ -16,7 +16,7 @@ class EventRepository(ABC):
         pass
 
     @abstractmethod
-    def delete(self, event_id: uuid.UUID) -> None:
+    def delete(self, event_id: uuid.UUID, delete_time: datetime) -> None:
         pass
 
     @abstractmethod

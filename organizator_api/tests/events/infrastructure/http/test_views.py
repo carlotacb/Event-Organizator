@@ -261,3 +261,31 @@ class TestEventViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"Event does not exist")
+
+    def test__given_a_event__when_delete_event__then_the_event_is_deleted(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+
+        # When
+        response = self.client.post(
+            "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.content, b"Event updated correctly to be deleted")
+
+    def test__given_no_event_in_db__when_delete_event__then_returns_404(
+        self,
+    ) -> None:
+        # When
+        response = self.client.post(
+            "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"Event does not exist")

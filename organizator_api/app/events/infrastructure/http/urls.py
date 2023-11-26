@@ -5,6 +5,7 @@ from app.events.infrastructure.http.views import (
     get_all_events,
     get_event,
     update_event,
+    delete_event,
 )
 
 urlpatterns = [
@@ -12,4 +13,5 @@ urlpatterns = [
     path("", get_all_events),
     path("<uuid:event_id>", get_event),
     path("update/<uuid:event_id>", update_event),
+    path("delete/<uuid:event_id>", delete_event),
 ]

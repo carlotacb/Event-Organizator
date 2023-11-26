@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from typing import List
 
 from app.events.domain.exceptions import EventNotFound, EventAlreadyExists
@@ -35,8 +36,13 @@ class EventRepositoryMock(EventRepository):
 
         raise EventNotFound
 
-    def delete(self, event_id: uuid.UUID) -> None:
-        pass
+    def delete(self, event_id: uuid.UUID, delete_time: datetime) -> None:
+        for event in self.events:
+            if event.id == event_id:
+                event.deleted_at = delete_time
+                event.updated_at = delete_time
+                return
+        raise EventNotFound
 
     def get(self, event_id: uuid.UUID) -> Event:
         for event in self.events:

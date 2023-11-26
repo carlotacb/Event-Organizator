@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List
 
 from django.db import IntegrityError
@@ -34,8 +34,14 @@ class ORMEventRepository(EventRepository):
         except IntegrityError:
             raise EventAlreadyExists()
 
-    def delete(self, event_id: uuid.UUID) -> None:
-        pass  # pragma: no cover
+    def delete(self, event_id: uuid.UUID, delete_time: datetime) -> None:
+        try:
+            orm_event = ORMEvent.objects.get(id=event_id)
+            orm_event.deleted_at = delete_time
+            orm_event.updated_at = delete_time
+            orm_event.save()
+        except ORMEvent.DoesNotExist:
+            raise EventNotFound()
 
     def get(self, event_id: uuid.UUID) -> Event:
         try:

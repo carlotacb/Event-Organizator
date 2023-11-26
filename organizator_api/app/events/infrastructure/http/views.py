@@ -12,6 +12,7 @@ from app.events.domain.use_cases.get_all_events_use_case import GetAllEventsUseC
 from app.events.application.response import EventResponse
 from app.events.domain.use_cases.get_event_use_case import GetEventUseCase
 from app.events.domain.use_cases.update_event_use_case import UpdateEventUseCase
+from app.events.domain.use_cases.delete_event_use_case import DeleteEventUseCase
 
 
 @require_http_methods(["POST"])
@@ -108,3 +109,13 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
         return HttpResponse(status=404, content="Event does not exist")
 
     return HttpResponse(status=201, content="Event modified correctly")
+
+
+@require_http_methods(["POST"])
+def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    try:
+        DeleteEventUseCase().execute(event_id=event_id)
+    except EventNotFound:
+        return HttpResponse(status=404, content="Event does not exist")
+
+    return HttpResponse(status=201, content="Event updated correctly to be deleted")

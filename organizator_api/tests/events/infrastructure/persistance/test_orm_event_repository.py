@@ -1,6 +1,6 @@
 import uuid
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.events.infrastructure.persistance.models.orm_event import ORMEvent
 from app.events.infrastructure.persistance.orm_event_repository import (
@@ -134,3 +134,31 @@ class TestORMEventRepository(ApiTests):
         # Then
         with self.assertRaises(EventNotFound):
             ORMEventRepository().update(event=event)
+
+    def test__given_a_event_id_for_an_existing_event__when_delete__then_event_is_deleted(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        ORMEventRepository().create(event=event)
+        delete_time = datetime.now(timezone.utc)
+
+        # When
+        ORMEventRepository().delete(event_id=event.id, delete_time=delete_time)
+
+        # Then
+        event = ORMEventRepository().get(event_id=event.id)
+        self.assertIsNotNone(event.deleted_at)
+        self.assertEqual(event.deleted_at, delete_time)
+        self.assertEqual(event.updated_at, delete_time)
+
+    def test__given_a_non_existing_event_in_the_db__when_delete__then_it_raises_event_not_found(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        delete_time = datetime.now(timezone.utc)
+
+        # Then
+        with self.assertRaises(EventNotFound):
+            ORMEventRepository().delete(event_id=event.id, delete_time=delete_time)
