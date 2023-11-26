@@ -4,10 +4,12 @@ from app.events.infrastructure.http.views import (
     create_new_event,
     get_all_events,
     get_event,
+    update_event,
 )
 
 urlpatterns = [
     path("new", create_new_event),
     path("", get_all_events),
     path("<uuid:event_id>", get_event),
+    path("update/<uuid:event_id>", update_event),
 ]
