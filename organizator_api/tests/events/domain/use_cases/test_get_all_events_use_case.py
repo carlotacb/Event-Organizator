@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime, timezone
 
 from tests.events.domain.EventFactory import EventFactory
 from app.events.domain.use_cases.get_all_events_use_case import GetAllEventsUseCase
@@ -11,7 +10,10 @@ class TestGetAllEventsUseCase(ApiTests):
         super().setUp()
         self.event_repository.clear()
         event = EventFactory().create()
-        event2 = EventFactory().create(name="HackUPC 2022")
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"),
+            name="HackUPC 2022",
+        )
         self.event_repository.create(event)
         self.event_repository.create(event2)
 

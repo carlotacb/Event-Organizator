@@ -18,7 +18,22 @@ class EventRepositoryMock(EventRepository):
         self.events.append(event)
 
     def update(self, event: Event) -> None:
-        pass
+        for e in self.events:
+            if e.name == event.name and e.id != event.id:
+                raise EventAlreadyExists
+        for e in self.events:
+            if e.id == event.id:
+                e.name = event.name
+                e.description = event.description
+                e.url = event.url
+                e.start_date = event.start_date
+                e.end_date = event.end_date
+                e.location = event.location
+                e.header_image = event.header_image
+                e.updated_at = event.updated_at
+                return
+
+        raise EventNotFound
 
     def delete(self, event_id: uuid.UUID) -> None:
         pass
