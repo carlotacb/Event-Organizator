@@ -173,7 +173,7 @@ class TestEventViews(ApiTests):
         )
 
         # Then
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 202)
         self.assertEqual(response.content, b"Event modified correctly")
 
         events = self.event_repository.get_all()
@@ -208,7 +208,7 @@ class TestEventViews(ApiTests):
         )
 
         # Then
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 202)
         self.assertEqual(response.content, b"Event modified correctly")
 
         events = self.event_repository.get_all()

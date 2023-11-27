@@ -108,7 +108,7 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
 
-    return HttpResponse(status=201, content="Event modified correctly")
+    return HttpResponse(status=202, content="Event modified correctly")
 
 
 @require_http_methods(["POST"])
