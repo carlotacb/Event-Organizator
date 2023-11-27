@@ -6,7 +6,7 @@ from django.db import IntegrityError
 
 from app.events.domain.models.event import Event
 from app.events.domain.repositories import EventRepository
-from app.events.infrastructure.persistance.models.orm_event import ORMEvent
+from app.events.infrastructure.persistence.models.orm_event import ORMEvent
 from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 
 

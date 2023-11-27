@@ -1,5 +1,5 @@
 from app.events.domain.repositories import EventRepository
-from app.events.infrastructure.persistance.orm_event_repository import (
+from app.events.infrastructure.persistence.orm_event_repository import (
     ORMEventRepository,
 )
 

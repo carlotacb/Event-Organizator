@@ -4,8 +4,8 @@ from datetime import datetime
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
-from app.users.infrastructure.persistance.orm_user_repository import ORMUserRepository
-from app.users.infrastructure.persistance.models.orm_user import ORMUser
+from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
+from app.users.infrastructure.persistence.models.orm_user import ORMUser
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
 
 

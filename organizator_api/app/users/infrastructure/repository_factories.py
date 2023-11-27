@@ -1,5 +1,5 @@
 from app.users.domain.repositories import UserRepository
-from app.users.infrastructure.persistance.orm_user_repository import ORMUserRepository
+from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 
 
 class UserRepositoryFactory:
