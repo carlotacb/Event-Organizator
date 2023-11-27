@@ -76,4 +76,3 @@ class TestORMUserRepository(ApiTests):
         self.assertEqual(users[1].username, user2.username)
         self.assertEqual(users[1].bio, user2.bio)
         self.assertEqual(users[1].profile_image, user2.profile_image)
-
