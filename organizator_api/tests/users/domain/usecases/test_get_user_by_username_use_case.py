@@ -1,21 +1,25 @@
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
-from app.users.domain.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
+from app.users.domain.use_cases.get_user_by_username_use_case import (
+    GetUserByUsernameUseCase,
+)
 
 
-class TestGetUserByIdUseCase(ApiTests):
+class TestGetUserByUsernameUseCase(ApiTests):
     def setUp(self) -> None:
         super().setUp()
         self.user_repository.clear()
 
-    def test__given_user_id__when_get_user_by_id__then_user_is_returned(self) -> None:
+    def test__given_username__when_get_user_by_username__then_user_is_returned(
+        self,
+    ) -> None:
         # Given
         user = UserFactory().create()
         self.user_repository.create(user)
 
         # When
-        user = GetUserByIdUseCase().execute(user_id=user.id)
+        user = GetUserByUsernameUseCase().execute(username=user.username)
 
         # Then
         self.assertEqual(len(self.user_repository.get_all()), 1)

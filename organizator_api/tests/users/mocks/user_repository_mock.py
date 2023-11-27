@@ -25,5 +25,11 @@ class UserRepositoryMock(UserRepository):
                 return user
         raise UserNotFound()
 
+    def get_by_username(self, username: str) -> User:
+        for user in self.users:
+            if user.username == username:
+                return user
+        raise UserNotFound()
+
     def clear(self) -> None:
         self.users = []

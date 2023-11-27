@@ -26,6 +26,13 @@ class ORMUserRepository(UserRepository):
         except ORMUser.DoesNotExist:
             raise UserNotFound()
 
+    def get_by_username(self, username: str) -> User:
+        try:
+            user = self._to_domain(ORMUser.objects.get(username=username))
+            return user
+        except ORMUser.DoesNotExist:
+            raise UserNotFound()
+
     def _to_model(self, user: User) -> ORMUser:
         return ORMUser(
             id=user.id,
