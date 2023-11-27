@@ -6,7 +6,7 @@ from tests.users.domain.UserFactory import UserFactory
 
 from app.users.infrastructure.persistance.orm_user_repository import ORMUserRepository
 from app.users.infrastructure.persistance.models.orm_user import ORMUser
-from app.users.domain.exceptions import UserAlreadyExists
+from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
 
 
 class TestORMUserRepository(ApiTests):
@@ -76,3 +76,38 @@ class TestORMUserRepository(ApiTests):
         self.assertEqual(users[1].username, user2.username)
         self.assertEqual(users[1].bio, user2.bio)
         self.assertEqual(users[1].profile_image, user2.profile_image)
+
+    def test__given_a_user__when_get_by_id__then_user_is_returned(self) -> None:
+        # Given
+        user = UserFactory().create()
+        ORMUserRepository().create(user=user)
+
+        # When
+        user = ORMUserRepository().get_by_id(user.id)
+
+        # Then
+        self.assertEqual(user.id, user.id)
+        self.assertEqual(type(user.id), uuid.UUID)
+        self.assertEqual(user.email, user.email)
+        self.assertEqual(type(user.email), str)
+        self.assertEqual(user.password, user.password)
+        self.assertEqual(type(user.password), str)
+        self.assertEqual(user.first_name, user.first_name)
+        self.assertEqual(type(user.first_name), str)
+        self.assertEqual(user.last_name, user.last_name)
+        self.assertEqual(type(user.last_name), str)
+        self.assertEqual(user.username, user.username)
+        self.assertEqual(type(user.username), str)
+        self.assertEqual(user.bio, user.bio)
+        self.assertEqual(type(user.bio), str)
+        self.assertEqual(user.profile_image, user.profile_image)
+        self.assertEqual(type(user.profile_image), str)
+        self.assertEqual(type(user.created_at), datetime)
+        self.assertEqual(type(user.updated_at), datetime)
+
+    def test__given_a_non_existing_id__when_get_by_id__then_user_not_found_is_raised(
+        self,
+    ) -> None:
+        # Then
+        with self.assertRaises(UserNotFound):
+            ORMUserRepository().get_by_id(uuid.uuid4())
