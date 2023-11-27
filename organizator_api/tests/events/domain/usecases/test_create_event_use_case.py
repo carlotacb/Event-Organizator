@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from app.events.application.requests import CreateEventRequest
-from app.events.domain.use_cases.create_event_use_case import CreateEventUseCase
+from app.events.domain.usecases.create_event_use_case import CreateEventUseCase
 from tests.api_tests import ApiTests
 
 

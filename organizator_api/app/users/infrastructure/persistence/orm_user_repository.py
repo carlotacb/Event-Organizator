@@ -6,7 +6,7 @@ from typing import List
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
-from app.users.infrastructure.persistance.models.orm_user import ORMUser
+from app.users.infrastructure.persistence.models.orm_user import ORMUser
 
 
 class ORMUserRepository(UserRepository):

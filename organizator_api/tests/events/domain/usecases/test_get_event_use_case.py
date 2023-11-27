@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from app.events.domain.use_cases.get_event_use_case import GetEventUseCase
+from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from tests.events.domain.EventFactory import EventFactory
 from tests.api_tests import ApiTests
 

@@ -1,7 +1,7 @@
 import uuid
 
 from app.users.application.requests import UpdateUserRequest
-from app.users.domain.use_cases.update_user_use_case import UpdateUserUseCase
+from app.users.domain.usecases.update_user_use_case import UpdateUserUseCase
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 

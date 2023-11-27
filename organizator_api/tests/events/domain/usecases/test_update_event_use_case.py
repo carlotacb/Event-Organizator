@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from app.events.application.requests import UpdateEventRequest
-from app.events.domain.use_cases.update_event_use_case import UpdateEventUseCase
+from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
 from tests.events.domain.EventFactory import EventFactory
 from tests.api_tests import ApiTests
 

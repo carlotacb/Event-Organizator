@@ -5,12 +5,12 @@ from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from app.users.application.requests import CreateUserRequest
-from app.users.domain.use_cases.create_user_use_case import CreateUserUseCase
+from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
-from app.users.domain.use_cases.get_all_users_use_case import GetAllUsersUseCase
+from app.users.domain.usecases.get_all_users_use_case import GetAllUsersUseCase
 from app.users.application.response import UserResponse
-from app.users.domain.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
-from app.users.domain.use_cases.get_user_by_username_use_case import (
+from app.users.domain.usecases.get_user_by_id_use_case import GetUserByIdUseCase
+from app.users.domain.usecases.get_user_by_username_use_case import (
     GetUserByUsernameUseCase,
 )
 
