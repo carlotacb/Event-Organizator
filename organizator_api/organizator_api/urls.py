@@ -22,5 +22,6 @@ base_path: str = "organizator-api"
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(f"{base_path}/events/", include("app.events.infrastructure.http.urls")),
+    path(f"{base_path}/users/", include("app.users.infrastructure.http.urls")),
     path("api-auth/", include("rest_framework.urls")),
 ]
