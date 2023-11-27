@@ -4,7 +4,7 @@ from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from app.users.domain.models.user import User
 
 
-class GetByIdUseCase:
+class GetUserByIdUseCase:
     def __init__(self) -> None:
         self.user_repository = UserRepositoryFactory.create()
 

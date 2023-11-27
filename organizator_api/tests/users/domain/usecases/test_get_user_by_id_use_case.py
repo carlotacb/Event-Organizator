@@ -1,7 +1,7 @@
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
-from app.users.domain.use_cases.get_by_id_use_case import GetByIdUseCase
+from app.users.domain.use_cases.get_by_id_use_case import GetUserByIdUseCase
 
 
 class TestGetUserByIdUseCase(ApiTests):
@@ -15,7 +15,7 @@ class TestGetUserByIdUseCase(ApiTests):
         self.user_repository.create(user)
 
         # When
-        user = GetByIdUseCase().execute(user_id=user.id)
+        user = GetUserByIdUseCase().execute(user_id=user.id)
 
         # Then
         self.assertEqual(len(self.user_repository.get_all()), 1)
