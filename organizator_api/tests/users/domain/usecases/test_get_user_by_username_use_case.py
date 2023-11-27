@@ -1,7 +1,7 @@
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
-from app.users.domain.use_cases.get_user_by_username_use_case import (
+from app.users.domain.usecases.get_user_by_username_use_case import (
     GetUserByUsernameUseCase,
 )
 

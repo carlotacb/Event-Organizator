@@ -2,7 +2,7 @@ import uuid
 
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
-from app.users.domain.use_cases.get_all_users_use_case import GetAllUsersUseCase
+from app.users.domain.usecases.get_all_users_use_case import GetAllUsersUseCase
 
 
 class TestGetAllUsersUseCase(ApiTests):
