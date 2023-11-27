@@ -26,7 +26,6 @@ class ApiTests(TestCase):
         )
         self.user_repository_patcher.start()
 
-
     def tearDown(self) -> None:
         super().tearDown()
         self.event_repository_patcher.stop()

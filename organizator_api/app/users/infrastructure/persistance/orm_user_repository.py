@@ -14,8 +14,8 @@ class ORMUserRepository(UserRepository):
         except IntegrityError:
             raise UserAlreadyExists()
 
-    def get_all(self) -> List[User]: # type: ignore
-        pass # pragma: no cover
+    def get_all(self) -> List[User]:  # type: ignore
+        pass  # pragma: no cover
 
     def _to_model(self, user: User) -> ORMUser:
         return ORMUser(

@@ -16,7 +16,7 @@ class UserFactory:
         bio: str = "The user that is using this application",
         profile_image: str = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
         created_at: datetime = datetime.now(),
-        updated_at: datetime = datetime.now()
+        updated_at: datetime = datetime.now(),
     ) -> User:
         return User(
             id=new_id,
@@ -28,5 +28,5 @@ class UserFactory:
             bio=bio,
             profile_image=profile_image,
             created_at=created_at,
-            updated_at=updated_at
+            updated_at=updated_at,
         )
