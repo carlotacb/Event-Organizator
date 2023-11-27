@@ -1,6 +1,6 @@
 import uuid
 
-from app.events.domain.use_cases.delete_event_use_case import DeleteEventUseCase
+from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 
