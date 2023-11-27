@@ -111,3 +111,28 @@ class TestORMUserRepository(ApiTests):
         # Then
         with self.assertRaises(UserNotFound):
             ORMUserRepository().get_by_id(uuid.uuid4())
+
+    def test__given_a_user__when_get_by_username__then_user_is_returned(self) -> None:
+        # Given
+        user = UserFactory().create()
+        ORMUserRepository().create(user=user)
+
+        # When
+        user = ORMUserRepository().get_by_username(user.username)
+
+        # Then
+        self.assertEqual(user.id, user.id)
+        self.assertEqual(user.email, user.email)
+        self.assertEqual(user.password, user.password)
+        self.assertEqual(user.first_name, user.first_name)
+        self.assertEqual(user.last_name, user.last_name)
+        self.assertEqual(user.username, user.username)
+        self.assertEqual(user.bio, user.bio)
+        self.assertEqual(user.profile_image, user.profile_image)
+
+    def test__given_a_non_existing_username__when_get_by_username__then_user_not_found_is_raised(
+        self,
+    ) -> None:
+        # Then
+        with self.assertRaises(UserNotFound):
+            ORMUserRepository().get_by_username("non_existing_username")
