@@ -10,6 +10,9 @@ from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
 from app.users.domain.use_cases.get_all_users_use_case import GetAllUsersUseCase
 from app.users.application.response import UserResponse
 from app.users.domain.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
+from app.users.domain.use_cases.get_user_by_username_use_case import (
+    GetUserByUsernameUseCase,
+)
 
 
 @require_http_methods(["POST"])
@@ -62,6 +65,20 @@ def get_all_users(request: HttpRequest) -> HttpResponse:
 def get_user_by_id(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
     try:
         user = GetUserByIdUseCase().execute(user_id=user_id)
+    except UserNotFound:
+        return HttpResponse(status=404, content="User does not exist")
+
+    return HttpResponse(
+        status=200,
+        content=json.dumps(UserResponse.from_user(user).to_dict()),
+        content_type="application/json",
+    )
+
+
+@require_http_methods(["GET"])
+def get_user_by_username(request: HttpRequest, username: str) -> HttpResponse:
+    try:
+        user = GetUserByUsernameUseCase().execute(username=username)
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
 
