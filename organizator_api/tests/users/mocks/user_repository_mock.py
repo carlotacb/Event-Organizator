@@ -39,8 +39,6 @@ class UserRepositoryMock(UserRepository):
                 raise UserAlreadyExists()
         for u in self.users:
             if user.id == u.id:
-                u.email = user.email
-                u.password = user.password
                 u.first_name = user.first_name
                 u.last_name = user.last_name
                 u.username = user.username

@@ -36,8 +36,6 @@ class ORMUserRepository(UserRepository):
     def update(self, user: User) -> None:
         try:
             orm_user = ORMUser.objects.get(id=user.id)
-            orm_user.email = user.email
-            orm_user.password = user.password
             orm_user.first_name = user.first_name
             orm_user.last_name = user.last_name
             orm_user.username = user.username
