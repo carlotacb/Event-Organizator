@@ -14,3 +14,9 @@ class UserRepositoryMock(UserRepository):
             if user.username == u.username:
                 raise UserAlreadyExists()
         self.users.append(user)
+
+    def get_all(self) -> List[User]:
+        return self.users
+
+    def clear(self) -> None:
+        self.users = []

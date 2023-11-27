@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from typing import List
 
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
@@ -12,6 +13,9 @@ class ORMUserRepository(UserRepository):
             self._to_model(user).save()
         except IntegrityError:
             raise UserAlreadyExists()
+
+    def get_all(self) -> List[User]: # type: ignore
+        pass # pragma: no cover
 
     def _to_model(self, user: User) -> ORMUser:
         return ORMUser(
