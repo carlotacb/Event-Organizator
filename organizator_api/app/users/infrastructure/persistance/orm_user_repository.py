@@ -33,6 +33,21 @@ class ORMUserRepository(UserRepository):
         except ORMUser.DoesNotExist:
             raise UserNotFound()
 
+    def update(self, user: User) -> None:
+        try:
+            orm_user = ORMUser.objects.get(id=user.id)
+            orm_user.first_name = user.first_name
+            orm_user.last_name = user.last_name
+            orm_user.username = user.username
+            orm_user.bio = user.bio
+            orm_user.profile_image = user.profile_image
+            orm_user.updated_at = user.updated_at
+            orm_user.save()
+        except ORMUser.DoesNotExist:
+            raise UserNotFound()
+        except IntegrityError:
+            raise UserAlreadyExists()
+
     def _to_model(self, user: User) -> ORMUser:
         return ORMUser(
             id=user.id,

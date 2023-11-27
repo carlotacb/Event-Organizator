@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -10,3 +11,12 @@ class CreateUserRequest:
     username: str
     bio: str
     profile_image: str
+
+
+@dataclass
+class UpdateUserRequest:
+    username: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    bio: Optional[str] = None
+    profile_image: Optional[str] = None
