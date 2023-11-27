@@ -9,7 +9,7 @@ from app.users.domain.use_cases.create_user_use_case import CreateUserUseCase
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
 from app.users.domain.use_cases.get_all_users_use_case import GetAllUsersUseCase
 from app.users.application.response import UserResponse
-from app.users.domain.use_cases.get_by_id_use_case import GetUserByIdUseCase
+from app.users.domain.use_cases.get_user_by_id_use_case import GetUserByIdUseCase
 
 
 @require_http_methods(["POST"])
