@@ -31,5 +31,24 @@ class UserRepositoryMock(UserRepository):
                 return user
         raise UserNotFound()
 
+    def update(self, user: User) -> None:
+        for u in self.users:
+            if (
+                u.username == user.username or u.email == user.email
+            ) and user.id != u.id:
+                raise UserAlreadyExists()
+        for u in self.users:
+            if user.id == u.id:
+                u.email = user.email
+                u.password = user.password
+                u.first_name = user.first_name
+                u.last_name = user.last_name
+                u.username = user.username
+                u.bio = user.bio
+                u.profile_image = user.profile_image
+                u.updated_at = user.updated_at
+                return
+        raise UserNotFound()
+
     def clear(self) -> None:
         self.users = []

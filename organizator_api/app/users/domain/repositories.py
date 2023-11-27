@@ -21,3 +21,7 @@ class UserRepository(ABC):
     @abstractmethod
     def get_by_username(self, username: str) -> User:
         pass
+
+    @abstractmethod
+    def update(self, user: User) -> None:
+        pass
