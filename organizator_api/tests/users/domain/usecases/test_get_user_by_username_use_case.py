@@ -1,7 +1,9 @@
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
-from app.users.domain.use_cases.get_user_by_username_use_case import GetUserByUsernameUseCase
+from app.users.domain.use_cases.get_user_by_username_use_case import (
+    GetUserByUsernameUseCase,
+)
 
 
 class TestGetUserByUsernameUseCase(ApiTests):
@@ -9,7 +11,9 @@ class TestGetUserByUsernameUseCase(ApiTests):
         super().setUp()
         self.user_repository.clear()
 
-    def test__given_username__when_get_user_by_username__then_user_is_returned(self) -> None:
+    def test__given_username__when_get_user_by_username__then_user_is_returned(
+        self,
+    ) -> None:
         # Given
         user = UserFactory().create()
         self.user_repository.create(user)
