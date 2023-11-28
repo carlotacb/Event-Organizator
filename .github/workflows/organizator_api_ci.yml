@@ -8,7 +8,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/organizator_api_ci.yml'
-      - 'organizator-api/**'
+      - 'organizator_api/**'
       - '!organizator/**'
     branches: [ master ]
   workflow_dispatch:
