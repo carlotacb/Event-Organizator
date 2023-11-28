@@ -1,0 +1,482 @@
+openapi: 3.0.0
+servers:
+  - description: LocalHost
+    url: http://0.0.0.0:8000/organizator-api
+info:
+  description: API for organizator app
+  version: "1.0.0"
+  title: Organizator API
+  contact:
+    email: carkbra@gmail.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/license/mit'
+
+tags:
+  - name: events
+    description: Everything about the events
+  - name: users
+    description: Everything about users
+
+paths:
+  /events/new:
+    post:
+      tags:
+        - events
+      summary: Creates a new event with the base information
+      operationId: newEvent
+      description: |
+        With the base information of the event, you can create an event be aware that the event name is unique and also the dates should be something logical.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventItem'
+        description: Event to add
+      responses:
+        '201':
+          description: Event created correctly
+        '409':
+          description: Event already exists
+        '400':
+          description: Unexpected body
+
+  /events/:
+    get:
+      tags:
+        - events
+      summary: Gets all the events of the system
+      operationId: allEvents
+      description: |
+        Get absolutely all the events of the system, in future versions it will have filters and search options
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
+
+  /events/{event_id}:
+    get:
+      tags:
+        - events
+      summary: Get event by id
+      operationId: eventById
+      description: |
+        Get the information for a event given a ID, the basic information, also marking if the event has been deleted or not.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found
+
+  /events/update/{event_id}:
+    post:
+      tags:
+        - events
+      summary: Update event by id
+      operationId: updateById
+      description: |
+        With some event information, not all the information is necessary to update, the event is updated. The name should be diferent as any event from the database.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventUpdateItem'
+        description: Event information to update
+      responses:
+        '202':
+          description: Event modified correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found
+        '409':
+          description: Event already exist, there is some event with that name already
+
+  /events/delete/{event_id}:
+    post:
+      tags:
+        - events
+      summary: Delete event by id
+      operationId: deleteById
+      description: |
+        Given a event ID, the event is marked as deleted, the event is not deleted in the DB but the delete_at date is introduced with the current date, so the event is marked as deleted.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '202':
+          description: Event modified correctly
+        '404':
+          description: Event not found
+
+  /users/new:
+    post:
+      tags:
+        - users
+      summary: Creates a new user with the base information
+      operationId: newUser
+      description: |
+        With the base information of a user, you can create a user be aware that the username and the email should be unique.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserItem'
+        description: User to add
+      responses:
+        '201':
+          description: User created correctly
+        '409':
+          description: User already exists, either with the same email or the same username
+        '400':
+          description: Unexpected body
+
+  /users/:
+    get:
+      tags:
+        - users
+      summary: Gets all the users registered in the system
+      operationId: allUsers
+      description: |
+        Get absolutely all the users of the system, in future versions it will have filters, a search or something similar
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+
+  /users/{user_id}:
+    get:
+      tags:
+        - users
+      summary: Get user information by id
+      operationId: userById
+      description: |
+        Get the basic information for a user given a ID.
+      parameters:
+      - name: user_id
+        in: path
+        description: User ID for the user that we want to get
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Event not found
+
+  /users/{username}:
+    get:
+      tags:
+        - users
+      summary: Get user information by username
+      operationId: userByUsername
+      description: |
+        Get the basic information for a user given a username.
+      parameters:
+      - name: username
+        in: path
+        description: username for the user that we want to get
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Event not found
+
+  /users/update/{user_id}:
+    post:
+      tags:
+        - users
+      summary: Updates a user with the available information
+      operationId: updateUser
+      description: |
+        With the base information of a user, you can update. Take in account that the email and the password can not be changed and the username should be unique.
+      parameters:
+      - name: user_id
+        in: path
+        description: User ID for the user that we want to get
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateItem'
+        description: User to update
+      responses:
+        '200':
+          description: User updated correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: User already exists
+        '400':
+          description: The email can not be changed or the password can not be changed
+        '404':
+          description: User does not exists
+
+
+components:
+  schemas:
+    EventItem:
+      type: object
+      required:
+        - name
+        - url
+        - description
+        - start_date
+        - end_date
+        - location
+        - header_image
+      properties:
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "2023-05-12T09:12:33.001Z"
+        end_date:
+          type: string
+          format: date-time
+          example: "2025-05-14T09:12:33.001Z"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+    EventUpdateItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "2023-05-12T09:12:33.001Z"
+        end_date:
+          type: string
+          format: date-time
+          example: "2025-05-14T09:12:33.001Z"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "c9d1d737-fdb5-4c38-b452-75dddfe5b414"
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "2023-05-12T09:12:33.001Z"
+        end_date:
+          type: string
+          format: date-time
+          example: "2025-05-14T09:12:33.001Z"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+        created_at:
+          type: string
+          format: date-time
+          example: "2020-11-17T21:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2020-11-17T21:00:00Z"
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2023-11-17T21:00:00Z"
+    EventList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    UserItem:
+      type: object
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+        - username
+        - bio
+        - profile_image
+      properties:
+        email:
+          type: string
+          format: email
+          example: "carlota@hackupc.com"
+        password:
+          type: string
+          example: "123456asdf"
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        username:
+          type: string
+          example: "carlotacb"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+    UserUpdateItem:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        username:
+          type: string
+          example: "carlotacb"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+        email:
+          type: string
+          format: email
+          example: "carlota@hackupc.com"
+        password:
+          type: string
+          example: "123456asdf"
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        username:
+          type: string
+          example: "carlotacb"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+        created_at:
+          type: string
+          format: date-time
+          example: "2020-11-17T21:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2020-11-17T21:00:00Z"
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+  securitySchemes:
+    cookieAuth:         # arbitrary name for the security scheme; will be used in the "security" key later
+      type: apiKey
+      in: cookie
+      name: csrftoken  # cookie name
+
+security:
+  - cookieAuth: []
