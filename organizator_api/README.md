@@ -2,7 +2,9 @@
 
 [![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
 [![](https://github.com/carlotacb/TFM-EventOrganizator/actions/workflows/organizator_api_ci.yml/badge.svg)](https://github.com/carlotacb/TFM-EventOrganizator/actions/workflows/organizator_api_ci.yml)
-
+<br><br>
+![image](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![image](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green)
 > API developed with Django as framework and Swagger to create all the API documentation.
 
 [🔗 Link for swagger documentation](https://app.swaggerhub.com/apis-docs/carlotacb/Organizator-API/1.0.0/)
