@@ -9,10 +9,7 @@ on:
     paths:
       - '.github/workflows/organizator_api_ci.yml'
       - 'organizator-api/**'
-  push:
-    paths:
-      - '.github/workflows/organizator_api_ci.yml'
-      - 'organizator-api/**'
+      - '!organizator/**'
     branches: [ master ]
   workflow_dispatch:
 

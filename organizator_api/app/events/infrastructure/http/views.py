@@ -6,13 +6,13 @@ from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from app.events.application.requests import CreateEventRequest, UpdateEventRequest
-from app.events.domain.usecases.create_event_use_case import CreateEventUseCase
-from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
-from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.application.response import EventResponse
+from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
+from app.events.domain.usecases.create_event_use_case import CreateEventUseCase
+from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
+from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
-from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 
 
 @require_http_methods(["POST"])

@@ -1,9 +1,9 @@
 import uuid
 from datetime import datetime, timezone
 
-from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from app.users.application.requests import UpdateUserRequest
 from app.users.domain.models.user import User
+from app.users.infrastructure.repository_factories import UserRepositoryFactory
 
 
 class UpdateUserUseCase:

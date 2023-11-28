@@ -1,8 +1,8 @@
 import uuid
 
-from tests.events.domain.EventFactory import EventFactory
 from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from tests.api_tests import ApiTests
+from tests.events.domain.EventFactory import EventFactory
 
 
 class TestGetAllEventsUseCase(ApiTests):

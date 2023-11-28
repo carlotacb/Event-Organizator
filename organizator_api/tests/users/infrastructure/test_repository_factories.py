@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from app.users.domain.repositories import UserRepository
+from app.users.infrastructure.repository_factories import UserRepositoryFactory
 
 
 class TestRepositoryFactories(TestCase):
