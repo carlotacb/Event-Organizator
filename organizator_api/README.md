@@ -67,6 +67,8 @@ coverage run --source="./app" manage.py test && coverage html
 open htmlcov/index.html
 ```
 
+To run the tests, if you are using pycharm, with the files saved in the `.run` folder, you can run the tests by using the pycharm interface.
+
 ## 📝 Documentation for development 
 
 ### 🗂️ Project structure
