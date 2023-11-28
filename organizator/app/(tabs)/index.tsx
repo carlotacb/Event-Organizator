@@ -7,6 +7,7 @@ export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>And this is a subtitle to do a minimal test</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="app/(tabs)/index.tsx" />
     </View>
