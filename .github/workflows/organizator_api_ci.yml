@@ -6,9 +6,14 @@ defaults:
 
 on:
   pull_request:
-    branches: [ master ]
     paths:
-        - './organizator-api/**'
+      - '.github/workflows/organizator_api_ci.yml'
+      - 'organizator-api/**'
+  push:
+    paths:
+      - '.github/workflows/organizator_api_ci.yml'
+      - 'organizator-api/**'
+    branches: [ master ]
   workflow_dispatch:
 
 env:
