@@ -1,5 +1,8 @@
 # Organizator API
 
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-390/)
+[![](https://github.com/carlotacb/TFM-EventOrganizator/actions/workflows/organizator_api_ci.yml/badge.svg)](https://github.com/carlotacb/TFM-EventOrganizator/actions/workflows/organizator_api_ci.yml)
+
 > API developed with Django as framework and Swagger to create all the API documentation.
 
 [🔗 Link for swagger documentation](https://app.swaggerhub.com/apis-docs/carlotacb/Organizator-API/1.0.0/)
@@ -63,6 +66,8 @@ coverage run --source="./app" manage.py test && coverage html
 # To open the html file with the coverage. This command should run in the normal command line inside of this folder
 open htmlcov/index.html
 ```
+
+To run the tests, if you are using pycharm, with the files saved in the `.run` folder, you can run the tests by using the pycharm interface.
 
 ## 📝 Documentation for development 
 
