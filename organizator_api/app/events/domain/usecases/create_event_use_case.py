@@ -12,16 +12,16 @@ class CreateEventUseCase:
 
     def execute(self, event_data: CreateEventRequest) -> None:
         event = Event(
+            id=uuid.uuid4(),
             name=event_data.name,
             url=event_data.url,
-            description=event_data.description,
             start_date=event_data.start_date,
             end_date=event_data.end_date,
             location=event_data.location,
+            description=event_data.description,
             header_image=event_data.header_image,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
-            id=uuid.uuid4(),
         )
 
         self.event_repository.create(event)
