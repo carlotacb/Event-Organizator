@@ -9,4 +9,4 @@ class GetEventUseCase:
         self.event_repository = EventRepositoryFactory.create()
 
     def execute(self, event_id: uuid.UUID) -> Event:
-        return self.event_repository.get(event_id)
+        return self.event_repository.get(event_id=event_id)
