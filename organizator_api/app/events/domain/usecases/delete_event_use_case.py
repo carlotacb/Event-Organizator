@@ -9,4 +9,6 @@ class DeleteEventUseCase:
         self.event_repository = EventRepositoryFactory.create()
 
     def execute(self, event_id: uuid.UUID) -> None:
-        self.event_repository.delete(event_id, datetime.now(timezone.utc))
+        self.event_repository.delete(
+            event_id=event_id, delete_time=datetime.now(timezone.utc)
+        )
