@@ -1,7 +1,6 @@
+from app.users.domain.usecases.get_user_by_id_use_case import GetUserByIdUseCase
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
-
-from app.users.domain.usecases.get_user_by_id_use_case import GetUserByIdUseCase
 
 
 class TestGetUserByIdUseCase(ApiTests):

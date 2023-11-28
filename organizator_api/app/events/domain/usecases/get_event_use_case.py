@@ -1,7 +1,7 @@
 import uuid
 
-from app.events.infrastructure.repository_factories import EventRepositoryFactory
 from app.events.domain.models.event import Event
+from app.events.infrastructure.repository_factories import EventRepositoryFactory
 
 
 class GetEventUseCase:

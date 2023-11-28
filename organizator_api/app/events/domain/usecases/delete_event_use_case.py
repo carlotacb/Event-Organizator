@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
 import uuid
+from datetime import datetime, timezone
 
 from app.events.infrastructure.repository_factories import EventRepositoryFactory
 

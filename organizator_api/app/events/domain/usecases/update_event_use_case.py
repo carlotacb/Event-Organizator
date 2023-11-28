@@ -1,9 +1,9 @@
 import uuid
 from datetime import timezone, datetime
 
-from app.events.infrastructure.repository_factories import EventRepositoryFactory
-from app.events.domain.models.event import Event
 from app.events.application.requests import UpdateEventRequest
+from app.events.domain.models.event import Event
+from app.events.infrastructure.repository_factories import EventRepositoryFactory
 
 
 class UpdateEventUseCase:

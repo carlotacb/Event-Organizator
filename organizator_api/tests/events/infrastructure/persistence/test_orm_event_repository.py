@@ -1,12 +1,11 @@
 import uuid
-
 from datetime import datetime, timezone
 
+from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 from app.events.infrastructure.persistence.models.orm_event import ORMEvent
 from app.events.infrastructure.persistence.orm_event_repository import (
     ORMEventRepository,
 )
-from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 

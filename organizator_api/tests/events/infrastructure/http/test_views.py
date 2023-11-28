@@ -2,8 +2,8 @@ import json
 import uuid
 from datetime import datetime
 
-from tests.events.domain.EventFactory import EventFactory
 from tests.api_tests import ApiTests
+from tests.events.domain.EventFactory import EventFactory
 
 
 class TestEventViews(ApiTests):

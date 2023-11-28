@@ -1,6 +1,6 @@
-from tests.api_tests import ApiTests
 from app.users.application.requests import CreateUserRequest
 from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
+from tests.api_tests import ApiTests
 
 
 class TestCreateUserUseCase(ApiTests):

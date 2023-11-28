@@ -1,7 +1,7 @@
 from typing import List
 
-from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from app.users.domain.models.user import User
+from app.users.infrastructure.repository_factories import UserRepositoryFactory
 
 
 class GetAllUsersUseCase:

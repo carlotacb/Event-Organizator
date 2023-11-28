@@ -1,9 +1,9 @@
 import uuid
 from typing import List
 
-from app.users.domain.repositories import UserRepository
-from app.users.domain.models.user import User
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
+from app.users.domain.models.user import User
+from app.users.domain.repositories import UserRepository
 
 
 class UserRepositoryMock(UserRepository):
