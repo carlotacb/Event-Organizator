@@ -173,8 +173,11 @@ class TestEventViews(ApiTests):
         )
 
         # Then
-        self.assertEqual(response.status_code, 202)
-        self.assertEqual(response.content, b"Event modified correctly")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackNight Ep.VI", "url": "https://www.hacknights.dev", "description": "The best hack-night ever", "start_date": "2023-11-17T21:00:00Z", "end_date": "2023-11-18T05:00:00Z", "location": "Aula d\'estudis Campus Nord", "header_image": "https://www.hacknights.dev/images/hacknight.png", "deleted": false}',
+        )
 
         events = self.event_repository.get_all()
         self.assertEqual(len(events), 1)
@@ -208,8 +211,11 @@ class TestEventViews(ApiTests):
         )
 
         # Then
-        self.assertEqual(response.status_code, 202)
-        self.assertEqual(response.content, b"Event modified correctly")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://2023.hackupc.com/", "description": "The biggest student hackathon in Europe taking place in Barcelona", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}',
+        )
 
         events = self.event_repository.get_all()
         self.assertEqual(len(events), 1)
@@ -275,7 +281,7 @@ class TestEventViews(ApiTests):
         )
 
         # Then
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, b"Event updated correctly to be deleted")
 
     def test__given_no_event_in_db__when_delete_event__then_returns_404(

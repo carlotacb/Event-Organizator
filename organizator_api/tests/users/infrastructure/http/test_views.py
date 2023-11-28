@@ -189,3 +189,115 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_user_in_db__when_update_user__then_user_is_updated(self) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+        body = {
+            "username": "charlie",
+            "first_name": "Charlie",
+            "last_name": "Brown",
+            "bio": "I'm Charlie",
+            "profile_image": "https://www.google.com",
+        }
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "charlie", "email": "carlota@hackupc.com", "first_name": "Charlie", "last_name": "Brown", "bio": "I\'m Charlie", "profile_image": "https://www.google.com"}',
+        )
+
+    def test__given_user_in_db__when_update_user_with_email__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+        body = {"email": "carlota@hackupc.com"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"The email cannot be updated")
+
+    def test__given_user_in_db__when_update_user_with_existing_username__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+        body = {"password": "carlotacb"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"The password cannot be updated")
+
+    def test__given_user_in_db__when_update_user_with_a_existing_username__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        user2 = UserFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
+            email="carkbra@gmail.com",
+            username="carkbra",
+        )
+        self.user_repository.create(user)
+        self.user_repository.create(user2)
+        body = {"username": "carkbra"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.content, b"User already exists")
+
+    def test__given_no_user_in_db__when_update_a_non_existing_user__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {
+            "username": "charlie",
+            "first_name": "Charlie",
+            "last_name": "Brown",
+            "bio": "I'm Charlie",
+            "profile_image": "https://www.google.com",
+        }
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"User does not exist")

@@ -102,13 +102,16 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        UpdateEventUseCase().execute(event_id=event_id, event=event_data)
+        event = UpdateEventUseCase().execute(event_id=event_id, event=event_data)
+        event_response = EventResponse.from_event(event).to_dict()
     except EventAlreadyExists:
         return HttpResponse(status=409, content="Event already exists")
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
 
-    return HttpResponse(status=202, content="Event modified correctly")
+    return HttpResponse(
+        status=200, content=json.dumps(event_response), content_type="application/json"
+    )
 
 
 @require_http_methods(["POST"])
@@ -118,4 +121,4 @@ def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
 
-    return HttpResponse(status=201, content="Event updated correctly to be deleted")
+    return HttpResponse(status=200, content="Event updated correctly to be deleted")
