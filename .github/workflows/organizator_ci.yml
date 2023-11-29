@@ -34,7 +34,7 @@ jobs:
               run: npm install
     
             - name: 🧪 Test
-              run: npx jest --coverage --coverageReporters json-summary
+              run: npm run test
 
             - name: 📝 Generate test coverage xml
               uses: MishaKav/jest-coverage-comment@main
