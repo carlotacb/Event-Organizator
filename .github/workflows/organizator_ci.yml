@@ -19,7 +19,7 @@ env:
 
 jobs:
     tests:
-        name: 🧪 Test
+        name: 🧪  Test and coverage
         runs-on: ubuntu-latest
         steps:
             - name: 🏗 Setup repo
