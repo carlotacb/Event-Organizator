@@ -34,7 +34,13 @@ jobs:
               run: npm install
     
             - name: 🧪 Test
-              run: npm run test
+              run: |
+                npx jest --coverage | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+
+            - name: Jest Coverage Comment
+              uses: MishaKav/jest-coverage-comment@main
+              with:
+                coverage-path: ./coverage.txt
 
             - name: 📝 Generate test coverage xml
               uses: MishaKav/jest-coverage-comment@main
