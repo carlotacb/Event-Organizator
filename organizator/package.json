@@ -8,11 +8,24 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
+    "test-no-cover": "jest --coverage=false",
     "test-watch": "jest --watchAll",
     "lint": "eslint ."
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/app/+html.tsx",
+      "!**/constants/**",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js",
+      "!**/expo-env.d.ts",
+      "!**/.expo/**"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
