@@ -1,4 +1,4 @@
-name: Organizator API CI
+name: 👩🏻‍💻📦 Organizator API CI
 
 defaults:
   run:
@@ -19,35 +19,39 @@ env:
 
 jobs:
   linter:
+    name: 🦄 Linter
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [ "3.9" ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Run type checks
+      - name: 🏗  Setup repo
+        uses: actions/checkout@v3
+      - name: 🦄 Run type checks
         run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api mypy . --cache-dir=/dev/null
-      - name: Run linting
+      - name: 🦄 Run linting
         run: docker-compose -f ../docker-compose.yaml run --rm --no-deps api black . --check --verbose
-      - name: Remove running containers
+      - name: 🏗  Remove running containers
         run: docker-compose -f ../docker-compose.yaml down
   test:
+    name: 🤞 Test and coverage
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [ "3.9" ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Run dev migrations
+      - name: 🏗  Setup repo
+        uses: actions/checkout@v3
+      - name: 📦 Run dev migrations
         run: docker-compose -f ../docker-compose.yaml run --rm api python manage.py migrate
-      - name: Run tests
+      - name: 🧪 Run tests
         run: docker-compose -f ../docker-compose.yaml run --rm api coverage run --source='./app' manage.py test
-      - name: Generate test coverage xml
+      - name: 📝 Generate test coverage xml
         run: |
           docker-compose -f ../docker-compose.yaml run --rm --no-deps api coverage xml
           sudo chown -R $USER:$USER $GITHUB_WORKSPACE
           sed -i 's/<source>\/code<\/source>/<source>organizator_api<\/source>/g' coverage.xml  
-      - name: Publish coverage report in PR comment
+      - name: 📝 Publish coverage report in PR comment
         uses: orgoro/coverage@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:
@@ -56,5 +60,5 @@ jobs:
           thresholdNew: 0.9999
           thresholdModified: 0.9999
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Remove running containers
+      - name: 🏗  Remove running containers
         run: docker-compose -f ../docker-compose.yaml down
