@@ -1,0 +1,40 @@
+name: Organizator Frontend CI
+
+defaults: 
+    run: 
+        working-directory: ./organizator
+
+on:
+    pull_request:
+        paths:
+          - '.github/workflows/organizator_ci.yml'
+          - '!organizator_api/**'
+          - 'organizator/**'
+        branches: [ master ]
+    workflow_dispatch: 
+
+env:
+    DEBUG: 1
+    IMAGE_TAG: ${{ github.job }}-${{ github.sha }}
+
+jobs:
+    tests:
+        name: Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🏗 Setup repo
+              uses: actions/checkout@v3
+
+            - name: 🏗 Setup Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18.x
+    
+            - name: 🧪 Test
+              run: npm test
+              
+            - name: Linter
+              run: 
+    
+
+    build:    
