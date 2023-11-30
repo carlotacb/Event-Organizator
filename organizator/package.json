@@ -10,7 +10,7 @@
     "test": "jest",
     "test-no-cover": "jest --coverage=false",
     "test-watch": "jest --watchAll",
-    "lint": "eslint **/*.tsx --fix",
+    "lint": "eslint **/*.tsx & eslint **/*.ts & eslint **/*-test.js --fix",
     "check-lint": "eslint **/*.tsx & eslint **/*.ts & eslint **/*-test.js",
     "format": "npx prettier --write .",
     "check-format": "npx prettier -c ."
