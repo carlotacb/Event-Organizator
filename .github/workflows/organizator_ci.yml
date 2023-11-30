@@ -50,7 +50,7 @@ jobs:
                 summary-title: My Summary Title
                 badge-title: Coverage
                 hide-comment: false
-                create-new-comment: false
+                create-new-comment: true
                 hide-summary: false
                 junitxml-title: My JUnit Title
                 junitxml-path: ./coverage/junit.xml
