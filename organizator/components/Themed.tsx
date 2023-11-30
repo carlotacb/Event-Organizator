@@ -12,8 +12,8 @@ import {
 import Colors from "../constants/Colors";
 
 type ThemeProps = {
-  lightColor?: string;
-  darkColor?: string;
+  lightColor?: string | null;
+  darkColor?: string | null;
 };
 
 export type TextProps = ThemeProps & DefaultText["props"];
@@ -34,15 +34,26 @@ export function useThemeColor(
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+
+  const lightColorDefinition: string = lightColor || "#FFF";
+  const darkColorDefinition: string = darkColor || "#000";
+
+  const color = useThemeColor(
+    { light: lightColorDefinition, dark: darkColorDefinition },
+    "text",
+  );
 
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
+
+  const lightColorDefinition: string = lightColor || "#FFF";
+  const darkColorDefinition: string = darkColor || "#000";
+
   const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
+    { light: lightColorDefinition, dark: darkColorDefinition },
     "background",
   );
 
