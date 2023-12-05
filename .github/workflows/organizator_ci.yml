@@ -34,28 +34,27 @@ jobs:
               run: npm install
     
             - name: 🧪 Test
-              run: |
-                npx jest --coverage | tee ./coverage.txt && exit ${PIPESTATUS[0]}
+              run: npm test
 
-            - name: Jest Coverage Comment
-              uses: MishaKav/jest-coverage-comment@main
-              with:
-                coverage-path: ./coverage.txt
+            #- name: Jest Coverage Comment
+            #  uses: MishaKav/jest-coverage-comment@main
+            #  with:
+            #    coverage-path: ./coverage.txt
 
-            - name: 📝 Generate test coverage xml
-              uses: MishaKav/jest-coverage-comment@main
-              with:
-                coverage-summary-path: ./coverage/coverage-summary.json
-                title: My Jest Coverage Comment
-                summary-title: My Summary Title
-                badge-title: Coverage
-                hide-comment: false
-                create-new-comment: true
-                hide-summary: false
-                junitxml-title: My JUnit Title
-                junitxml-path: ./coverage/junit.xml
-                coverage-title: My Coverage Title
-                coverage-path: ./coverage.txt
+           # - name: 📝 Generate test coverage xml
+            #  uses: MishaKav/jest-coverage-comment@main
+            #  with:
+            #    coverage-summary-path: ./coverage/coverage-summary.json
+            #    title: My Jest Coverage Comment
+            #    summary-title: My Summary Title
+            #    badge-title: Coverage
+            #    hide-comment: false
+            #    create-new-comment: true
+            #    hide-summary: false
+             #   junitxml-title: My JUnit Title
+             #   junitxml-path: ./coverage/junit.xml
+              #  coverage-title: My Coverage Title
+               # coverage-path: ./coverage.txt
 
     lint:
         name: 🦄 Linter
