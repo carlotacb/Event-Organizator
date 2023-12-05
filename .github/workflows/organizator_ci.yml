@@ -34,19 +34,45 @@ jobs:
               run: npm install
     
             - name: 🧪 Test
-              run: npm run test
+              run: npm test
 
-            #- name: 📝 Generate test coverage xml
-            #  uses: carlotacb/TFM-EventOrganizator@master
+            #- name: Jest Coverage Comment
+            #  uses: MishaKav/jest-coverage-comment@main
+            #  with:
+            #    coverage-path: ./coverage.txt
+
+           # - name: 📝 Generate test coverage xml
+            #  uses: MishaKav/jest-coverage-comment@main
             #  with:
             #    coverage-summary-path: ./coverage/coverage-summary.json
             #    title: My Jest Coverage Comment
             #    summary-title: My Summary Title
             #    badge-title: Coverage
             #    hide-comment: false
-            #    create-new-comment: false
+            #    create-new-comment: true
             #    hide-summary: false
-            #    junitxml-title: My JUnit Title
-            #    junitxml-path: ./coverage/junit.xml
-            #    coverage-title: My Coverage Title
-            #    coverage-path: ./coverage.txt
+             #   junitxml-title: My JUnit Title
+             #   junitxml-path: ./coverage/junit.xml
+              #  coverage-title: My Coverage Title
+               # coverage-path: ./coverage.txt
+
+    lint:
+        name: 🦄 Linter
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🏗 Setup repo
+              uses: actions/checkout@v3
+
+            - name: 🏗 Setup Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18.x
+
+            - name: 📦 Install dependencies
+              run: npm install
+
+            - name: 🦄 Check format (prettier)
+              run: npm run check-format
+
+            - name: 🦄 Check lint (eslint)
+              run: npm run check-lint

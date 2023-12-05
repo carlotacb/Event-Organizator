@@ -2,10 +2,35 @@ import { Head } from "expo-head";
 import { Stack } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 
-import { ExternalLink } from "../components/ExternalLink";
+import ExternalLink from "../components/ExternalLink";
 import { MonoText } from "../components/StyledText";
 import { View } from "../components/Themed";
 import Colors from "../constants/Colors";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    paddingLeft: "20%",
+    paddingRight: "20%",
+    paddingTop: "5%",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  helpContainer: {
+    marginTop: 15,
+    marginHorizontal: 20,
+    alignItems: "center",
+  },
+  helpLink: {
+    paddingVertical: 15,
+  },
+  helpLinkText: {
+    textAlign: "center",
+  },
+});
 
 export default function HomePage() {
   return (
@@ -41,28 +66,3 @@ export default function HomePage() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    paddingLeft: "20%",
-    paddingRight: "20%",
-    paddingTop: "5%",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: "center",
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: "center",
-  },
-});
