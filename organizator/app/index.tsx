@@ -4,8 +4,9 @@ import { View, ScrollView } from "@gluestack-ui/themed";
 import EventCard from "../components/EventCard";
 import { allEventsPlaceholder } from "../utils/Placeholders";
 import { getAllEvents } from "../utils/axios";
+import { EventAllInformation } from "../utils/Interfaces";
 
-let allEvents = allEventsPlaceholder;
+let allEvents: EventAllInformation[] = [];
 
 getAllEvents().then((response) => {
   allEvents = response.eventInformation || allEventsPlaceholder;
@@ -18,14 +19,14 @@ export default function HomePage() {
       <Head>
         <title>Homepage</title>
       </Head>
-      <ScrollView style={{ padding: "40px" }}>
+      <ScrollView style={{ padding: 40 }}>
         <Stack.Screen options={{ headerShown: false }} />
         <View
           style={{
             display: "flex",
             flexWrap: "wrap",
             flexDirection: "row",
-            gap: "2%",
+            gap: 30,
             justifyContent: "center",
           }}
         >

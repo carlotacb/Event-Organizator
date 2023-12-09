@@ -13,8 +13,11 @@ export async function getAllEvents(): Promise<getAllEventResponse> {
     const response = await axios({
       method: "get",
       url: `${eventsAPI}`,
+      headers: {
+        "X-CSRFTOKEN": "OWMpm5pWe5INbqlV9ZXOWwlIENDIYldi",
+      },
     });
-    return { error: null, eventInformation: { ...response.data } };
+    return { error: null, eventInformation: [...response.data] };
   } catch (error) {
     console.log(error);
     return {

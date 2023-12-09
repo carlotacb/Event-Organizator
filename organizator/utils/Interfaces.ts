@@ -1,13 +1,14 @@
 // This interface is in snake case because it's the information coming from the API
 export interface EventAllInformation {
-  id: string;
-  name: string;
-  url: string;
+  deleted: boolean;
   description: string;
-  start_date: string;
   end_date: string;
-  location: string;
   header_image: string;
+  id: string;
+  location: string;
+  name: string;
+  start_date: string;
+  url: string;
 }
 
 export interface EventCardProps {
