@@ -1,6 +1,4 @@
 import { Box, Image, VStack, Text, Heading, Link } from "@gluestack-ui/themed";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMugSaucer } from "@fortawesome/free-solid-svg-icons/faMugSaucer";
 
 import { EventCardProps } from "../utils/Interfaces";
 
@@ -26,7 +24,6 @@ export default function EventCard(props: EventCardProps) {
       </Box>
       <VStack px="$6" pt="$4" pb="$6">
         <Heading size="md">{name}</Heading>
-        <FontAwesomeIcon icon={faMugSaucer} />q
         <Text fontSize="$sm" my="$1.5">
           {startDate}
         </Text>

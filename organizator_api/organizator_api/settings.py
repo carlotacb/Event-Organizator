@@ -27,6 +27,7 @@ SECRET_KEY = "django-insecure-4w9iz9^-)9qk&t(_$ke18lrn=bzi-l!0@7n^ay0*z)o!9-a9b0
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
