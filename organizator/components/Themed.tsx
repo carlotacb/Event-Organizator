@@ -7,6 +7,7 @@ import {
   Text as DefaultText,
   useColorScheme,
   View as DefaultView,
+  ScrollView as DefaultScrollView,
 } from "react-native";
 
 import Colors from "../constants/Colors";
@@ -59,3 +60,5 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+export function ScreenScrollView(props: ViewProps) {}

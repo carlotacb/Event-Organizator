@@ -1,35 +1,15 @@
 import { Head } from "expo-head";
 import { Stack } from "expo-router";
-import { ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView } from "@gluestack-ui/themed";
+import EventCard from "../components/EventCard";
+import { allEventsPlaceholder } from "../utils/Placeholders";
+import { getAllEvents } from "../utils/axios";
 
-import ExternalLink from "../components/ExternalLink";
-import { MonoText } from "../components/StyledText";
-import { View } from "../components/Themed";
-import Colors from "../constants/Colors";
+let allEvents = allEventsPlaceholder;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    paddingLeft: "20%",
-    paddingRight: "20%",
-    paddingTop: "5%",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: "center",
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    textAlign: "center",
-  },
+getAllEvents().then((response) => {
+  allEvents = response.eventInformation || allEventsPlaceholder;
+  console.log(allEvents);
 });
 
 export default function HomePage() {
@@ -38,29 +18,28 @@ export default function HomePage() {
       <Head>
         <title>Homepage</title>
       </Head>
-      <ScrollView>
-        <View style={styles.container}>
-          <Stack.Screen options={{ headerShown: false }} />
-          <MonoText style={styles.title}>
-            This will be the home page for the application
-          </MonoText>
-
-          <View style={styles.helpContainer}>
-            <ExternalLink
-              style={styles.helpLink}
-              href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet"
-            >
-              <MonoText
-                style={styles.helpLinkText}
-                lightColor={Colors.light.tint}
-              >
-                Tap here if your app doesn't automatically update after making
-                changes
-              </MonoText>
-            </ExternalLink>
-          </View>
-
-          <MonoText>Lorem ipsum dolor sit amet,</MonoText>
+      <ScrollView style={{ padding: "40px" }}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            gap: "2%",
+            justifyContent: "center",
+          }}
+        >
+          {allEvents.map((event) => (
+            <EventCard
+              key={event.id}
+              name={event.name}
+              startDate={event.start_date}
+              endDate={event.end_date}
+              location={event.location}
+              id={event.id}
+              headerImage={event.header_image}
+            />
+          ))}
         </View>
       </ScrollView>
     </>
