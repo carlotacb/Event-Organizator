@@ -1,11 +1,10 @@
 import * as React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import renderer from "react-test-renderer";
-
-import MonoText from "../StyledText";
+import RegisterPage from "../register";
 
 it(`renders correctly`, () => {
-  const tree = renderer.create(<MonoText>Snapshot test!</MonoText>).toJSON();
+  const tree = renderer.create(<RegisterPage />).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

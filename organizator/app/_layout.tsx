@@ -1,47 +1,44 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { config } from "@gluestack-ui/config";
-import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import React from "react";
+import { Stack, useRouter } from "expo-router";
+import { Button } from "react-native";
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+const RootLayout = () => {
+  const router = useRouter();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    // eslint-disable-next-line global-require
-    Montserrat: require("../assets/fonts/Montserrat-Regular.ttf"),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
   return (
-    <GluestackUIProvider config={config}>
-      <Stack />
-    </GluestackUIProvider>
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: "#10101E" },
+        headerTintColor: "#FFF",
+        headerTitleStyle: { fontWeight: "bold" },
+      }}
+    >
+      <Stack.Screen
+        name="index"
+        options={{ headerTitle: "Login", headerShown: false }}
+      />
+      <Stack.Screen
+        name="register"
+        options={{
+          headerTitle: "Create account",
+          headerRight: () => (
+            <Button onPress={() => router.push("modal")} title="Open" />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="modal"
+        options={{
+          presentation: "modal",
+          headerLeft: () => (
+            <Button onPress={() => router.back()} title="Close" />
+          ),
+        }}
+      />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs2)" options={{ headerShown: false }} />
+    </Stack>
   );
-}
+};
+
+export default RootLayout;
