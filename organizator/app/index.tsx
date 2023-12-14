@@ -1,48 +1,49 @@
-import { Head } from "expo-head";
-import { Stack } from "expo-router";
-import { View, ScrollView } from "@gluestack-ui/themed";
-import EventCard from "../components/EventCard";
-import { allEventsPlaceholder } from "../utils/Placeholders";
-import { getAllEvents } from "../utils/axios";
-import { EventAllInformation } from "../utils/Interfaces";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Link, useRouter } from "expo-router";
 
-let allEvents: EventAllInformation[] = [];
+export default function Page() {
+  const router = useRouter();
 
-getAllEvents().then((response) => {
-  allEvents = response.eventInformation || allEventsPlaceholder;
-  console.log(allEvents);
-});
+  const handlePress = () => {
+    router.replace("/home");
+  };
 
-export default function HomePage() {
   return (
-    <>
-      <Head>
-        <title>Homepage</title>
-      </Head>
-      <ScrollView style={{ padding: 40 }}>
-        <Stack.Screen options={{ headerShown: false }} />
-        <View
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            gap: 30,
-            justifyContent: "center",
-          }}
-        >
-          {allEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              name={event.name}
-              startDate={event.start_date}
-              endDate={event.end_date}
-              location={event.location}
-              id={event.id}
-              headerImage={event.header_image}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </>
+    <View style={styles.container}>
+      <View style={styles.main}>
+        <Text style={styles.title}>Hello World</Text>
+        <Text style={styles.subtitle}>This is the first page of your app.</Text>
+        <Link href={"/register"} asChild>
+          <Pressable>
+            <Text>Register</Text>
+          </Pressable>
+        </Link>
+        <Pressable onPress={handlePress}>
+          <Text>Home</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    padding: 24,
+  },
+  main: {
+    flex: 1,
+    justifyContent: "center",
+    maxWidth: 960,
+    marginHorizontal: "auto",
+  },
+  title: {
+    fontSize: 64,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    fontSize: 36,
+    color: "#38434D",
+  },
+});
