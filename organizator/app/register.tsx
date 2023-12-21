@@ -1,15 +1,43 @@
 import React, { useState } from "react";
+// @ts-ignore
+import styled from "styled-components/native";
 import {
   SafeAreaView,
-  StyleSheet,
   Text,
   ScrollView,
   ActivityIndicator,
   View,
 } from "react-native";
 
+import { router } from "expo-router";
 import Input from "../components/Input";
 import Button from "../components/StyledButton";
+import registerUser from "../utils/api/axiosUsers";
+
+const Container = styled(SafeAreaView)`
+  padding: 50px 40px;
+  background-color: white;
+`;
+
+const Title = styled(Text)`
+  font-size: 40px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+`;
+
+const SubTitle = styled(Text)`
+  font-size: 18px;
+  color: gray;
+  margin: 5px 0 20px 0;
+  text-align: center;
+`;
+
+const ButtonContainer = styled(View)`
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+`;
 
 export default function RegisterPage() {
   const [inputs, setInputs] = useState({
@@ -116,19 +144,15 @@ export default function RegisterPage() {
   };
 
   const register = () => {
-    // console.log("register!");
-    // console.log(inputs);
-
     setLoading(true);
-    setTimeout(() => {
-      try {
-        setLoading(false);
-        // console.log("register success!");
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        // console.log(error);
+    registerUser(inputs).then((response) => {
+      setLoading(false);
+      if (response.error) {
+        console.log("Something went wrong");
+      } else {
+        router.replace("/");
       }
-    }, 3000);
+    });
   };
 
   const handleOnChange = (text: string, input: string) => {
@@ -139,17 +163,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Container>
       {loading ? (
         <View style={{ flex: 1, justifyContent: "center" }}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.textTitle}>Welcome!</Text>
-          <Text style={styles.textSubTitle}>
+        <ScrollView
+          contentContainerStyle={{ paddingTop: 30, paddingHorizontal: 20 }}
+        >
+          <Title>Welcome!</Title>
+          <SubTitle>
             We are happy to have you here! Please fill in the following details
-          </Text>
+          </SubTitle>
           <Input
             label="Username"
             iconName="user"
@@ -210,35 +236,11 @@ export default function RegisterPage() {
             error={errors.profilePicture}
           /> */}
 
-          <Button title="Register" onPress={validate} />
+          <ButtonContainer>
+            <Button title="Register" onPress={validate} />
+          </ButtonContainer>
         </ScrollView>
       )}
-    </SafeAreaView>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    flex: 1,
-  },
-  scrollContainer: {
-    paddingTop: 30,
-    paddingHorizontal: 20,
-  },
-  textTitle: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "black",
-  },
-  textSubTitle: {
-    fontSize: 18,
-    color: "black",
-    marginVertical: 5,
-  },
-  image: {
-    width: 250,
-    height: 250,
-    alignSelf: "center",
-  },
-});

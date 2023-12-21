@@ -1,4 +1,22 @@
-import { Text, StyleSheet, Pressable } from "react-native";
+import { Text, Pressable } from "react-native";
+// @ts-ignore
+import styled from "styled-components/native";
+
+const ButtonContainer = styled(Pressable)`
+  height: 55px;
+  width: 60%;
+  background-color: darkslategray;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+`;
+
+const ButtonText = styled(Text)`
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+`;
 
 interface ButtonProps {
   title: string;
@@ -9,25 +27,8 @@ export default function Button(props: ButtonProps) {
   const { title, onPress } = props;
 
   return (
-    <Pressable onPress={onPress} style={styles.button}>
-      <Text style={styles.title}>{title}</Text>
-    </Pressable>
+    <ButtonContainer onPress={onPress}>
+      <ButtonText>{title}</ButtonText>
+    </ButtonContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    height: 55,
-    width: "100%",
-    backgroundColor: "blue",
-    marginVertical: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 100,
-  },
-  title: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-});

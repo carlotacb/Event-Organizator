@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, TextInputProps } from "react-native";
+// @ts-ignore
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
@@ -50,7 +51,7 @@ const TextInputContainer = styled(View)<{ isFocus: boolean }>`
 `;
 
 const InputStyled = styled(TextInput)`
-  color: darkblue;
+  color: black;
   flex: 1;
   margin-left: 10px;
   margin-right: 10px;
@@ -58,12 +59,12 @@ const InputStyled = styled(TextInput)`
 
 const InputIcon = styled(FontAwesome)`
   font-size: 20px;
-  color: darkblue;
+  color: dimgray;
 `;
 
 const EyeIcon = styled(FontAwesome)`
   font-size: 15px;
-  color: darkblue;
+  color: darkslategray;
 `;
 
 interface InputProps extends TextInputProps {
