@@ -7,7 +7,7 @@ const Container = styled(View)`
   margin-bottom: 20px;
 `;
 
-const LabelInput = styled(View)`
+const TextContainerRow = styled(View)`
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -25,36 +25,44 @@ const TextRequiredLabel = styled(Text)`
 const TextError = styled(Text)`
   margin-top: 7px;
   color: red;
-  font-size: 14px;
+  font-size: 12px;
+`;
+
+const ErrorIcon = styled(FontAwesome)`
+  margin-top: 8px;
+  font-size: 12px;
+  color: red;
+  margin-left: 15px;
 `;
 
 const TextInputContainer = styled(View)<{ isFocus: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: lightcyan;
+  background-color: ${(props: { isFocus: boolean }) =>
+    props.isFocus ? "transparent" : "#eaeaea"};
   height: 55px;
   border-radius: 20px;
-  border-width: 1px;
+  border-width: 2px;
   border-color: ${(props: { isFocus: boolean }) =>
-    props.isFocus ? "red" : "blue"};
-  padding: 15px;
+    props.isFocus ? "#a9a9a9" : "#eaeaea"};
+  padding: 5px 20px;
 `;
 
 const InputStyled = styled(TextInput)`
   color: darkblue;
   flex: 1;
   margin-left: 10px;
-  outline: none;
+  margin-right: 10px;
 `;
 
 const InputIcon = styled(FontAwesome)`
-  font-size: 25px;
+  font-size: 20px;
   color: darkblue;
 `;
 
 const EyeIcon = styled(FontAwesome)`
-  font-size: 20px;
+  font-size: 15px;
   color: darkblue;
 `;
 
@@ -74,13 +82,14 @@ export default function Input(props: InputProps) {
 
   return (
     <Container>
-      <LabelInput>
+      <TextContainerRow>
         <TextLabel>{label}</TextLabel>
         <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
-      </LabelInput>
-      <TextInputContainer isFocus={isFocused}>
+      </TextContainerRow>
+      <TextInputContainer isFocus={isFocused} error={error}>
         {iconName && <InputIcon name={iconName} />}
         <InputStyled
+          style={{ outline: "none" }}
           onFocus={() => {
             setIsFocused(true);
           }}
@@ -95,7 +104,12 @@ export default function Input(props: InputProps) {
           />
         )}
       </TextInputContainer>
-      {error && <TextError>{error}</TextError>}
+      {error && (
+        <TextContainerRow>
+          <ErrorIcon name="warning" />
+          <TextError>{error}</TextError>
+        </TextContainerRow>
+      )}
     </Container>
   );
 }
