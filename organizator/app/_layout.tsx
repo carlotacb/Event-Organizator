@@ -1,9 +1,8 @@
 import React from "react";
-import { Stack, useRouter } from "expo-router";
-import { Button } from "react-native";
+import { Stack } from "expo-router";
 
-const RootLayout = () => {
-  const router = useRouter();
+export default function RootLayout() {
+  // const router = useRouter();
 
   return (
     <Stack
@@ -21,24 +20,19 @@ const RootLayout = () => {
         name="register"
         options={{
           headerTitle: "Create account",
-          headerRight: () => (
-            <Button onPress={() => router.push("modal")} title="Open" />
-          ),
         }}
       />
       <Stack.Screen
         name="modal"
         options={{
           presentation: "modal",
-          headerLeft: () => (
-            <Button onPress={() => router.back()} title="Close" />
-          ),
+          // headerLeft: () => (
+          //  <Button onPress={() => router.back()} title="Close" />
+          // ),
         }}
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs2)" options={{ headerShown: false }} />
     </Stack>
   );
-};
-
-export default RootLayout;
+}
