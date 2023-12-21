@@ -48,11 +48,6 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     "no-use-before-define": "off",
     "react/jsx-props-no-spreading": "off",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        devDependencies: ["**/*.test.ts", "**/*.test.tsx", "**/*mock-utils.ts"],
-      },
-    ],
+    "import/no-extraneous-dependencies": "off",
   },
 };
