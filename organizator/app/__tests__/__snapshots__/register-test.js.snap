@@ -1,9 +1,744 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<View>
-  <Text>
-    Register
-  </Text>
-</View>
+<RCTSafeAreaView
+  style={
+    {
+      "backgroundColor": "white",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "paddingHorizontal": 20,
+        "paddingTop": 30,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          {
+            "color": "black",
+            "fontSize": 30,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Welcome!
+      </Text>
+      <Text
+        style={
+          {
+            "color": "black",
+            "fontSize": 18,
+            "marginVertical": 5,
+          }
+        }
+      >
+        We are happy to have you here! Please fill in the following details
+      </Text>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Username
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="user"
+            label="Username"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            required={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Email
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="at"
+            keyboardType="email-address"
+            label="Email"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            required={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Password
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="lock"
+            label="Password"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            password={true}
+            required={true}
+            secureTextEntry={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+          <Text />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Confirm your password
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="lock"
+            label="Confirm your password"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            password={true}
+            required={true}
+            secureTextEntry={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+          <Text />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            First Name
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="id-badge"
+            label="First Name"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            required={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Last Name
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="id-badge"
+            label="Last Name"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            required={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "marginBottom": 20,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                  "marginLeft": 15,
+                },
+              ]
+            }
+          >
+            Biography
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            *
+          </Text>
+        </View>
+        <View
+          isFocus={false}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#eaeaea",
+                "borderColor": "#eaeaea",
+                "borderRadius": 20,
+                "borderWidth": 2,
+                "display": "flex",
+                "flexDirection": "row",
+                "height": 55,
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "paddingTop": 5,
+              },
+            ]
+          }
+        >
+          <Text />
+          <TextInput
+            iconName="pencil"
+            label="Biography"
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            required={true}
+            style={
+              [
+                {
+                  "color": "darkblue",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                },
+                {
+                  "outline": "none",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "blue",
+            "borderRadius": 100,
+            "height": 55,
+            "justifyContent": "center",
+            "marginVertical": 10,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "white",
+              "fontSize": 18,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Register
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
 `;
