@@ -63,7 +63,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = React.useState(false);
 
   const validate = () => {
-    let isValid = true;
+    let isValid = false;
 
     if (!inputs.username) {
       handleError("Please enter your username", "username");
@@ -138,6 +138,9 @@ export default function RegisterPage() {
       isValid = true;
     } */
 
+    console.log(inputs);
+    console.log(isValid);
+
     if (isValid) {
       register();
     }
@@ -169,9 +172,7 @@ export default function RegisterPage() {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <ScrollView
-          contentContainerStyle={{ paddingTop: 30, paddingHorizontal: 20 }}
-        >
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
           <Title>Welcome!</Title>
           <SubTitle>
             We are happy to have you here! Please fill in the following details

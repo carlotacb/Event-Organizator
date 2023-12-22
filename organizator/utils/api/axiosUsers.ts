@@ -13,11 +13,8 @@ export default async function registerUser(
   try {
     await axios({
       method: "post",
-      url: `${usersAPI}/register/`,
-      data: serializerToRegisterFields(data),
-      headers: {
-        "X-CSRFTOKEN": "OWMpm5pWe5INbqlV9ZXOWwlIENDIYldi",
-      },
+      url: `${usersAPI}/new`,
+      data: JSON.stringify(serializerToRegisterFields(data)),
     });
     return { error: null };
   } catch (error) {
