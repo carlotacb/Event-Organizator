@@ -1,9 +1,9 @@
 import axios from "axios";
-import { RegisterFields, RegisterFormFields } from "../interfaces/Users";
-
-interface RegisterResponse {
-  readonly error: string | null;
-}
+import {
+  RegisterFields,
+  RegisterFormFields,
+  RegisterResponse,
+} from "../interfaces/Users";
 
 const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
 
@@ -17,10 +17,9 @@ export default async function registerUser(
       data: JSON.stringify(serializerToRegisterFields(data)),
     });
     return { error: null };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     return {
-      error: "unexpected error",
+      error: error.response.data,
     };
   }
 }

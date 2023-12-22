@@ -17,3 +17,7 @@ export interface RegisterFormFields {
   lastName: string;
   bio: string;
 }
+
+export interface RegisterResponse {
+  readonly error: string | null;
+}

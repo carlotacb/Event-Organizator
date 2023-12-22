@@ -10,9 +10,11 @@ import {
 } from "react-native";
 
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
 import Input from "../components/Input";
 import Button from "../components/StyledButton";
 import registerUser from "../utils/api/axiosUsers";
+import { RegisterResponse } from "../utils/interfaces/Users";
 
 const Container = styled(SafeAreaView)`
   padding: 50px 40px;
@@ -138,9 +140,6 @@ export default function RegisterPage() {
       isValid = true;
     } */
 
-    console.log(inputs);
-    console.log(isValid);
-
     if (isValid) {
       register();
     }
@@ -148,11 +147,24 @@ export default function RegisterPage() {
 
   const register = () => {
     setLoading(true);
-    registerUser(inputs).then((response) => {
+    registerUser(inputs).then((response: RegisterResponse) => {
       setLoading(false);
       if (response.error) {
-        console.log("Something went wrong");
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: response.error,
+        });
       } else {
+        Toast.show({
+          type: "success",
+          text1: "Congratulations!",
+          text2: "You are now part of the community!",
+          position: "top",
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 40,
+        });
         router.replace("/");
       }
     });
@@ -172,7 +184,8 @@ export default function RegisterPage() {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
+          <Toast />
           <Title>Welcome!</Title>
           <SubTitle>
             We are happy to have you here! Please fill in the following details
