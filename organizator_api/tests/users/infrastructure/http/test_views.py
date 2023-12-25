@@ -301,3 +301,52 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_user_in_db__when_giving_user_and_password_and_login_is_called__then_token_is_created(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps({"username": user.username, "password": user.password}),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test__given_user_in_db__when_giving_user_and_a_incorrect_password_and_login_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps({"username": user.username, "password": "wrong password"}),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Invalid password")
+
+    def test__when_giving_an_unexiting_username_and_login_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps({"username": "unexisting user", "password": "password"}),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"User does not exist")
