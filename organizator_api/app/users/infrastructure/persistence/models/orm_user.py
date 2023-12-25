@@ -13,5 +13,6 @@ class ORMUser(models.Model):
     username = models.CharField(max_length=255, unique=True)
     bio = models.TextField()
     profile_image = models.CharField(max_length=255)
+    token = models.UUIDField(default=None, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
