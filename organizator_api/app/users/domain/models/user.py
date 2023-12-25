@@ -1,6 +1,7 @@
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 
 
 @dataclass
@@ -15,3 +16,4 @@ class User:
     profile_image: str
     created_at: datetime
     updated_at: datetime
+    token: Optional[uuid.UUID] = None
