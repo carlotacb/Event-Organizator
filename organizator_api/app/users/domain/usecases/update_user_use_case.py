@@ -25,6 +25,7 @@ class UpdateUserUseCase:
             bio=user.bio if user.bio else original_user.bio,
             created_at=original_user.created_at,
             updated_at=datetime.now(tz=timezone.utc),
+            token=original_user.token,
         )
 
         self.user_repository.update(new_user)
