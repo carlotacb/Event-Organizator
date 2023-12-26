@@ -129,7 +129,7 @@ def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
 
 
 @require_http_methods(["POST"])
-def login_user(request: HttpRequest) -> HttpResponse:
+def login(request: HttpRequest) -> HttpResponse:
     json_body = json.loads(request.body)
 
     if "username" not in json_body:
