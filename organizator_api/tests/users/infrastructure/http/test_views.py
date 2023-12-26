@@ -301,3 +301,91 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_user_in_db_and_correct_body__when_login_endpoint_is_called__then_token_is_created(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+        body = {"username": user.username, "password": user.password}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test__given_user_in_db_and_body_with_incorrect_password__when_when_login_endpoint_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+        body = {"username": user.username, "password": "wrong password"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Invalid password")
+
+    def test__given_a_boy_with_a_unexisting_username__when_login_endpoint_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "unexisting user", "password": "password"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_a_unexpected_body_without_username__when_login_endpoint_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"password": "password"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Username is required")
+
+    def test__given_a_unexpected_body_without_password__when_login_endpoint_is_called__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "username"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/login",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Password is required")

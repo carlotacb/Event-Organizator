@@ -42,6 +42,7 @@ class ORMUserRepository(UserRepository):
             orm_user.bio = user.bio
             orm_user.profile_image = user.profile_image
             orm_user.updated_at = user.updated_at
+            orm_user.token = user.token
             orm_user.save()
         except ORMUser.DoesNotExist:
             raise UserNotFound()
