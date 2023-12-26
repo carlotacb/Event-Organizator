@@ -39,11 +39,14 @@ class TestLoginUseCase(ApiTests):
                 username=user.username, password="this is not a valid password"
             )
 
-    def test__given_a_user_with_a_token_already__when_login__then_it_returns_the_existing_token(self) -> None:
+    def test__given_a_user_with_a_token_already__when_login__then_it_returns_the_existing_token(
+        self,
+    ) -> None:
         # Given
-        user = UserFactory().create(token=uuid.UUID("60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d"))
+        user = UserFactory().create(
+            token=uuid.UUID("60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d")
+        )
         self.user_repository.create(user)
-
 
         # When
         token = LoginUseCase().execute(username=user.username, password=user.password)
