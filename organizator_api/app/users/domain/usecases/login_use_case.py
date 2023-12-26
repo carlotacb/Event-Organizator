@@ -10,6 +10,9 @@ class LoginUseCase:
 
     def execute(self, username: str, password: str) -> uuid.UUID:
         user = self.user_repository.get_by_username(username)
+        if user.token is not None:
+            return user.token
+
         if user.password != password:
             raise InvalidPassword
 

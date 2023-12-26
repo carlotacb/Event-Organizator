@@ -15,6 +15,7 @@ class UserFactory:
         username: str = "carlotacb",
         bio: str = "The user that is using this application",
         profile_image: str = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+        token: uuid.UUID = None,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> User:
@@ -27,6 +28,7 @@ class UserFactory:
             username=username,
             bio=bio,
             profile_image=profile_image,
+            token=token,
             created_at=created_at,
             updated_at=updated_at,
         )
