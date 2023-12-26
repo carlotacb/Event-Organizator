@@ -6,14 +6,14 @@ from app.users.infrastructure.http.views import (
     get_user_by_id,
     get_user_by_username,
     update_user,
-    login_user,
+    login,
 )
 
 urlpatterns = [
     path("new", create_new_user),
     path("", get_all_users),
     path("<uuid:user_id>", get_user_by_id),
-    path("<str:username>", get_user_by_username),
+    path("login", login),
     path("update/<uuid:user_id>", update_user),
-    path("login", login_user),
+    path("<str:username>", get_user_by_username),
 ]
