@@ -236,7 +236,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -328,7 +328,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -421,7 +421,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -515,7 +515,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -607,7 +607,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -698,7 +698,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
@@ -789,7 +789,7 @@ exports[`renders correctly 1`] = `
                   "marginRight": 10,
                 },
                 {
-                  "outline": "none",
+                  "outlineStyle": "none",
                 },
               ]
             }
