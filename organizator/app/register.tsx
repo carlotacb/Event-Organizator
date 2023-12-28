@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import {
@@ -15,6 +15,7 @@ import Input from "../components/Input";
 import Button from "../components/StyledButton";
 import { registerUser } from "../utils/api/axiosUsers";
 import { RegisterResponse } from "../utils/interfaces/Users";
+import { getToken } from "../utils/sessionCalls";
 
 const Container = styled(SafeAreaView)`
   padding: 50px 40px;
@@ -63,6 +64,14 @@ export default function RegisterPage() {
     // profilePicture: undefined,
   });
   const [loading, setLoading] = React.useState(false);
+
+  useEffect(() => {
+    getToken().then((token) => {
+      if (token) {
+        router.replace("/home");
+      }
+    });
+  });
 
   const validate = () => {
     let isValid = false;
@@ -154,18 +163,10 @@ export default function RegisterPage() {
           type: "error",
           text1: "Error",
           text2: response.error,
+          visibilityTime: 8000,
         });
       } else {
-        Toast.show({
-          type: "success",
-          text1: "Congratulations!",
-          text2: "You are now part of the community!",
-          position: "top",
-          visibilityTime: 4000,
-          autoHide: true,
-          topOffset: 40,
-        });
-        router.replace("/");
+        router.replace("/home");
       }
     });
   };
@@ -179,70 +180,78 @@ export default function RegisterPage() {
 
   return (
     <Container>
-      {loading ? (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator size="large" />
-        </View>
-      ) : (
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
-          <Toast />
-          <Title>Welcome!</Title>
-          <SubTitle>
-            We are happy to have you here! Please fill in the following details
-          </SubTitle>
-          <Input
-            label="Username"
-            iconName="user"
-            required
-            onChangeText={(text) => handleOnChange(text, "username")}
-            error={errors.username}
-          />
-          <Input
-            label="Email"
-            iconName="at"
-            required
-            onChangeText={(text) => handleOnChange(text, "email")}
-            error={errors.email}
-            keyboardType="email-address"
-          />
-          <Input
-            label="Password"
-            iconName="lock"
-            required
-            onChangeText={(text) => handleOnChange(text, "password")}
-            error={errors.password}
-            password
-          />
-          <Input
-            label="Confirm your password"
-            required
-            iconName="lock"
-            onChangeText={(text) => handleOnChange(text, "passwordConfirm")}
-            error={errors.passwordConfirm}
-            password
-          />
-          <Input
-            label="First Name"
-            iconName="id-badge"
-            required
-            onChangeText={(text) => handleOnChange(text, "firstName")}
-            error={errors.firstName}
-          />
-          <Input
-            label="Last Name"
-            iconName="id-badge"
-            required
-            onChangeText={(text) => handleOnChange(text, "lastName")}
-            error={errors.lastName}
-          />
-          <Input
-            label="Biography"
-            iconName="pencil"
-            required
-            onChangeText={(text) => handleOnChange(text, "bio")}
-            error={errors.bio}
-          />
-          {/* <Input
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        {loading ? (
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <>
+            <Title>Welcome!</Title>
+            <SubTitle>
+              We are happy to have you here! Please fill in the following
+              details
+            </SubTitle>
+            <Input
+              label="Username"
+              iconName="user"
+              required
+              value={inputs.username}
+              onChangeText={(text) => handleOnChange(text, "username")}
+              error={errors.username}
+            />
+            <Input
+              label="Email"
+              iconName="at"
+              required
+              value={inputs.email}
+              onChangeText={(text) => handleOnChange(text, "email")}
+              error={errors.email}
+              keyboardType="email-address"
+            />
+            <Input
+              label="Password"
+              iconName="lock"
+              required
+              value={inputs.password}
+              onChangeText={(text) => handleOnChange(text, "password")}
+              error={errors.password}
+              password
+            />
+            <Input
+              label="Confirm your password"
+              iconName="lock"
+              required
+              value={inputs.passwordConfirm}
+              onChangeText={(text) => handleOnChange(text, "passwordConfirm")}
+              error={errors.passwordConfirm}
+              password
+            />
+            <Input
+              label="First Name"
+              iconName="id-badge"
+              required
+              value={inputs.firstName}
+              onChangeText={(text) => handleOnChange(text, "firstName")}
+              error={errors.firstName}
+            />
+            <Input
+              label="Last Name"
+              iconName="id-badge"
+              required
+              value={inputs.lastName}
+              onChangeText={(text) => handleOnChange(text, "lastName")}
+              error={errors.lastName}
+            />
+            <Input
+              label="Biography"
+              iconName="pencil"
+              required
+              value={inputs.bio}
+              onChangeText={(text) => handleOnChange(text, "bio")}
+              error={errors.bio}
+            />
+            {/* <Input
             label="Profile Picture"
             iconName="camera"
             required
@@ -250,11 +259,13 @@ export default function RegisterPage() {
             error={errors.profilePicture}
           /> */}
 
-          <ButtonContainer>
-            <Button title="Register" onPress={validate} />
-          </ButtonContainer>
-        </ScrollView>
-      )}
+            <ButtonContainer>
+              <Button title="Register" onPress={validate} />
+            </ButtonContainer>
+          </>
+        )}
+        <Toast />
+      </ScrollView>
     </Container>
   );
 }
