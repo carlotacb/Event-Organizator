@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  // const router = useRouter();
-
   return (
     <Stack
       screenOptions={{
@@ -23,12 +21,9 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen
-        name="modal"
+        name="login"
         options={{
-          presentation: "modal",
-          // headerLeft: () => (
-          //  <Button onPress={() => router.back()} title="Close" />
-          // ),
+          headerShown: false,
         }}
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
