@@ -13,13 +13,18 @@ export default function Page() {
       <View style={styles.main}>
         <Text style={styles.title}>Hello World</Text>
         <Text style={styles.subtitle}>This is the first page of your app.</Text>
-        <Link href={"/register"} asChild>
+        <Link href="/register" asChild>
           <Pressable>
-            <Text>Register</Text>
+            <Text style={{ padding: 20, fontSize: 20 }}>Register</Text>
+          </Pressable>
+        </Link>
+        <Link href="/login" asChild>
+          <Pressable>
+            <Text style={{ padding: 20, fontSize: 20 }}>Login</Text>
           </Pressable>
         </Link>
         <Pressable onPress={handlePress}>
-          <Text>Home</Text>
+          <Text style={{ padding: 20, fontSize: 20 }}>Home</Text>
         </Pressable>
       </View>
     </View>

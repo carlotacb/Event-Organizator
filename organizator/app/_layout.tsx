@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
@@ -10,10 +10,6 @@ export default function RootLayout() {
         headerTitleStyle: { fontWeight: "bold" },
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{ headerTitle: "Login", headerShown: false }}
-      />
       <Stack.Screen
         name="register"
         options={{
