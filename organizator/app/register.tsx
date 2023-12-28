@@ -13,7 +13,7 @@ import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import Input from "../components/Input";
 import Button from "../components/StyledButton";
-import registerUser from "../utils/api/axiosUsers";
+import { registerUser } from "../utils/api/axiosUsers";
 import { RegisterResponse } from "../utils/interfaces/Users";
 
 const Container = styled(SafeAreaView)`

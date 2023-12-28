@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  LoginFormFields,
+  LoginResponse,
   RegisterFields,
   RegisterFormFields,
   RegisterResponse,
@@ -7,7 +9,7 @@ import {
 
 const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
 
-export default async function registerUser(
+export async function registerUser(
   data: RegisterFormFields,
 ): Promise<RegisterResponse> {
   try {
@@ -20,6 +22,22 @@ export default async function registerUser(
   } catch (error: any) {
     return {
       error: error.response.data,
+    };
+  }
+}
+
+export async function loginUser(data: LoginFormFields): Promise<LoginResponse> {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${usersAPI}/login`,
+      data: JSON.stringify(data),
+    });
+    return { error: null, token: response.data.token };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      token: "",
     };
   }
 }

@@ -90,7 +90,7 @@ export default function Input(props: InputProps) {
       <TextInputContainer isFocus={isFocused} error={error}>
         {iconName && <InputIcon name={iconName} />}
         <InputStyled
-          style={{ outline: "none" }}
+          style={{ outlineStyle: "none" }}
           onFocus={() => {
             setIsFocused(true);
           }}
