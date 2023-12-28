@@ -1,0 +1,685 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly a input with label and value 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with label and value and error 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    error="error"
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      error="error"
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+  </View>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text />
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+            "fontSize": 12,
+            "marginTop": 7,
+          },
+        ]
+      }
+    >
+      error
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with label and value that is disabled 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      disabled={true}
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with label and value that is password 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      password
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      label="password"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      password={true}
+      secureTextEntry={true}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+    <Text
+      allowFontScaling={false}
+      onPress={[Function]}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 12,
+          },
+          [
+            {
+              "color": "darkslategray",
+              "fontSize": 15,
+            },
+          ],
+          {
+            "fontFamily": "FontAwesome",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with label and value that is required 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    >
+      *
+    </Text>
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      required={true}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with only label 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`renders correctly a input with value and icon 1`] = `
+<View
+  style={
+    [
+      {
+        "marginBottom": 20,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
+    isFocus={false}
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#eaeaea",
+          "borderColor": "#eaeaea",
+          "borderRadius": 20,
+          "borderWidth": 2,
+          "display": "flex",
+          "flexDirection": "row",
+          "height": 55,
+          "paddingBottom": 5,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 5,
+        },
+      ]
+    }
+  >
+    <TextInput
+      icon="user"
+      label="username"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      style={
+        [
+          {
+            "color": "black",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginLeft": 10,
+            "marginRight": 10,
+          },
+          {
+            "outlineStyle": "none",
+          },
+        ]
+      }
+      value="test"
+    />
+  </View>
+</View>
+`;
