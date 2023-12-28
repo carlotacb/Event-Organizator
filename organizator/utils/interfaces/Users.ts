@@ -21,3 +21,13 @@ export interface RegisterFormFields {
 export interface RegisterResponse {
   readonly error: string | null;
 }
+
+export interface LoginFormFields {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  readonly token: string;
+  readonly error: string | null;
+}
