@@ -9,7 +9,7 @@ export default function () {
         name="home"
         options={{
           tabBarLabel: "Home",
-          headerTitle: "HomeScreen",
+          headerTitle: "All upcoming events",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           ),
