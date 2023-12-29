@@ -171,8 +171,8 @@ class TestUserViews(ApiTests):
         self.user_repository.create(user)
 
         # When
-        headers = {"Authorization": user.token}
-        response = self.client.get("/organizator-api/users/me", **headers)
+        headers = {"HTTP_Authorization": "baad2fe5-0122-459b-9572-625c3351d6ac"}
+        response = self.client.get("/organizator-api/users/me", **headers)  # type: ignore
 
         # Then
         self.assertEqual(response.status_code, 200)
@@ -202,7 +202,8 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # When
-        response = self.client.get("/organizator-api/users/me")
+        headers = {"HTTP_Authorization": "8e0af048-073a-47e7-8de8-db7a17718e95"}
+        response = self.client.get("/organizator-api/users/me", **headers)  # type: ignore
 
         # Then
         self.assertEqual(response.status_code, 404)

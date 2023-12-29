@@ -1,9 +1,9 @@
 import uuid
-from typing import List
+from typing import List, Optional
 
 from django.db import IntegrityError
 
-from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
+from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
@@ -26,7 +26,9 @@ class ORMUserRepository(UserRepository):
         except ORMUser.DoesNotExist:
             raise UserNotFound()
 
-    def get_by_token(self, token: uuid.UUID) -> User:
+    def get_by_token(self, token: Optional[uuid.UUID]) -> User:
+        if token is None:
+            raise UserNotLoggedIn()
         try:
             user = self._to_domain(ORMUser.objects.get(token=token))
             return user

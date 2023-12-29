@@ -1,7 +1,7 @@
 import uuid
-from typing import List
+from typing import List, Optional
 
-from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
+from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 
@@ -25,7 +25,9 @@ class UserRepositoryMock(UserRepository):
                 return user
         raise UserNotFound()
 
-    def get_by_token(self, token: uuid.UUID) -> User:
+    def get_by_token(self, token: Optional[uuid.UUID]) -> User:
+        if token is None:
+            raise UserNotLoggedIn()
         for user in self.users:
             if user.token == token:
                 return user

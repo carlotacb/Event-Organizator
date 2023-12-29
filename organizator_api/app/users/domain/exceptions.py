@@ -6,5 +6,9 @@ class UserNotFound(Exception):
     pass
 
 
+class UserNotLoggedIn(Exception):
+    pass
+
+
 class InvalidPassword(Exception):
     pass

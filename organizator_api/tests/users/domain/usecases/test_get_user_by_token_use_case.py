@@ -18,7 +18,7 @@ class TestGetUserByTokenUseCase(ApiTests):
         self.user_repository.create(user)
 
         # When
-        user = GetUserByTokenUseCase().execute(token=user.token) # type: ignore
+        user = GetUserByTokenUseCase().execute(token=user.token)
 
         # Then
         self.assertEqual(len(self.user_repository.get_all()), 1)

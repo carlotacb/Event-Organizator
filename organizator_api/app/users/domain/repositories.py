@@ -1,6 +1,6 @@
 import uuid
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from app.users.domain.models.user import User
 
@@ -23,7 +23,7 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_token(self, token: uuid.UUID) -> User:
+    def get_by_token(self, token: Optional[uuid.UUID]) -> User:
         pass
 
     @abstractmethod
