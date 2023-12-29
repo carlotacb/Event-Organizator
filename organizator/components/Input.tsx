@@ -36,12 +36,16 @@ const ErrorIcon = styled(FontAwesome)`
   margin-left: 15px;
 `;
 
-const TextInputContainer = styled(View)<{ isFocus: boolean }>`
+const TextInputContainer = styled(View)<{
+  isFocus: boolean;
+  disabled: boolean;
+}>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${(props: { isFocus: boolean }) =>
-    props.isFocus ? "transparent" : "#eaeaea"};
+  background-color: ${(props: { isFocus: boolean; disabled: boolean }) =>
+    props.isFocus ? "transparent" : props.disabled ? "#969696" : "#eaeaea"};
+
   height: 55px;
   border-radius: 20px;
   border-width: 2px;
@@ -50,16 +54,22 @@ const TextInputContainer = styled(View)<{ isFocus: boolean }>`
   padding: 5px 20px;
 `;
 
-const InputStyled = styled(TextInput)`
-  color: black;
+const InputStyled = styled(TextInput)<{
+  disabled: boolean;
+}>`
+  color: ${(props: { disabled: boolean }) =>
+    props.disabled ? "#eaeaea" : "black"};
   flex: 1;
   margin-left: 10px;
   margin-right: 10px;
 `;
 
-const InputIcon = styled(FontAwesome)`
+const InputIcon = styled(FontAwesome)<{
+  disabled: boolean;
+}>`
   font-size: 20px;
-  color: dimgray;
+  color: ${(props: { disabled: boolean }) =>
+    props.disabled ? "#eaeaea" : "dimgray"};
 `;
 
 const EyeIcon = styled(FontAwesome)`
@@ -73,29 +83,38 @@ interface InputProps extends TextInputProps {
   iconName?: string | never;
   password?: boolean;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export default function Input(props: InputProps) {
-  const { label, error, required, password, iconName } = props;
+  const { label, error, required, password, iconName, disabled } = props;
 
   const [hidePassword, setHidePassword] = React.useState(password);
   const [isFocused, setIsFocused] = React.useState(false);
 
   return (
     <Container>
-      <TextContainerRow>
-        <TextLabel>{label}</TextLabel>
-        <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
-      </TextContainerRow>
-      <TextInputContainer isFocus={isFocused} error={error}>
-        {iconName && <InputIcon name={iconName} />}
+      {disabled ? null : (
+        <>
+          <TextContainerRow>
+            <TextLabel>{label}</TextLabel>
+            <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
+          </TextContainerRow>{" "}
+        </>
+      )}
+      <TextInputContainer isFocus={isFocused} error={error} disabled={disabled}>
+        {iconName && <InputIcon name={iconName} disabled={disabled} />}
         <InputStyled
+          disabled={disabled}
           style={{ outlineStyle: "none" }}
           onFocus={() => {
-            setIsFocused(true);
+            if (!disabled) setIsFocused(true);
           }}
-          onBlur={() => setIsFocused(false)}
+          onBlur={() => {
+            if (!disabled) setIsFocused(false);
+          }}
           secureTextEntry={hidePassword}
+          editable={!disabled}
           {...props}
         />
         {password && (
