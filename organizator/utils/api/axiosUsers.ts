@@ -5,7 +5,10 @@ import {
   RegisterFields,
   RegisterFormFields,
   RegisterResponse,
+  UpdateFormFields,
+  UserInformationResponse,
 } from "../interfaces/Users";
+import { getToken } from "../sessionCalls";
 
 const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
 
@@ -26,6 +29,19 @@ export async function registerUser(
   }
 }
 
+function serializerToRegisterFields(data: RegisterFormFields): RegisterFields {
+  return {
+    email: data.email,
+    password: data.password,
+    first_name: data.firstName,
+    last_name: data.lastName,
+    username: data.username,
+    bio: data.bio,
+    profile_image:
+      "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D",
+  };
+}
+
 export async function loginUser(data: LoginFormFields): Promise<LoginResponse> {
   try {
     const response = await axios({
@@ -42,15 +58,68 @@ export async function loginUser(data: LoginFormFields): Promise<LoginResponse> {
   }
 }
 
-function serializerToRegisterFields(data: RegisterFormFields): RegisterFields {
-  return {
-    email: data.email,
-    password: data.password,
-    first_name: data.firstName,
-    last_name: data.lastName,
-    username: data.username,
-    bio: data.bio,
-    profile_image:
-      "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D",
-  };
+export async function getMyInformation(
+  token: string | null,
+): Promise<UserInformationResponse> {
+  console.log(token);
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${usersAPI}/me`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+      userInformation: {
+        id: response.data.id,
+        bio: response.data.bio,
+        email: response.data.email,
+        firstName: response.data.first_name,
+        lastName: response.data.last_name,
+        profileImage: response.data.profile_image,
+        username: response.data.username,
+      },
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      userInformation: null,
+    };
+  }
+}
+
+export async function updateMyInformation(
+  data: UpdateFormFields,
+  id: string,
+): Promise<UserInformationResponse> {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${usersAPI}/update/${id}`,
+      data: JSON.stringify({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        bio: data.bio,
+      }),
+    });
+    return {
+      error: null,
+      userInformation: {
+        id: response.data.id,
+        bio: response.data.bio,
+        email: response.data.email,
+        firstName: response.data.first_name,
+        lastName: response.data.last_name,
+        profileImage: response.data.profile_image,
+        username: response.data.username,
+      },
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      userInformation: null,
+    };
+  }
 }

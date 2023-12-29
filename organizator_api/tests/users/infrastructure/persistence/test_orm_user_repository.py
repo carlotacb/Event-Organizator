@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from app.users.domain.exceptions import UserAlreadyExists, UserNotFound
+from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
 from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from tests.api_tests import ApiTests
@@ -135,6 +135,42 @@ class TestORMUserRepository(ApiTests):
         # Then
         with self.assertRaises(UserNotFound):
             ORMUserRepository().get_by_username("non_existing_username")
+
+    def test__given_a_user__when_get_by_token__then_user_is_returned(self) -> None:
+        # Given
+        user = UserFactory().create(
+            token=uuid.UUID("8e0af048-073a-47e7-8de8-db7a17718e95")
+        )
+        ORMUserRepository().create(user=user)
+
+        # When
+        user = ORMUserRepository().get_by_token(user.token)
+
+        # Then
+        self.assertEqual(user.id, user.id)
+        self.assertEqual(user.email, user.email)
+        self.assertEqual(user.password, user.password)
+        self.assertEqual(user.first_name, user.first_name)
+        self.assertEqual(user.last_name, user.last_name)
+        self.assertEqual(user.username, user.username)
+        self.assertEqual(user.bio, user.bio)
+        self.assertEqual(user.profile_image, user.profile_image)
+
+    def test__when_get_by_token_is_called_without_a_token__then_user_not_logged_in_is_raised(
+        self,
+    ) -> None:
+        # Then
+        with self.assertRaises(UserNotLoggedIn):
+            ORMUserRepository().get_by_token(None)
+
+    def test__given_a_non_existing_token__when_get_by_token__then_user_not_found_is_raised(
+        self,
+    ) -> None:
+        # Then
+        with self.assertRaises(UserNotFound):
+            ORMUserRepository().get_by_token(
+                uuid.UUID("8e0af048-073a-47e7-8de8-db7a17718e95")
+            )
 
     def test__given_a_user__when_update__then_user_is_updated(self) -> None:
         # Given
