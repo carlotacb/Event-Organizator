@@ -1,3 +1,5 @@
+import uuid
+
 from app.users.domain.usecases.get_user_by_token_use_case import GetUserByTokenUseCase
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
@@ -10,11 +12,13 @@ class TestGetUserByTokenUseCase(ApiTests):
 
     def test__given_token__when_get_user_by_token__then_user_is_returned(self) -> None:
         # Given
-        user = UserFactory().create()
+        user = UserFactory().create(
+            token=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc")
+        )
         self.user_repository.create(user)
 
         # When
-        user = GetUserByTokenUseCase().execute(token=user.token)
+        user = GetUserByTokenUseCase().execute(token=user.token) # type: ignore
 
         # Then
         self.assertEqual(len(self.user_repository.get_all()), 1)
