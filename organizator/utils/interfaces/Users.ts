@@ -31,3 +31,24 @@ export interface LoginResponse {
   readonly token: string;
   readonly error: string | null;
 }
+
+export interface UserInformation {
+  readonly id: string;
+  readonly username: string;
+  readonly email: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly bio: string;
+  readonly profileImage: string;
+}
+
+export interface UserInformationResponse {
+  readonly error: string | null;
+  readonly userInformation: UserInformation | null;
+}
+
+export interface UpdateFormFields {
+  firstName: string;
+  lastName: string;
+  bio: string;
+}
