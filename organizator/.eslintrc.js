@@ -51,5 +51,6 @@ module.exports = {
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "no-nested-ternary": "off",
   },
 };
