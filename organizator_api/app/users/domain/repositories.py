@@ -23,5 +23,9 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
+    def get_by_token(self, token: uuid.UUID) -> User:
+        pass
+
+    @abstractmethod
     def update(self, user: User) -> None:
         pass

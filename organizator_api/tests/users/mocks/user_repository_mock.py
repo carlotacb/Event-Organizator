@@ -25,6 +25,12 @@ class UserRepositoryMock(UserRepository):
                 return user
         raise UserNotFound()
 
+    def get_by_token(self, token: uuid.UUID) -> User:
+        for user in self.users:
+            if user.token == token:
+                return user
+        raise UserNotFound()
+
     def get_by_username(self, username: str) -> User:
         for user in self.users:
             if user.username == username:
