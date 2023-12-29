@@ -83,6 +83,7 @@ class ORMUserRepository(UserRepository):
             username=user.username,
             bio=user.bio,
             profile_image=user.profile_image,
+            token=user.token,
             created_at=user.created_at,
             updated_at=user.updated_at,
         )
