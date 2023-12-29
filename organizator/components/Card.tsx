@@ -5,6 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import parseDate from "../utils/util-functions";
 
 interface CardProps {
+  // eslint-disable-next-line react/no-unused-prop-types
   id: string;
   title: string;
   startDate: string;
