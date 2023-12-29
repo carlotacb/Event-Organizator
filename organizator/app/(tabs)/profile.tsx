@@ -65,17 +65,15 @@ export default function Profile() {
       return getMyInformation(token);
     };
 
-    fetchData()
-      .then((response) => {
-        setLoading(false);
-        setUserInformation(response.userInformation);
-        setInputs({
-          firstName: response.userInformation?.firstName || "",
-          lastName: response.userInformation?.lastName || "",
-          bio: response.userInformation?.bio || "",
-        });
-      })
-      .catch((error) => console.log(error));
+    fetchData().then((response) => {
+      setLoading(false);
+      setUserInformation(response.userInformation);
+      setInputs({
+        firstName: response.userInformation?.firstName || "",
+        lastName: response.userInformation?.lastName || "",
+        bio: response.userInformation?.bio || "",
+      });
+    });
   }, []);
 
   const editProfile = () => {
