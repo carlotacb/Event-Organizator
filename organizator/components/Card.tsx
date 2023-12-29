@@ -51,8 +51,7 @@ const TextLine = styled.View`
 `;
 
 export default function Card(props: CardProps) {
-  const { id, title, startDate, endDate, location, headerImage } = props;
-  console.log(id);
+  const { title, startDate, endDate, location, headerImage } = props;
 
   return (
     <CardContainer>
