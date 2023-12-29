@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
+// @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import {
@@ -76,6 +77,38 @@ export default function Profile() {
     });
   }, []);
 
+  const validate = () => {
+    let isValid = false;
+
+    if (inputs.firstName === "") {
+      handleError("First name is required", "firstName");
+    } else {
+      handleError(undefined, "firstName");
+    }
+
+    if (inputs.lastName === "") {
+      handleError("Last name is required", "lastName");
+    } else {
+      handleError(undefined, "lastName");
+    }
+
+    if (inputs.bio === "") {
+      handleError("Biography is required", "bio");
+    } else {
+      handleError(undefined, "bio");
+    }
+
+    if (
+      errors.firstName === undefined &&
+      errors.lastName === undefined &&
+      errors.bio === undefined
+    ) {
+      isValid = true;
+    }
+
+    if (isValid) editProfile();
+  };
+
   const editProfile = () => {
     setLoading(true);
     updateMyInformation(inputs, userInformation?.id || "").then((response) => {
@@ -142,7 +175,7 @@ export default function Profile() {
                 error={errors.bio}
               />
               <ButtonContainer>
-                <Button title="Edit information" onPress={editProfile} />
+                <Button title="Edit information" onPress={validate} />
               </ButtonContainer>
             </InputsContainer>
           </>
