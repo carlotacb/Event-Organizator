@@ -18,10 +18,9 @@ export async function getAllEvents(): Promise<getAllEventResponse> {
       },
     });
     return { error: null, eventInformation: [...response.data] };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     return {
-      error: "unexpected error",
+      error: error.response.data,
       eventInformation: null,
     };
   }
