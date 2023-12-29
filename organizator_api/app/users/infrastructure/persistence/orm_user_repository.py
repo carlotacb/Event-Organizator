@@ -30,7 +30,7 @@ class ORMUserRepository(UserRepository):
         if token is None:
             raise UserNotLoggedIn()
         try:
-            user = self._to_domain(ORMUser.objects.get(token=token))
+            user = self._to_domain(ORMUser.objects.get(token=str(token)))
             return user
         except ORMUser.DoesNotExist:
             raise UserNotFound()
@@ -67,6 +67,7 @@ class ORMUserRepository(UserRepository):
             last_name=user.last_name,
             username=user.username,
             bio=user.bio,
+            token=user.token,
             profile_image=user.profile_image,
             created_at=user.created_at,
             updated_at=user.updated_at,
