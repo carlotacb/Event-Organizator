@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default () => {
+export default function () {
   return (
     <Tabs>
       <Tabs.Screen
@@ -16,16 +16,6 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarLabel: "Profile",
-          headerTitle: "My profile",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="user" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="list"
         options={{
           tabBarLabel: "News",
@@ -35,6 +25,16 @@ export default () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarLabel: "Profile",
+          headerTitle: "My profile",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="user" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
-};
+}
