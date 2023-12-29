@@ -43,6 +43,7 @@ exports[`renders correctly a input with label and value 1`] = `
       }
     />
   </View>
+   
   <View
     isFocus={false}
     style={
@@ -65,6 +66,7 @@ exports[`renders correctly a input with label and value 1`] = `
     }
   >
     <TextInput
+      editable={true}
       label="username"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -80,6 +82,7 @@ exports[`renders correctly a input with label and value 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -132,6 +135,7 @@ exports[`renders correctly a input with label and value and error 1`] = `
       }
     />
   </View>
+   
   <View
     error="error"
     isFocus={false}
@@ -155,6 +159,7 @@ exports[`renders correctly a input with label and value and error 1`] = `
     }
   >
     <TextInput
+      editable={true}
       error="error"
       label="username"
       onBlur={[Function]}
@@ -171,6 +176,7 @@ exports[`renders correctly a input with label and value and error 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -217,45 +223,13 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
   }
 >
   <View
-    style={
-      [
-        {
-          "display": "flex",
-          "flexDirection": "row",
-          "gap": 5,
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "marginBottom": 8,
-            "marginLeft": 15,
-          },
-        ]
-      }
-    >
-      username
-    </Text>
-    <Text
-      style={
-        [
-          {
-            "color": "red",
-          },
-        ]
-      }
-    />
-  </View>
-  <View
+    disabled={true}
     isFocus={false}
     style={
       [
         {
           "alignItems": "center",
-          "backgroundColor": "#eaeaea",
+          "backgroundColor": "#969696",
           "borderColor": "#eaeaea",
           "borderRadius": 20,
           "borderWidth": 2,
@@ -272,13 +246,14 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
   >
     <TextInput
       disabled={true}
+      editable={false}
       label="username"
       onBlur={[Function]}
       onFocus={[Function]}
       style={
         [
           {
-            "color": "black",
+            "color": "#eaeaea",
             "flexBasis": 0,
             "flexGrow": 1,
             "flexShrink": 1,
@@ -287,6 +262,7 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -339,6 +315,7 @@ exports[`renders correctly a input with label and value that is password 1`] = `
       }
     />
   </View>
+   
   <View
     isFocus={false}
     style={
@@ -361,6 +338,7 @@ exports[`renders correctly a input with label and value that is password 1`] = `
     }
   >
     <TextInput
+      editable={true}
       label="password"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -378,6 +356,7 @@ exports[`renders correctly a input with label and value that is password 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -459,6 +438,7 @@ exports[`renders correctly a input with label and value that is required 1`] = `
       *
     </Text>
   </View>
+   
   <View
     isFocus={false}
     style={
@@ -481,6 +461,7 @@ exports[`renders correctly a input with label and value that is required 1`] = `
     }
   >
     <TextInput
+      editable={true}
       label="username"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -497,6 +478,7 @@ exports[`renders correctly a input with label and value that is required 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -549,6 +531,7 @@ exports[`renders correctly a input with only label 1`] = `
       }
     />
   </View>
+   
   <View
     isFocus={false}
     style={
@@ -571,6 +554,7 @@ exports[`renders correctly a input with only label 1`] = `
     }
   >
     <TextInput
+      editable={true}
       label="username"
       onBlur={[Function]}
       onFocus={[Function]}
@@ -586,6 +570,7 @@ exports[`renders correctly a input with only label 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }
@@ -637,6 +622,7 @@ exports[`renders correctly a input with value and icon 1`] = `
       }
     />
   </View>
+   
   <View
     isFocus={false}
     style={
@@ -659,6 +645,7 @@ exports[`renders correctly a input with value and icon 1`] = `
     }
   >
     <TextInput
+      editable={true}
       icon="user"
       label="username"
       onBlur={[Function]}
@@ -675,6 +662,7 @@ exports[`renders correctly a input with value and icon 1`] = `
           },
           {
             "outlineStyle": "none",
+            "padding": 10,
           },
         ]
       }

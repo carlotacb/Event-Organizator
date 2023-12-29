@@ -106,7 +106,7 @@ export default function Input(props: InputProps) {
         {iconName && <InputIcon name={iconName} disabled={disabled} />}
         <InputStyled
           disabled={disabled}
-          style={{ outlineStyle: "none" }}
+          style={{ outlineStyle: "none", padding: 10 }}
           onFocus={() => {
             if (!disabled) setIsFocused(true);
           }}
