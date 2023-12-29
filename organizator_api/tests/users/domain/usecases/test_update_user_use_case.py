@@ -10,7 +10,8 @@ class TestUpdateUserUseCase(ApiTests):
     def setUp(self) -> None:
         super().setUp()
         self.user_repository.clear()
-        user = UserFactory().create()
+        self.user_token = uuid.UUID("5b90906e-2894-467d-835e-3e4fbe42af9f")
+        user = UserFactory().create(token=self.user_token)
         self.user_repository.create(user)
 
     def test__given_update_user_request__when_update_user__then_the_user_is_updated(
@@ -39,6 +40,7 @@ class TestUpdateUserUseCase(ApiTests):
             "https://www.hacknights.dev/images/hacknight.png", user.profile_image
         )
         self.assertEqual("carlota@hackupc.com", user.email)
+        self.assertEqual(self.user_token, user.token)
 
     def test__given_update_user_request_with_empty_fields__when_update_user__then_the_user_is_not_updated(
         self,
@@ -66,6 +68,7 @@ class TestUpdateUserUseCase(ApiTests):
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             user.profile_image,
         )
+        self.assertEqual(self.user_token, user.token)
 
     def test__given_update_user_request_with_only_bio__when_update_user__then_the_user_is_updated(
         self,
@@ -89,3 +92,4 @@ class TestUpdateUserUseCase(ApiTests):
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             user.profile_image,
         )
+        self.assertEqual(self.user_token, user.token)
