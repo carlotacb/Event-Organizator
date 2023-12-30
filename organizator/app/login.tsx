@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import {
-  SafeAreaView,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  View,
-  Pressable,
-} from "react-native";
+import { SafeAreaView, Text, ScrollView, View, Pressable } from "react-native";
 
 import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -141,9 +134,7 @@ export default function LoginPage() {
       >
         <Toast />
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <ActivityIndicator size="large" />
-          </View>
+          <LoginPage />
         ) : (
           <>
             <Title>Welcome back!</Title>
