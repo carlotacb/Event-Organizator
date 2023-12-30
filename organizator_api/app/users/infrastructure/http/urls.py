@@ -8,6 +8,7 @@ from app.users.infrastructure.http.views import (
     update_user,
     login,
     get_user_by_token,
+    logout,
 )
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path("", get_all_users),
     path("me", get_user_by_token),
     path("login", login),
+    path("logout", logout),
     path("update/<uuid:user_id>", update_user),
     path("<uuid:user_id>", get_user_by_id),
     path("<str:username>", get_user_by_username),

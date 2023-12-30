@@ -15,6 +15,7 @@ from app.users.domain.usecases.get_user_by_username_use_case import (
     GetUserByUsernameUseCase,
 )
 from app.users.domain.usecases.login_use_case import LoginUseCase
+from app.users.domain.usecases.logout_use_case import LogoutUseCase
 from app.users.domain.usecases.update_user_use_case import UpdateUserUseCase
 
 
@@ -172,3 +173,15 @@ def login(request: HttpRequest) -> HttpResponse:
         content=json.dumps({"token": str(token)}),
         content_type="application/json",
     )
+
+
+@require_http_methods(["POST"])
+def logout(request: HttpRequest) -> HttpResponse:
+    token = request.headers.get("Authorization")
+
+    if not token:
+        return HttpResponse(status=409, content="Unauthorized")
+
+    LogoutUseCase().execute(token=uuid.UUID(token))
+
+    return HttpResponse(status=200, content="User logged out correctly")
