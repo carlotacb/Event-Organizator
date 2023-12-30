@@ -77,7 +77,7 @@ export default function LoginPage() {
   useEffect(() => {
     getToken().then((token) => {
       if (token) {
-        router.replace("/home");
+        router.replace("/");
       }
     });
   });
@@ -118,7 +118,7 @@ export default function LoginPage() {
         });
       } else {
         storeToken(response.token);
-        router.replace("/home");
+        router.replace("/");
       }
     });
   };

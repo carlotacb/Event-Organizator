@@ -76,7 +76,7 @@ export default function Home() {
                   Come back in a few days... maybe we have news!
                 </SubTitle>
                 <Image
-                  source={require("../../../assets/noInformation.jpg")}
+                  source={require("../../../assets/empty.png")}
                   style={{ width: 280, height: 280, alignSelf: "center" }}
                 />
               </NoEventsContainer>
@@ -85,7 +85,7 @@ export default function Home() {
                 {events.map((event) => (
                   <Pressable
                     onPress={() => {
-                      router.push(`/home/${event.id}`);
+                      router.push(`/${event.id}`);
                     }}
                     key={event.id}
                   >

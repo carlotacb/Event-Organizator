@@ -6,7 +6,7 @@ export default function HomepageTabs() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="home"
+        name="(home)"
         options={{
           tabBarLabel: "Home",
           headerTitle: "All upcoming events",

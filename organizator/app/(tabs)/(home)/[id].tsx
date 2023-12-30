@@ -86,7 +86,7 @@ export default function EventPage() {
     deleteEvent(id)
       .then(() => {
         setShowAlert(false);
-        router.replace("/home");
+        router.replace("/");
       })
       .catch((error) => {
         console.log(error);

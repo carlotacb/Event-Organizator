@@ -66,7 +66,7 @@ export default function RegisterPage() {
   useEffect(() => {
     getToken().then((token) => {
       if (token) {
-        router.replace("/home");
+        router.replace("/");
       }
     });
   });
@@ -151,7 +151,7 @@ export default function RegisterPage() {
           visibilityTime: 8000,
         });
       } else {
-        router.replace("/home");
+        router.replace("/(home)login");
       }
     });
   };
