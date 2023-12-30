@@ -51,7 +51,6 @@ export default function RegisterPage() {
     firstName: "",
     lastName: "",
     bio: "",
-    // profilePicture: "",
   });
   const [errors, setErrors] = React.useState({
     username: undefined,
@@ -61,7 +60,6 @@ export default function RegisterPage() {
     firstName: undefined,
     lastName: undefined,
     bio: undefined,
-    // profilePicture: undefined,
   });
   const [loading, setLoading] = React.useState(false);
 
@@ -78,76 +76,63 @@ export default function RegisterPage() {
 
     if (!inputs.username) {
       handleError("Please enter your username", "username");
-      isValid = false;
     } else {
       handleError(undefined, "username");
-      isValid = true;
     }
 
     if (!inputs.email) {
       handleError("Please enter an email address", "email");
-      isValid = false;
     } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
       handleError("Please enter a valid email address", "email");
-      isValid = false;
     } else {
       handleError(undefined, "email");
-      isValid = true;
     }
 
     if (!inputs.password) {
       handleError("Please enter a password", "password");
-      isValid = false;
     } else if (inputs.password.length < 8) {
       handleError("Minimum password length is 8", "password");
-      isValid = false;
     } else {
       handleError(undefined, "password");
-      isValid = true;
     }
 
     if (!inputs.passwordConfirm) {
       handleError("Please enter confirm password", "passwordConfirm");
-      isValid = false;
     } else if (inputs.passwordConfirm !== inputs.password) {
       handleError("Password confirmation does not match", "passwordConfirm");
-      isValid = false;
     } else {
       handleError(undefined, "passwordConfirm");
-      isValid = true;
     }
 
     if (!inputs.firstName) {
       handleError("Please enter your first name", "firstName");
-      isValid = false;
     } else {
       handleError(undefined, "firstName");
-      isValid = true;
     }
 
     if (!inputs.lastName) {
       handleError("Please enter your last name", "lastName");
-      isValid = false;
     } else {
       handleError(undefined, "lastName");
-      isValid = true;
     }
 
     if (!inputs.bio) {
       handleError("Please enter your bio", "bio");
-      isValid = false;
     } else {
       handleError(undefined, "bio");
-      isValid = true;
     }
 
-    /* if (!inputs.profilePicture) {
-      handleError("Please enter your profile picture", "profilePicture");
-      isValid = false;
-    } else {
-      handleError(undefined, "profilePicture");
+    if (
+      errors.username === undefined &&
+      errors.email === undefined &&
+      errors.password === undefined &&
+      errors.passwordConfirm === undefined &&
+      errors.firstName === undefined &&
+      errors.lastName === undefined &&
+      errors.bio === undefined
+    ) {
       isValid = true;
-    } */
+    }
 
     if (isValid) {
       register();
@@ -251,13 +236,6 @@ export default function RegisterPage() {
               onChangeText={(text) => handleOnChange(text, "bio")}
               error={errors.bio}
             />
-            {/* <Input
-            label="Profile Picture"
-            iconName="camera"
-            required
-            onChangeText={(text) => handleOnChange(text, "profilePicture")}
-            error={errors.profilePicture}
-          /> */}
 
             <ButtonContainer>
               <Button title="Register" onPress={validate} />

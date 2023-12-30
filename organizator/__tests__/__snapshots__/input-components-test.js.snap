@@ -43,7 +43,6 @@ exports[`renders correctly a input with label and value 1`] = `
       }
     />
   </View>
-   
   <View
     isFocus={false}
     style={
@@ -135,7 +134,6 @@ exports[`renders correctly a input with label and value and error 1`] = `
       }
     />
   </View>
-   
   <View
     error="error"
     isFocus={false}
@@ -315,7 +313,6 @@ exports[`renders correctly a input with label and value that is password 1`] = `
       }
     />
   </View>
-   
   <View
     isFocus={false}
     style={
@@ -438,7 +435,6 @@ exports[`renders correctly a input with label and value that is required 1`] = `
       *
     </Text>
   </View>
-   
   <View
     isFocus={false}
     style={
@@ -531,7 +527,6 @@ exports[`renders correctly a input with only label 1`] = `
       }
     />
   </View>
-   
   <View
     isFocus={false}
     style={
@@ -622,7 +617,6 @@ exports[`renders correctly a input with value and icon 1`] = `
       }
     />
   </View>
-   
   <View
     isFocus={false}
     style={

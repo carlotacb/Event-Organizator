@@ -95,12 +95,10 @@ export default function Input(props: InputProps) {
   return (
     <Container>
       {disabled ? null : (
-        <>
-          <TextContainerRow>
-            <TextLabel>{label}</TextLabel>
-            <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
-          </TextContainerRow>{" "}
-        </>
+        <TextContainerRow>
+          <TextLabel>{label}</TextLabel>
+          <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
+        </TextContainerRow>
       )}
       <TextInputContainer isFocus={isFocused} error={error} disabled={disabled}>
         {iconName && <InputIcon name={iconName} disabled={disabled} />}

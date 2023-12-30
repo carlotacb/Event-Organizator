@@ -2,14 +2,14 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function () {
+export default function Tabs2() {
   return (
     <Tabs>
       <Tabs.Screen
         name="home"
         options={{
           tabBarLabel: "Home",
-          headerTitle: "HomeScreen",
+          headerTitle: "All upcoming events",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           ),

@@ -8,7 +8,7 @@ interface getAllEventResponse {
 
 const eventsAPI = "http://0.0.0.0:8000/organizator-api/events/";
 
-export async function getAllEvents(): Promise<getAllEventResponse> {
+export default async function getAllEvents(): Promise<getAllEventResponse> {
   try {
     const response = await axios({
       method: "get",
@@ -18,10 +18,9 @@ export async function getAllEvents(): Promise<getAllEventResponse> {
       },
     });
     return { error: null, eventInformation: [...response.data] };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
     return {
-      error: "unexpected error",
+      error: error.response.data,
       eventInformation: null,
     };
   }
