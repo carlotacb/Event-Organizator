@@ -8,7 +8,6 @@ import {
   UpdateFormFields,
   UserInformationResponse,
 } from "../interfaces/Users";
-import { getToken } from "../sessionCalls";
 
 const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
 
