@@ -163,7 +163,9 @@ export default function LoginPage() {
             <RegisterText>
               You don't have an account yet?{" "}
               <Link href="/register" asChild>
-                <RegisterButton>Register now</RegisterButton>
+                <RegisterButton>
+                  <Text>Register now</Text>
+                </RegisterButton>
               </Link>
             </RegisterText>
           </>

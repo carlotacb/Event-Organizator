@@ -10,7 +10,7 @@ import {
 // @ts-ignore
 import styled from "styled-components/native";
 import { EventAllInformation } from "../../utils/interfaces/Events";
-import { getAllEvents } from "../../utils/api/axiosEvents";
+import getAllEvents from "../../utils/api/axiosEvents";
 import Card from "../../components/Card";
 
 const Container = styled(SafeAreaView)`
@@ -62,7 +62,7 @@ export default function Home() {
     <Container>
       <ScrollView contentContainerStyle={{ padding: 10 }}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center" }}>
+          <View style={{ flex: 1, justifyContent: "center", marginTop: 30 }}>
             <ActivityIndicator size="large" />
           </View>
         ) : (
