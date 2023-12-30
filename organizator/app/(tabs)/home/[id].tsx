@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Link, router, useLocalSearchParams } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { ConfirmDialog } from "react-native-simple-dialogs";
 import { EventInformation } from "../../../utils/interfaces/Events";
-import { getEventById } from "../../../utils/api/axiosEvents";
+import { deleteEvent, getEventById } from "../../../utils/api/axiosEvents";
 import parseDate from "../../../utils/util-functions";
 import ButtonWithIcon from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -73,6 +69,7 @@ export default function EventPage() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = React.useState(true);
   const [events, setEvents] = React.useState<EventInformation | null>(null);
+  const [showAlert, setShowAlert] = React.useState(false);
 
   useEffect(() => {
     // @ts-ignore
@@ -84,64 +81,134 @@ export default function EventPage() {
     });
   }, []);
 
+  const deleteThisEvent = () => {
+    // @ts-ignore
+    deleteEvent(id)
+      .then(() => {
+        setShowAlert(false);
+        router.replace("/home");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <Container>
       <ScrollView>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center", marginTop: 30 }}>
-            <ActivityIndicator size="large" />
-          </View>
+          <LoadingPage />
         ) : (
-          <>
-            <ImageHeader source={{ uri: events?.headerImage }} />
-            <InformationContainer>
-              <Title>{events?.name}</Title>
-              <Description>{events?.description}</Description>
-              <BasicInfoContainer>
-                <TextLine>
-                  <FontAwesome name="hourglass-start" />
-                  <Text>
-                    The event is starting on{" "}
-                    {parseDate(events?.startDate || "")}
-                  </Text>
-                </TextLine>
-                <TextLine>
-                  <FontAwesome name="hourglass-end" />
-                  <Text>
-                    The event is ending on {parseDate(events?.endDate || "")}
-                  </Text>
-                </TextLine>
-                <TextLine>
-                  <FontAwesome name="map-marker" />
-                  <Text>The event will take place in {events?.location}</Text>
-                </TextLine>
-                <TextLine>
-                  <FontAwesome name="link" />
-                  <Text>
-                    Find all the information in{" "}
-                    <StyledLink href={events?.url || ""}>here</StyledLink>
-                  </Text>
-                </TextLine>
-              </BasicInfoContainer>
-              <ButtonsContainer>
-                <ButtonWithIcon
-                  title="Edit"
-                  onPress={() => {
-                    router.push(`/home/${events?.id}/edit`);
-                  }}
-                  color="#58a659"
-                  iconName="pencil"
+          <View>
+            {events?.deleted ? (
+              <View style={{ padding: 100, alignItems: "center" }}>
+                <Title>The event {events?.name} has been removed</Title>
+                <Description>
+                  To know more about it, contact the organizers
+                </Description>
+                <Image
+                  source={require("../../../assets/deleted.webp")}
+                  style={{ width: 280, height: 280, alignSelf: "center" }}
                 />
-                <ButtonWithIcon
-                  title="Delete"
-                  onPress={() => {}}
-                  color="#f07267"
-                  iconName="trash"
-                />
-              </ButtonsContainer>
-            </InformationContainer>
-          </>
+              </View>
+            ) : (
+              <>
+                <ImageHeader source={{ uri: events?.headerImage }} />
+                <InformationContainer>
+                  <Title>{events?.name}</Title>
+                  <Description>{events?.description}</Description>
+                  <BasicInfoContainer>
+                    <TextLine>
+                      <FontAwesome name="hourglass-start" />
+                      <Text>
+                        The event is starting on{" "}
+                        {parseDate(events?.startDate || "")}
+                      </Text>
+                    </TextLine>
+                    <TextLine>
+                      <FontAwesome name="hourglass-end" />
+                      <Text>
+                        The event is ending on{" "}
+                        {parseDate(events?.endDate || "")}
+                      </Text>
+                    </TextLine>
+                    <TextLine>
+                      <FontAwesome name="map-marker" />
+                      <Text>
+                        The event will take place in {events?.location}
+                      </Text>
+                    </TextLine>
+                    <TextLine>
+                      <FontAwesome name="link" />
+                      <Text>
+                        Find all the information in{" "}
+                        <StyledLink href={events?.url || ""}>here</StyledLink>
+                      </Text>
+                    </TextLine>
+                  </BasicInfoContainer>
+                  <ButtonsContainer>
+                    <ButtonWithIcon
+                      title="Edit"
+                      onPress={() => {}}
+                      color="#58a659"
+                      iconName="pencil"
+                    />
+                    <ButtonWithIcon
+                      title="Delete"
+                      onPress={() => {
+                        setShowAlert(true);
+                      }}
+                      color="#f07267"
+                      iconName="trash"
+                    />
+                  </ButtonsContainer>
+                </InformationContainer>
+              </>
+            )}
+          </View>
         )}
+        <ConfirmDialog
+          title={`Delete ${events?.name}`}
+          message="Are you sure about that? This action will not be undone"
+          onTouchOutside={() => setShowAlert(false)}
+          visible={showAlert}
+          negativeButton={{
+            title: "Cancel",
+            onPress: () => {
+              setShowAlert(false);
+            },
+            titleStyle: {
+              color: "red",
+              fontSize: 20,
+            },
+            style: {
+              backgroundColor: "transparent",
+              paddingHorizontal: 10,
+            },
+          }}
+          positiveButton={{
+            title: "Delete!",
+            onPress: () => {
+              deleteThisEvent();
+            },
+            titleStyle: {
+              color: "blue",
+              fontSize: 20,
+            },
+            style: {
+              backgroundColor: "transparent",
+              paddingHorizontal: 10,
+            },
+          }}
+          buttonsStyle={{
+            alignContent: "center",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+          contentInsetAdjustmentBehavior="automatic"
+          onRequestClose={() => setShowAlert(false)}
+        />
       </ScrollView>
     </Container>
   );
