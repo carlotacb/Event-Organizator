@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Image,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
@@ -14,6 +7,7 @@ import { EventAllInformation } from "../../../utils/interfaces/Events";
 import { getAllEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
 import LoadingPage from "../../../components/LodingPage";
+import EmptyPage from "../../../components/EmptyPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -27,24 +21,6 @@ const CardsContainer = styled(View)`
   gap: 20px;
   flex-direction: row;
   margin: 30px 0;
-`;
-
-const NoEventsContainer = styled(View)`
-  padding-top: 60px;
-`;
-
-const Title = styled(Text)`
-  font-size: 30px;
-  font-weight: bold;
-  color: black;
-  text-align: center;
-`;
-
-const SubTitle = styled(Text)`
-  font-size: 18px;
-  color: gray;
-  margin: 5px 0 20px 0;
-  text-align: center;
 `;
 
 export default function Home() {
@@ -68,16 +44,11 @@ export default function Home() {
         ) : (
           <View style={{ justifyContent: "center" }}>
             {events.length === 0 ? (
-              <NoEventsContainer>
-                <Title>There are no events</Title>
-                <SubTitle>
-                  Come back in a few days... maybe we have news!
-                </SubTitle>
-                <Image
-                  source={require("../../../assets/empty.png")}
-                  style={{ width: 280, height: 280, alignSelf: "center" }}
-                />
-              </NoEventsContainer>
+              <EmptyPage
+                title="There are no events"
+                subtitle="Come back in a few days... maybe we have news!"
+                image={require("../../../assets/empty.png")}
+              />
             ) : (
               <CardsContainer>
                 {events.map((event) => (
