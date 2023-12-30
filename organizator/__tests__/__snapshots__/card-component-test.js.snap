@@ -20,7 +20,7 @@ exports[`renders correctly a button 1`] = `
         },
         "shadowOpacity": 1,
         "shadowRadius": 10,
-        "width": 260,
+        "width": 280,
       },
     ]
   }
