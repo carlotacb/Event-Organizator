@@ -10,6 +10,7 @@ export default function HomepageTabs() {
         options={{
           tabBarLabel: "Home",
           headerTitle: "All upcoming events",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           ),

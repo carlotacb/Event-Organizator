@@ -11,6 +11,18 @@ export interface EventAllInformation {
   url: string;
 }
 
+export interface EventInformation {
+  deleted: boolean;
+  description: string;
+  endDate: string;
+  headerImage: string;
+  id: string;
+  location: string;
+  name: string;
+  startDate: string;
+  url: string;
+}
+
 export interface EventCardProps {
   id: string;
   name: string;
@@ -18,4 +30,14 @@ export interface EventCardProps {
   endDate: string;
   location: string;
   headerImage: string;
+}
+
+export interface getAllEventResponse {
+  readonly error: string | null;
+  readonly eventInformation: EventAllInformation[] | null;
+}
+
+export interface getEventResponse {
+  readonly error: string | null;
+  readonly eventInformation: EventInformation | null;
 }
