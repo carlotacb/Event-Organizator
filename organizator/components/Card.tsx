@@ -21,7 +21,7 @@ const CardContainer = styled.View`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   margin: 10px;
-  width: 260px;
+  width: 280px;
 `;
 
 const CardImage = styled.Image`

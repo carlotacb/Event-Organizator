@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-  EventAllInformation,
+  deleteEventResponse,
   getAllEventResponse,
   getEventResponse,
 } from "../interfaces/Events";
@@ -46,6 +46,24 @@ export async function getEventById(eventId: string): Promise<getEventResponse> {
     return {
       error: error.response.data,
       eventInformation: null,
+    };
+  }
+}
+
+export async function deleteEvent(
+  eventId: string,
+): Promise<deleteEventResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${eventsAPI}/delete/${eventId}`,
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
     };
   }
 }

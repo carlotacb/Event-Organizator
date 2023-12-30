@@ -41,3 +41,7 @@ export interface getEventResponse {
   readonly error: string | null;
   readonly eventInformation: EventInformation | null;
 }
+
+export interface deleteEventResponse {
+  readonly error: string | null;
+}
