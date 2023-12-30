@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Image,
+  Pressable,
   SafeAreaView,
   ScrollView,
   Text,
@@ -9,9 +10,10 @@ import {
 } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
-import { EventAllInformation } from "../../utils/interfaces/Events";
-import getAllEvents from "../../utils/api/axiosEvents";
-import Card from "../../components/Card";
+import { Link, router } from "expo-router";
+import { EventAllInformation } from "../../../utils/interfaces/Events";
+import { getAllEvents } from "../../../utils/api/axiosEvents";
+import Card from "../../../components/Card";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -74,22 +76,28 @@ export default function Home() {
                   Come back in a few days... maybe we have news!
                 </SubTitle>
                 <Image
-                  source={require("../../assets/noInformation.jpg")}
+                  source={require("../../../assets/noInformation.jpg")}
                   style={{ width: 280, height: 280, alignSelf: "center" }}
                 />
               </NoEventsContainer>
             ) : (
               <CardsContainer>
                 {events.map((event) => (
-                  <Card
+                  <Pressable
+                    onPress={() => {
+                      router.push(`/home/${event.id}`);
+                    }}
                     key={event.id}
-                    title={event.name}
-                    startDate={event.start_date}
-                    endDate={event.end_date}
-                    location={event.location}
-                    id={event.id}
-                    headerImage={event.header_image}
-                  />
+                  >
+                    <Card
+                      title={event.name}
+                      startDate={event.start_date}
+                      endDate={event.end_date}
+                      location={event.location}
+                      id={event.id}
+                      headerImage={event.header_image}
+                    />
+                  </Pressable>
                 ))}
               </CardsContainer>
             )}
