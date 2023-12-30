@@ -79,17 +79,17 @@ export default function LoginPage() {
 
     if (!inputs.username) {
       handleError("Please enter your username", "username");
-      isValid = false;
     } else {
       handleError(undefined, "username");
-      isValid = true;
     }
 
     if (!inputs.password) {
       handleError("Please enter a password", "password");
-      isValid = false;
     } else {
       handleError(undefined, "password");
+    }
+
+    if (errors.username === undefined && errors.password === undefined) {
       isValid = true;
     }
 
