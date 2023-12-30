@@ -435,3 +435,33 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Password is required")
+
+    def test__given_a_user_with_a_token__when_logout_endpoint_is_called__then_token_is_deleted(
+        self,
+    ) -> None:
+        # Given
+        token_for_user = uuid.UUID("60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d")
+        user = UserFactory().create(token=token_for_user)
+        self.user_repository.create(user)
+
+        # When
+        headers = {"HTTP_Authorization": "60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d"}
+        response = self.client.post("/organizator-api/users/logout", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test__given_a_user_with_token__when_logout_endpoint_is_called_without_header__then_unauthorized_is_returned(
+        self,
+    ) -> None:
+        # Given
+        token_for_user = uuid.UUID("60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d")
+        user = UserFactory().create(token=token_for_user)
+        self.user_repository.create(user)
+
+        # When
+        response = self.client.post("/organizator-api/users/logout")
+
+        # Then
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.content, b"Unauthorized")
