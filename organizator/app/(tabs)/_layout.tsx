@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function Tabs2() {
+export default function HomepageTabs() {
   return (
     <Tabs>
       <Tabs.Screen

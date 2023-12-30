@@ -54,5 +54,6 @@ module.exports = {
     "no-nested-ternary": "off",
     "global-require": "off",
     "react/no-unstable-nested-components": "off",
+    "no-console": "off",
   },
 };
