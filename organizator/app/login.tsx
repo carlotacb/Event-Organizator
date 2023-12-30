@@ -44,15 +44,23 @@ const ButtonContainer = styled(View)`
   align-items: center;
 `;
 
+const RegisterTextContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+`;
+
 const RegisterText = styled(Text)`
   text-align: center;
-  margin-top: 10px;
   font-size: 15px;
 `;
 
-const RegisterButton = styled(Pressable)`
+const RegisterButton = styled(Text)`
   font-weight: bold;
-  color: #36368a;
+  color: blue;
 `;
 
 export default function LoginPage() {
@@ -160,14 +168,14 @@ export default function LoginPage() {
             <ButtonContainer>
               <Button title="Log in" onPress={validate} />
             </ButtonContainer>
-            <RegisterText>
-              You don't have an account yet?{" "}
+            <RegisterTextContainer>
+              <RegisterText>You don't have an account yet? </RegisterText>
               <Link href="/register" asChild>
-                <RegisterButton>
-                  <Text>Register now</Text>
-                </RegisterButton>
+                <Pressable>
+                  <RegisterButton>Register now</RegisterButton>
+                </Pressable>
               </Link>
-            </RegisterText>
+            </RegisterTextContainer>
           </>
         )}
       </ScrollView>
