@@ -10,7 +10,7 @@ import {
 } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import { getAllEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
