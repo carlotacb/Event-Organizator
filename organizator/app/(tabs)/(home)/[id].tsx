@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Link, router, useLocalSearchParams } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
