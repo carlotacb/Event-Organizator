@@ -10,6 +10,7 @@ import { deleteEvent, getEventById } from "../../../utils/api/axiosEvents";
 import parseDate from "../../../utils/util-functions";
 import ButtonWithIcon from "../../../components/ButtonWithIcon";
 import LoadingPage from "../../../components/LodingPage";
+import EmptyPage from "../../../components/EmptyPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -101,16 +102,11 @@ export default function EventPage() {
         ) : (
           <View>
             {events?.deleted ? (
-              <View style={{ padding: 100, alignItems: "center" }}>
-                <Title>The event {events?.name} has been removed</Title>
-                <Description>
-                  To know more about it, contact the organizers
-                </Description>
-                <Image
-                  source={require("../../../assets/deleted.webp")}
-                  style={{ width: 280, height: 280, alignSelf: "center" }}
-                />
-              </View>
+              <EmptyPage
+                title={`The event ${events?.name} has been removed`}
+                subtitle="To know more about it, contact the organizers"
+                image={require("../../../assets/deleted.webp")}
+              />
             ) : (
               <>
                 <ImageHeader source={{ uri: events?.headerImage }} />
@@ -199,12 +195,6 @@ export default function EventPage() {
               backgroundColor: "transparent",
               paddingHorizontal: 10,
             },
-          }}
-          buttonsStyle={{
-            alignContent: "center",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
           }}
           contentInsetAdjustmentBehavior="automatic"
           onRequestClose={() => setShowAlert(false)}
