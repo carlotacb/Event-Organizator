@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Pressable,
   SafeAreaView,
   ScrollView,
   Text,
@@ -10,11 +11,13 @@ import { router } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   getMyInformation,
+  logout,
   updateMyInformation,
 } from "../../utils/api/axiosUsers";
-import { getToken } from "../../utils/sessionCalls";
+import { getToken, removeToken } from "../../utils/sessionCalls";
 import { UserInformation } from "../../utils/interfaces/Users";
 import Input from "../../components/Input";
 import Button from "../../components/StyledButton";
@@ -23,6 +26,14 @@ const Container = styled(SafeAreaView)`
   padding: 30px;
   background-color: white;
   flex: 1;
+`;
+
+const TitleContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
 `;
 
 const Title = styled(Text)`
@@ -43,6 +54,7 @@ const ButtonContainer = styled(View)`
 
 export default function Profile() {
   const [loading, setLoading] = React.useState(true);
+  const [token, setToken] = React.useState<string | null>(null);
   const [userInformation, setUserInformation] =
     React.useState<UserInformation | null>(null);
   const [inputs, setInputs] = useState({
@@ -58,12 +70,13 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = await getToken();
-      if (token === null) {
+      const t = await getToken();
+      if (t === null) {
         router.replace("/login");
       }
 
-      return getMyInformation(token);
+      setToken(t);
+      return getMyInformation(t);
     };
 
     fetchData().then((response) => {
@@ -126,6 +139,12 @@ export default function Profile() {
     });
   };
 
+  const loggingOut = () => {
+    logout(token);
+    removeToken();
+    router.replace("/login");
+  };
+
   const handleOnChange = (text: string, input: string) => {
     setInputs((prevState) => ({ ...prevState, [input]: text }));
   };
@@ -142,7 +161,12 @@ export default function Profile() {
           </View>
         ) : (
           <>
-            <Title>Hi, {userInformation?.username} 👋🏼</Title>
+            <TitleContainer>
+              <Title>Hi, {userInformation?.username} 👋🏼</Title>
+              <Pressable onPress={loggingOut}>
+                <FontAwesome name="sign-out" size={30} color="red" />
+              </Pressable>
+            </TitleContainer>
             <InputsContainer>
               <Input
                 label="Email"

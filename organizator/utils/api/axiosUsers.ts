@@ -58,10 +58,23 @@ export async function loginUser(data: LoginFormFields): Promise<LoginResponse> {
   }
 }
 
+export async function logout(token: string | null) {
+  try {
+    await axios({
+      method: "post",
+      url: `${usersAPI}/logout`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+  } catch (error: any) {
+    console.log(error);
+  }
+}
+
 export async function getMyInformation(
   token: string | null,
 ): Promise<UserInformationResponse> {
-  console.log(token);
   try {
     const response = await axios({
       method: "get",
