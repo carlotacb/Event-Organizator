@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import {
-  SafeAreaView,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  View,
-} from "react-native";
+import { SafeAreaView, Text, ScrollView, View } from "react-native";
 
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -16,6 +10,7 @@ import Button from "../components/StyledButton";
 import { registerUser } from "../utils/api/axiosUsers";
 import { RegisterResponse } from "../utils/interfaces/Users";
 import { getToken } from "../utils/sessionCalls";
+import LoadingPage from "../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
   padding: 50px 40px;
@@ -167,9 +162,7 @@ export default function RegisterPage() {
     <Container>
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <ActivityIndicator size="large" />
-          </View>
+          <LoadingPage />
         ) : (
           <>
             <Title>Welcome!</Title>

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { router } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
@@ -21,6 +14,7 @@ import { getToken, removeToken } from "../../utils/sessionCalls";
 import { UserInformation } from "../../utils/interfaces/Users";
 import Input from "../../components/Input";
 import Button from "../../components/StyledButton";
+import LoadingPage from "../../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
   padding: 30px;
@@ -156,9 +150,7 @@ export default function Profile() {
     <Container>
       <ScrollView contentContainerStyle={{ padding: 20 }}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <ActivityIndicator size="large" />
-          </View>
+          <LoadingPage />
         ) : (
           <>
             <TitleContainer>

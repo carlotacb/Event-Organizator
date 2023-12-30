@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  ActivityIndicator,
   Image,
   Pressable,
   SafeAreaView,
@@ -14,6 +13,7 @@ import { router } from "expo-router";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import { getAllEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
+import LoadingPage from "../../../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -64,9 +64,7 @@ export default function Home() {
     <Container>
       <ScrollView contentContainerStyle={{ padding: 10 }}>
         {loading ? (
-          <View style={{ flex: 1, justifyContent: "center", marginTop: 30 }}>
-            <ActivityIndicator size="large" />
-          </View>
+          <LoadingPage />
         ) : (
           <View style={{ justifyContent: "center" }}>
             {events.length === 0 ? (
