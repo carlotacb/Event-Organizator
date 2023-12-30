@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import { getAllEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
@@ -23,6 +24,30 @@ const CardsContainer = styled(View)`
   margin: 30px 0;
 `;
 
+const CreateButtonContainer = styled(View)`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  align-items: center;
+  display: flex;
+`;
+
+const CreateButton = styled(Pressable)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 30px;
+  border-radius: 20px;
+  gap: 10px;
+  background-color: #58a659;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+`;
+
+const CreateButtonText = styled.Text`
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+`;
+
 export default function Home() {
   const [loading, setLoading] = React.useState(true);
   const [events, setEvents] = React.useState<EventAllInformation[]>([]);
@@ -38,7 +63,7 @@ export default function Home() {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{ padding: 10 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
         {loading ? (
           <LoadingPage />
         ) : (
@@ -73,6 +98,16 @@ export default function Home() {
           </View>
         )}
       </ScrollView>
+      <CreateButtonContainer>
+        <CreateButton
+          onPress={() => {
+            router.push("/create");
+          }}
+        >
+          <FontAwesome name="plus" size={20} color="white" />
+          <CreateButtonText>Create new</CreateButtonText>
+        </CreateButton>
+      </CreateButtonContainer>
     </Container>
   );
 }
