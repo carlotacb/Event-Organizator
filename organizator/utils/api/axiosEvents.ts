@@ -5,6 +5,8 @@ import {
   deleteEventResponse,
   getAllEventResponse,
   getEventResponse,
+  UpdateEventProps,
+  updateEventResponse,
 } from "../interfaces/Events";
 
 const eventsAPI = "http://0.0.0.0:8000/organizator-api/events";
@@ -93,6 +95,45 @@ export async function createEvent(
   } catch (error: any) {
     return {
       error: error.response.data,
+    };
+  }
+}
+
+export async function updateEvent(
+  eventInformation: UpdateEventProps,
+  eventId: string,
+): Promise<updateEventResponse> {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${eventsAPI}/update/${eventId}`,
+      data: {
+        name: eventInformation.name,
+        description: eventInformation.description,
+        start_date: eventInformation.startDate,
+        end_date: eventInformation.endDate,
+        location: eventInformation.location,
+        url: eventInformation.url,
+      },
+    });
+    return {
+      error: null,
+      eventInformation: {
+        deleted: !!response.data.deleted,
+        description: response.data.description,
+        endDate: response.data.end_date,
+        headerImage: response.data.header_image,
+        id: response.data.id,
+        location: response.data.location,
+        name: response.data.name,
+        startDate: response.data.start_date,
+        url: response.data.url,
+      },
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      eventInformation: null,
     };
   }
 }

@@ -42,12 +42,26 @@ export interface CreateEventProps {
   url: string;
 }
 
+export interface UpdateEventProps {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  url: string;
+}
+
 export interface getAllEventResponse {
   readonly error: string | null;
   readonly eventInformation: EventAllInformation[] | null;
 }
 
 export interface getEventResponse {
+  readonly error: string | null;
+  readonly eventInformation: EventInformation | null;
+}
+
+export interface updateEventResponse {
   readonly error: string | null;
   readonly eventInformation: EventInformation | null;
 }
