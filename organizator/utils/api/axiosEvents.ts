@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  CreateEventProps,
+  createEventResponse,
   deleteEventResponse,
   getAllEventResponse,
   getEventResponse,
@@ -57,6 +59,33 @@ export async function deleteEvent(
     await axios({
       method: "post",
       url: `${eventsAPI}/delete/${eventId}`,
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+    };
+  }
+}
+
+export async function createEvent(
+  eventInformation: CreateEventProps,
+): Promise<createEventResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${eventsAPI}/new`,
+      data: {
+        name: eventInformation.name,
+        description: eventInformation.description,
+        start_date: eventInformation.startDate,
+        end_date: eventInformation.endDate,
+        location: eventInformation.location,
+        header_image: eventInformation.headerImage,
+        url: eventInformation.url,
+      },
     });
     return {
       error: null,

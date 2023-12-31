@@ -45,8 +45,6 @@ const TextInputContainer = styled(View)<{
   align-items: center;
   background-color: ${(props: { isFocus: boolean; disabled: boolean }) =>
     props.isFocus ? "transparent" : props.disabled ? "#969696" : "#eaeaea"};
-
-  height: 55px;
   border-radius: 20px;
   border-width: 2px;
   border-color: ${(props: { isFocus: boolean }) =>

@@ -32,6 +32,16 @@ export interface EventCardProps {
   headerImage: string;
 }
 
+export interface CreateEventProps {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  headerImage: string;
+  url: string;
+}
+
 export interface getAllEventResponse {
   readonly error: string | null;
   readonly eventInformation: EventAllInformation[] | null;
@@ -43,5 +53,9 @@ export interface getEventResponse {
 }
 
 export interface deleteEventResponse {
+  readonly error: string | null;
+}
+
+export interface createEventResponse {
   readonly error: string | null;
 }
