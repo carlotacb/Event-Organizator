@@ -88,7 +88,7 @@ export default function CreatePage() {
       handleError(undefined, "location");
     }
 
-    if (!inputs.endDate) {
+    if (!inputs.headerImage) {
       handleError("Please enter a header image for the event", "headerImage");
     } else {
       handleError(undefined, "headerImage");
