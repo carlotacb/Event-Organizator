@@ -62,6 +62,20 @@ def get_all_events(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
+def get_all_upcoming_events(request: HttpRequest) -> HttpResponse:
+    all_events = GetAllEventsUseCase().execute()
+
+    events_response = []
+    for event in all_events:
+        if event.deleted_at is None and event.start_date > datetime.now():
+            events_response.append(EventResponse.from_event(event).to_dict())
+
+    return HttpResponse(
+        status=200, content=json.dumps(events_response), content_type="application/json"
+    )
+
+
+@require_http_methods(["GET"])
 def get_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     try:
         event = GetEventUseCase().execute(event_id=event_id)
