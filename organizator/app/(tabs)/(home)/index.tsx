@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import { router } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
-import { getAllEvents } from "../../../utils/api/axiosEvents";
+import { getAllUpcomingEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
@@ -53,7 +53,7 @@ export default function Home() {
   const [events, setEvents] = React.useState<EventAllInformation[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => getAllEvents();
+    const fetchData = async () => getAllUpcomingEvents();
 
     fetchData().then((response) => {
       setLoading(false);
