@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
