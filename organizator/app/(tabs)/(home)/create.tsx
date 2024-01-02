@@ -9,6 +9,12 @@ import Input from "../../../components/Input";
 import Button from "../../../components/ButtonWithIcon";
 import { createEvent } from "../../../utils/api/axiosEvents";
 import { createEventResponse } from "../../../utils/interfaces/Events";
+import {
+  checkDate,
+  checkDateRange,
+  checkURL,
+  dateToPlainString,
+} from "../../../utils/util-functions";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -50,60 +56,89 @@ export default function CreatePage() {
   };
 
   const validate = () => {
-    let isValid = false;
+    let isValid = true;
 
     if (!inputs.name) {
       handleError("Please enter a name for the event", "name");
+      isValid = false;
     } else {
       handleError(undefined, "name");
     }
 
     if (!inputs.url) {
       handleError("Please enter a url for the event", "url");
+      isValid = false;
     } else {
-      handleError(undefined, "url");
+      const urlChecker = checkURL(inputs.url);
+      if (!urlChecker.valid) {
+        handleError(urlChecker.error, "url");
+        isValid = false;
+      } else {
+        handleError(undefined, "url");
+      }
     }
 
     if (!inputs.description) {
       handleError("Please enter a description for the event", "description");
+      isValid = false;
     } else {
       handleError(undefined, "description");
     }
 
     if (!inputs.startDate) {
       handleError("Please enter a starting date for the event", "startDate");
+      isValid = false;
     } else {
-      handleError(undefined, "startDate");
+      const dateChecker = checkDate(inputs.startDate);
+      if (!dateChecker.valid) {
+        handleError(dateChecker.error, "startDate");
+        isValid = false;
+      } else {
+        const today = new Date();
+        const validRange = checkDateRange(
+          dateToPlainString(today),
+          inputs.startDate,
+        );
+        if (!validRange.valid) {
+          handleError(validRange.error, "startDate");
+          isValid = false;
+        } else {
+          handleError(undefined, "startDate");
+        }
+      }
     }
 
     if (!inputs.endDate) {
       handleError("Please enter a ending date for the event", "endDate");
+      isValid = false;
     } else {
-      handleError(undefined, "endDate");
+      const dateChecker = checkDate(inputs.endDate);
+      if (!dateChecker.valid) {
+        handleError(dateChecker.error, "endDate");
+        isValid = false;
+      } else {
+        const validRange = checkDateRange(inputs.startDate, inputs.endDate);
+        if (!validRange.valid) {
+          handleError(validRange.error, "endDate");
+          isValid = false;
+        } else {
+          handleError(undefined, "endDate");
+        }
+      }
     }
 
     if (!inputs.location) {
       handleError("Please enter a location for the event", "location");
+      isValid = false;
     } else {
       handleError(undefined, "location");
     }
 
     if (!inputs.headerImage) {
       handleError("Please enter a header image for the event", "headerImage");
+      isValid = false;
     } else {
       handleError(undefined, "headerImage");
-    }
-
-    if (
-      errors.name === undefined &&
-      errors.url === undefined &&
-      errors.description === undefined &&
-      errors.startDate === undefined &&
-      errors.endDate === undefined &&
-      errors.location === undefined &&
-      errors.headerImage === undefined
-    ) {
-      isValid = true;
     }
 
     if (isValid) {
@@ -148,6 +183,8 @@ export default function CreatePage() {
               required
               value={inputs.url}
               onChangeText={(text) => handleOnChange(text, "url")}
+              placeholder="https://www.example.com"
+              placeholderTextColor="#969696"
               error={errors.url}
             />
             <Input
@@ -156,6 +193,8 @@ export default function CreatePage() {
               required
               value={inputs.startDate}
               onChangeText={(text) => handleOnChange(text, "startDate")}
+              placeholder="DD/MM/YYYY HH:MM"
+              placeholderTextColor="#969696"
               error={errors.startDate}
             />
             <Input
@@ -164,6 +203,8 @@ export default function CreatePage() {
               required
               value={inputs.endDate}
               onChangeText={(text) => handleOnChange(text, "endDate")}
+              placeholder="DD/MM/YYYY HH:MM"
+              placeholderTextColor="#969696"
               error={errors.endDate}
             />
             <Input
@@ -190,6 +231,8 @@ export default function CreatePage() {
               numberOfLines={4}
               value={inputs.description}
               onChangeText={(text) => handleOnChange(text, "description")}
+              placeholder="Explain a bit about what's the event about, you can write as much as you want!"
+              placeholderTextColor="#969696"
               error={errors.description}
             />
 
