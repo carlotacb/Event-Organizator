@@ -8,8 +8,8 @@ class CreateEventRequest:
     name: str
     url: str
     description: str
-    start_date: datetime
-    end_date: datetime
+    start_date: str
+    end_date: str
     location: str
     header_image: str
 
