@@ -15,7 +15,6 @@ class LoginUseCase:
             return user.token
 
         check = bcrypt.checkpw(password.encode("utf-8"), bytes(user.password))
-
         if not check:
             raise InvalidPassword
 
