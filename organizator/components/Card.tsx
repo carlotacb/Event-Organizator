@@ -2,7 +2,7 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import parseDate from "../utils/util-functions";
+import { parseDate } from "../utils/util-functions";
 
 interface CardProps {
   // eslint-disable-next-line react/no-unused-prop-types
