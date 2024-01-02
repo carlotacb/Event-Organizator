@@ -5,6 +5,7 @@ gunicorn==21.2.0
 importlib-metadata==6.8.0
 Markdown==3.5.1
 psycopg2==2.9.9
+bcrypt==4.1.2
 # test
 coverage==7.3.2
 mypy==1.7.0

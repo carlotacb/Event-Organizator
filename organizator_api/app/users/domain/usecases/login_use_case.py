@@ -1,4 +1,5 @@
 import uuid
+import bcrypt
 
 from app.users.domain.exceptions import InvalidPassword
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
@@ -13,7 +14,7 @@ class LoginUseCase:
         if user.token is not None:
             return user.token
 
-        if user.password != password:
+        if bcrypt.checkpw(password.encode('utf-8'), user.password):
             raise InvalidPassword
 
         user.token = uuid.uuid4()
