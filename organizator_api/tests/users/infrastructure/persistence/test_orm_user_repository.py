@@ -87,7 +87,7 @@ class TestORMUserRepository(ApiTests):
         self.assertEqual(user.email, user.email)
         self.assertEqual(type(user.email), str)
         self.assertEqual(user.password, user.password)
-        self.assertEqual(type(user.password), str)
+        self.assertEqual(type(user.password), bytes)
         self.assertEqual(user.first_name, user.first_name)
         self.assertEqual(type(user.first_name), str)
         self.assertEqual(user.last_name, user.last_name)
