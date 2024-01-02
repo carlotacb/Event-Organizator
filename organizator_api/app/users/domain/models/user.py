@@ -8,7 +8,7 @@ from typing import Optional
 class User:
     id: uuid.UUID
     email: str
-    password: str
+    password: bytes
     first_name: str
     last_name: str
     username: str

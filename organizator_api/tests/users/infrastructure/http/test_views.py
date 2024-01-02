@@ -94,7 +94,6 @@ class TestUserViews(ApiTests):
         self.assertEqual(len(self.user_repository.get_all()), 1)
         user = self.user_repository.get_all().pop()
         self.assertEqual(user.email, "carlota@hackupc.com")
-        self.assertEqual(user.password, "12345678")
         self.assertEqual(user.first_name, "Carlota")
         self.assertEqual(user.last_name, "Catot")
         self.assertEqual(user.username, "carlota")
@@ -354,7 +353,7 @@ class TestUserViews(ApiTests):
         # Given
         user = UserFactory().create()
         self.user_repository.create(user)
-        body = {"username": user.username, "password": user.password}
+        body = {"username": user.username, "password": "123456"}
 
         # When
         response = self.client.post(

@@ -1,4 +1,5 @@
 import uuid
+import bcrypt
 from datetime import datetime
 from typing import Optional
 
@@ -20,10 +21,12 @@ class UserFactory:
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> User:
+        hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
         return User(
             id=new_id,
             email=email,
-            password=password,
+            password=hashed_password,
             first_name=first_name,
             last_name=last_name,
             username=username,
