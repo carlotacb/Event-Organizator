@@ -14,7 +14,8 @@ class LoginUseCase:
         if user.token is not None:
             return user.token
 
-        if bcrypt.checkpw(password.encode("utf-8"), user.password) is False:
+        check = bcrypt.checkpw(password.encode("utf-8"), bytes(user.password))
+        if not check:
             raise InvalidPassword
 
         user.token = uuid.uuid4()
