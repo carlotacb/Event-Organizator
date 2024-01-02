@@ -67,8 +67,6 @@ def get_all_upcoming_events(request: HttpRequest) -> HttpResponse:
 
     events_response = []
     for event in all_events:
-        print(event.start_date)
-        print(datetime.now())
         if event.deleted_at is None and event.start_date > datetime.now(tz=event.start_date.tzinfo):
             events_response.append(EventResponse.from_event(event).to_dict())
 
