@@ -19,10 +19,12 @@ class UpdateEventUseCase:
             if event.description
             else original_event.description,
             url=event.url if event.url else original_event.url,
-            start_date=event.start_date
+            start_date=datetime.strptime(event.start_date, "%d/%m/%Y %H:%M")
             if event.start_date
             else original_event.start_date,
-            end_date=event.end_date if event.end_date else original_event.end_date,
+            end_date=datetime.strptime(event.end_date, "%d/%m/%Y %H:%M")
+            if event.end_date
+            else original_event.end_date,
             location=event.location if event.location else original_event.location,
             header_image=event.header_image
             if event.header_image

@@ -11,11 +11,11 @@ import {
 
 const eventsAPI = "http://0.0.0.0:8000/organizator-api/events";
 
-export async function getAllEvents(): Promise<getAllEventResponse> {
+export async function getAllUpcomingEvents(): Promise<getAllEventResponse> {
   try {
     const response = await axios({
       method: "get",
-      url: `${eventsAPI}/`,
+      url: `${eventsAPI}/upcoming`,
     });
     return { error: null, eventInformation: [...response.data] };
   } catch (error: any) {

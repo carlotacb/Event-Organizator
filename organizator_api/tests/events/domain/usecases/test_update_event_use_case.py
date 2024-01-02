@@ -43,8 +43,8 @@ class TestUpdateEventUseCase(ApiTests):
             name="HackUPC 2021",
             description="Hackathon in Barcelona 2021",
             url="https://2021.hackupc.com",
-            start_date=datetime.strptime("2021-10-15T16:00:00Z", "%Y-%m-%dT%H:%M:%SZ"),
-            end_date=datetime.strptime("2021-10-17T16:00:00Z", "%Y-%m-%dT%H:%M:%SZ"),
+            start_date="15/10/2021 16:00",
+            end_date="17/10/2021 16:00",
             location="The best city in the world",
         )
 

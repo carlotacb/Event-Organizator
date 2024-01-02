@@ -8,8 +8,8 @@ class CreateEventRequest:
     name: str
     url: str
     description: str
-    start_date: datetime
-    end_date: datetime
+    start_date: str
+    end_date: str
     location: str
     header_image: str
 
@@ -19,7 +19,7 @@ class UpdateEventRequest:
     name: Optional[str] = None
     url: Optional[str] = None
     description: Optional[str] = None
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
     location: Optional[str] = None
     header_image: Optional[str] = None

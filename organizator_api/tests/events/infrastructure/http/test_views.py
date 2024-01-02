@@ -14,8 +14,8 @@ class TestEventViews(ApiTests):
             "name": "HackNight Ep.VI",
             "url": "https://www.hacknights.dev",
             "description": "The best hack-night ever",
-            "start_date": "2023-11-17T21:00:00Z",
-            "end_date": "2023-11-18T05:00:00Z",
+            "start_date": "17/11/2023 21:00",
+            "end_date": "18/11/2023 05:00",
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
         }
@@ -115,6 +115,30 @@ class TestEventViews(ApiTests):
             b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2022", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
         )
 
+    def test__given_events_in_db__when_get_all_upcoming_events__then_returns_the_events_list(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
+            name="HackUPC 2025",
+            start_date=datetime(2025, 5, 12, 16, 0),
+            end_date=datetime(2025, 5, 14, 18, 0),
+        )
+        self.event_repository.create(event)
+        self.event_repository.create(event2)
+
+        # When
+        response = self.client.get("/organizator-api/events/upcoming")
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'[{"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2025", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2025-05-12T16:00:00Z", "end_date": "2025-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
+        )
+
     def test__given_events_in_db__when_get_event_by_id__then_returns_the_event(
         self,
     ) -> None:
@@ -159,8 +183,8 @@ class TestEventViews(ApiTests):
             "name": "HackNight Ep.VI",
             "url": "https://www.hacknights.dev",
             "description": "The best hack-night ever",
-            "start_date": "2023-11-17T21:00:00Z",
-            "end_date": "2023-11-18T05:00:00Z",
+            "start_date": "17/11/2023 21:00",
+            "end_date": "18/11/2023 05:00",
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
         }
