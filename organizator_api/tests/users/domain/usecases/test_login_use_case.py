@@ -19,7 +19,7 @@ class TestLoginUseCase(ApiTests):
         self.user_repository.create(user)
 
         # When
-        token = LoginUseCase().execute(username=user.username, password=user.password)
+        token = LoginUseCase().execute(username=user.username, password="123456")
 
         # Then
         user = self.user_repository.get_all()[0]

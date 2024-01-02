@@ -12,7 +12,9 @@ class CreateUserUseCase:
         self.user_repository = UserRepositoryFactory.create()
 
     def execute(self, user_data: CreateUserRequest) -> None:
-        hashed_password = bcrypt.hashpw(user_data.password.encode('utf-8'), bcrypt.gensalt())
+        hashed_password = bcrypt.hashpw(
+            user_data.password.encode("utf-8"), bcrypt.gensalt()
+        )
 
         user = User(
             id=uuid.uuid4(),
