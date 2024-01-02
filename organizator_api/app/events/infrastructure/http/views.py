@@ -67,7 +67,9 @@ def get_all_upcoming_events(request: HttpRequest) -> HttpResponse:
 
     events_response = []
     for event in all_events:
-        if event.deleted_at is None and event.start_date > datetime.now():
+        print(event.start_date)
+        print(datetime.now())
+        if event.deleted_at is None and event.start_date > datetime.now(tz=event.start_date.tzinfo):
             events_response.append(EventResponse.from_event(event).to_dict())
 
     return HttpResponse(
@@ -105,10 +107,10 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
         name=name,
         url=url,
         description=description,
-        start_date=datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
+        start_date=start_date
         if start_date
         else None,
-        end_date=datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%SZ")
+        end_date=end_date
         if end_date
         else None,
         location=location,

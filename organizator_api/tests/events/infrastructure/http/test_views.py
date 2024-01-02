@@ -183,8 +183,8 @@ class TestEventViews(ApiTests):
             "name": "HackNight Ep.VI",
             "url": "https://www.hacknights.dev",
             "description": "The best hack-night ever",
-            "start_date": "2023-11-17T21:00:00Z",
-            "end_date": "2023-11-18T05:00:00Z",
+            "start_date": "17/11/2023 21:00",
+            "end_date": "18/11/2023 05:00",
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
         }
