@@ -13,7 +13,7 @@ class EventFactory:
         description: str = "The biggest student hackathon in Europe",
         url: str = "https://www.hackupc.com/",
         start_date: datetime = datetime(2023, 5, 12, 16, 0),
-        end_date: datetime = datetime(2023,5,14,18,0),
+        end_date: datetime = datetime(2023, 5, 14, 18, 0),
         location: str = "UPC Campus Nord",
         header_image: str = "https://hackupc.com/ogimage.png",
         created_at: datetime = datetime.now(),
