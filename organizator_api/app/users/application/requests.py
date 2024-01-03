@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from app.users.domain.models.user import UserRoles
+
 
 @dataclass
 class CreateUserRequest:
@@ -11,6 +13,7 @@ class CreateUserRequest:
     username: str
     bio: str
     profile_image: str
+    role: Optional[str] = UserRoles.PARTICIPANT.name
 
 
 @dataclass
@@ -20,3 +23,4 @@ class UpdateUserRequest:
     last_name: Optional[str] = None
     bio: Optional[str] = None
     profile_image: Optional[str] = None
+    role: Optional[str] = None

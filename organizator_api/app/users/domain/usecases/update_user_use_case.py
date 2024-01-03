@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 
 from app.users.application.requests import UpdateUserRequest
-from app.users.domain.models.user import User
+from app.users.domain.models.user import User, UserRoles
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
 
 
@@ -26,6 +26,7 @@ class UpdateUserUseCase:
             created_at=original_user.created_at,
             updated_at=datetime.now(tz=timezone.utc),
             token=original_user.token,
+            role=UserRoles[user.role] if user.role else original_user.role,
         )
 
         self.user_repository.update(new_user)

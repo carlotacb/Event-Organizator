@@ -14,16 +14,16 @@ class TestGetUserByIdUseCase(ApiTests):
         self.user_repository.create(user)
 
         # When
-        user = GetUserByIdUseCase().execute(user_id=user.id)
+        user_from_db = GetUserByIdUseCase().execute(user_id=user.id)
 
         # Then
         self.assertEqual(len(self.user_repository.get_all()), 1)
-        self.assertEqual(user.id, user.id)
-        self.assertEqual(user.email, user.email)
-        self.assertEqual(user.password, user.password)
-        self.assertEqual(user.first_name, user.first_name)
-        self.assertEqual(user.last_name, user.last_name)
-        self.assertEqual(user.username, user.username)
-        self.assertEqual(user.bio, user.bio)
-        self.assertEqual(user.profile_image, user.profile_image)
-        self.assertEqual(user.created_at, user.created_at)
+        self.assertEqual(user_from_db.id, user.id)
+        self.assertEqual(user_from_db.email, user.email)
+        self.assertEqual(user_from_db.password, user.password)
+        self.assertEqual(user_from_db.first_name, user.first_name)
+        self.assertEqual(user_from_db.last_name, user.last_name)
+        self.assertEqual(user_from_db.username, user.username)
+        self.assertEqual(user_from_db.bio, user.bio)
+        self.assertEqual(user_from_db.profile_image, user.profile_image)
+        self.assertEqual(user_from_db.created_at, user.created_at)

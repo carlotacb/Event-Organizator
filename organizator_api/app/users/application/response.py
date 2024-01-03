@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from app.users.domain.models.user import User
+from app.users.domain.models.user import User, UserRoles
 
 
 @dataclass
@@ -13,6 +13,7 @@ class UserResponse:
     last_name: str
     bio: str
     profile_image: str
+    role: UserRoles
 
     @staticmethod
     def from_user(user: User) -> "UserResponse":
@@ -24,6 +25,7 @@ class UserResponse:
             last_name=user.last_name,
             bio=user.bio,
             profile_image=user.profile_image,
+            role=user.role,
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -35,4 +37,5 @@ class UserResponse:
             "last_name": self.last_name,
             "bio": self.bio,
             "profile_image": self.profile_image,
+            "role": self.role.value,
         }
