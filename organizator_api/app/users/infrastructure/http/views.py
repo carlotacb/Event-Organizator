@@ -6,7 +6,12 @@ from django.views.decorators.http import require_http_methods
 
 from app.users.application.requests import CreateUserRequest, UpdateUserRequest
 from app.users.application.response import UserResponse
-from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, InvalidPassword
+from app.users.domain.exceptions import (
+    UserAlreadyExists,
+    UserNotFound,
+    InvalidPassword,
+    OnlyAuthorizedToOrganizerAdmin,
+)
 from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
 from app.users.domain.usecases.get_all_users_use_case import GetAllUsersUseCase
 from app.users.domain.usecases.get_role_by_token_use_case import GetRoleByTokenUseCase
@@ -17,6 +22,7 @@ from app.users.domain.usecases.get_user_by_username_use_case import (
 )
 from app.users.domain.usecases.login_use_case import LoginUseCase
 from app.users.domain.usecases.logout_use_case import LogoutUseCase
+from app.users.domain.usecases.update_user_role_use_case import UpdateUserRoleUseCase
 from app.users.domain.usecases.update_user_use_case import UpdateUserUseCase
 
 
@@ -161,6 +167,42 @@ def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
         return HttpResponse(status=404, content="User does not exist")
     except UserAlreadyExists:
         return HttpResponse(status=409, content="User already exists")
+
+    return HttpResponse(
+        status=200,
+        content=json.dumps(UserResponse.from_user(user).to_dict()),
+        content_type="application/json",
+    )
+
+
+@require_http_methods(["POST"])
+def update_role(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=409, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    json_body = json.loads(request.body)
+
+    try:
+        role = json_body["role"]
+    except (TypeError, KeyError):
+        return HttpResponse(status=400, content="Unexpected body")
+
+    try:
+        user = UpdateUserRoleUseCase().execute(
+            user_id=user_id, new_role=role, token=token_to_uuid
+        )
+    except UserNotFound:
+        return HttpResponse(status=404, content="User does not exist")
+    except OnlyAuthorizedToOrganizerAdmin:
+        return HttpResponse(status=401, content="Only authorized to organizer admin")
+    except (ValueError, KeyError):
+        return HttpResponse(status=400, content="Invalid role")
 
     return HttpResponse(
         status=200,
