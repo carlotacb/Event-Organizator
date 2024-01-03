@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
+from app.users.domain.models.user import UserRoles
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
 from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from tests.api_tests import ApiTests
@@ -214,3 +215,16 @@ class TestORMUserRepository(ApiTests):
         # Then
         with self.assertRaises(UserAlreadyExists):
             ORMUserRepository().update(user=user2)
+
+    def test__given_a_user__when_update_role__then_role_is_updated(self) -> None:
+        # Given
+        user = UserFactory().create()
+        ORMUserRepository().create(user=user)
+
+        # When
+        user.role = UserRoles.ORGANIZER
+        ORMUserRepository().update(user=user)
+
+        # Then
+        user = ORMUserRepository().get_by_id(user.id)
+        self.assertEqual(user.role, UserRoles.ORGANIZER)
