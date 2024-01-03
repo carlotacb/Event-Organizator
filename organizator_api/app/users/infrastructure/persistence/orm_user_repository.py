@@ -4,7 +4,7 @@ from typing import List, Optional
 from django.db import IntegrityError
 
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
-from app.users.domain.models.user import User
+from app.users.domain.models.user import User, UserRoles
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
 
@@ -71,6 +71,7 @@ class ORMUserRepository(UserRepository):
             profile_image=user.profile_image,
             created_at=user.created_at,
             updated_at=user.updated_at,
+            role=user.role.name,
         )
 
     def _to_domain(self, user: ORMUser) -> User:
@@ -86,4 +87,5 @@ class ORMUserRepository(UserRepository):
             token=user.token,
             created_at=user.created_at,
             updated_at=user.updated_at,
+            role=UserRoles[user.role],
         )

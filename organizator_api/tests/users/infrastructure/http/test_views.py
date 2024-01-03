@@ -1,6 +1,7 @@
 import json
 import uuid
 
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
@@ -99,6 +100,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(user.username, "carlota")
         self.assertEqual(user.bio, "I'm Carlota")
         self.assertEqual(user.profile_image, "https://www.google.com")
+        self.assertEqual(user.role, UserRoles.PARTICIPANT)
 
     def test__given_no_users_in_db__when_get_all_users__then_empty_list_is_returned(
         self,
@@ -130,7 +132,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "username": "carkbra", "email": "carkbra@gmail.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}]',
+            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", "role": "Participant"}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "username": "carkbra", "email": "carkbra@gmail.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", "role": "Participant"}]',
         )
 
     def test__given_user_in_db__when_get_by_id__then_user_is_returned(self) -> None:
@@ -147,7 +149,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", "role": "Participant"}',
         )
 
     def test__given_non_existing_user_in_db__when_get_by_id__then_not_found_is_returned(
@@ -177,7 +179,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", "role": "Participant"}',
         )
 
     def test__given_user_in_db__when_get_me_without_header__then_user_is_returned(
@@ -222,7 +224,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png", "role": "Participant"}',
         )
 
     def test__given_non_existing_user_in_db__when_get_by_username__then_not_found_is_returned(
@@ -258,7 +260,7 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "charlie", "email": "carlota@hackupc.com", "first_name": "Charlie", "last_name": "Brown", "bio": "I\'m Charlie", "profile_image": "https://www.google.com"}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "charlie", "email": "carlota@hackupc.com", "first_name": "Charlie", "last_name": "Brown", "bio": "I\'m Charlie", "profile_image": "https://www.google.com", "role": "Participant"}',
         )
 
     def test__given_user_in_db__when_update_user_with_email__then_error_is_returned(

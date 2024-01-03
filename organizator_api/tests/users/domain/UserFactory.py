@@ -3,7 +3,7 @@ import bcrypt
 from datetime import datetime
 from typing import Optional
 
-from app.users.domain.models.user import User
+from app.users.domain.models.user import User, UserRoles
 
 
 class UserFactory:
@@ -20,6 +20,7 @@ class UserFactory:
         token: Optional[uuid.UUID] = None,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
+        role: UserRoles = UserRoles.PARTICIPANT,
     ) -> User:
         hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
@@ -35,4 +36,5 @@ class UserFactory:
             token=token,
             created_at=created_at,
             updated_at=updated_at,
+            role=role,
         )

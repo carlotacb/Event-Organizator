@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import bcrypt
 
 from app.users.application.requests import CreateUserRequest
-from app.users.domain.models.user import User
+from app.users.domain.models.user import User, UserRoles
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
 
 
@@ -27,6 +27,7 @@ class CreateUserUseCase:
             profile_image=user_data.profile_image,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
+            role=UserRoles[user_data.role] if user_data.role else UserRoles.PARTICIPANT,
         )
 
         self.user_repository.create(user)
