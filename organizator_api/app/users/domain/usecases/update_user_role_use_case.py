@@ -20,7 +20,7 @@ class UpdateUserRoleUseCase:
             raise OnlyAuthorizedToOrganizerAdmin
 
         user = self.user_repository.get_by_id(user_id)
-        user.role = new_role
+        user.role = UserRoles[new_role]
 
         self.user_repository.update(user)
         return user

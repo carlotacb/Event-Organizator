@@ -38,12 +38,11 @@ class TestUpdateRoleUseCase(ApiTests):
         )
 
         # Then
-        self.assertEqual("ORGANIZER", user.role)
+        self.assertEqual(UserRoles.ORGANIZER, user.role)
 
     def test__given_user_in_db_participant__when_update_user_role_to_organizer__then_it_raises_exception(
         self,
     ) -> None:
-
         with self.assertRaises(OnlyAuthorizedToOrganizerAdmin):
             UpdateUserRoleUseCase().execute(
                 token=self.user_token2,
