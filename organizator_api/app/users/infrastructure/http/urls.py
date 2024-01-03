@@ -8,7 +8,8 @@ from app.users.infrastructure.http.views import (
     update_user,
     login,
     get_user_by_token,
-    logout, get_role_by_token,
+    logout,
+    get_role_by_token,
 )
 
 urlpatterns = [

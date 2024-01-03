@@ -112,6 +112,7 @@ def get_user_by_token(request: HttpRequest) -> HttpResponse:
         content_type="application/json",
     )
 
+
 @require_http_methods(["GET"])
 def get_role_by_token(request: HttpRequest) -> HttpResponse:
     token = request.headers.get("Authorization")
