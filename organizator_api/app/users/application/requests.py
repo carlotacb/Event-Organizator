@@ -23,4 +23,3 @@ class UpdateUserRequest:
     last_name: Optional[str] = None
     bio: Optional[str] = None
     profile_image: Optional[str] = None
-    role: Optional[str] = None
