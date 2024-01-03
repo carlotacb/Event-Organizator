@@ -9,6 +9,7 @@ from app.users.application.response import UserResponse
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, InvalidPassword
 from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
 from app.users.domain.usecases.get_all_users_use_case import GetAllUsersUseCase
+from app.users.domain.usecases.get_role_by_token_use_case import GetRoleByTokenUseCase
 from app.users.domain.usecases.get_user_by_id_use_case import GetUserByIdUseCase
 from app.users.domain.usecases.get_user_by_token_use_case import GetUserByTokenUseCase
 from app.users.domain.usecases.get_user_by_username_use_case import (
@@ -108,6 +109,25 @@ def get_user_by_token(request: HttpRequest) -> HttpResponse:
     return HttpResponse(
         status=200,
         content=json.dumps(UserResponse.from_user(user).to_dict()),
+        content_type="application/json",
+    )
+
+
+@require_http_methods(["GET"])
+def get_role_by_token(request: HttpRequest) -> HttpResponse:
+    token = request.headers.get("Authorization")
+
+    if not token:
+        return HttpResponse(status=409, content="Unauthorized")
+
+    try:
+        role = GetRoleByTokenUseCase().execute(token=uuid.UUID(token))
+    except UserNotFound:
+        return HttpResponse(status=404, content="User does not exist")
+
+    return HttpResponse(
+        status=200,
+        content=json.dumps({"role": role.value}),
         content_type="application/json",
     )
 
