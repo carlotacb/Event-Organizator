@@ -13,7 +13,10 @@ from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
-from app.users.domain.exceptions import OnlyAuthorizedToOrganizerAdmin
+from app.users.domain.exceptions import (
+    OnlyAuthorizedToOrganizerAdmin,
+    OnlyAuthorizedToOrganizer,
+)
 
 
 @require_http_methods(["POST"])
@@ -107,6 +110,15 @@ def get_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
 
 @require_http_methods(["POST"])
 def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
     json_body = json.loads(request.body)
 
     name = json_body["name"] if "name" in json_body else None
@@ -128,12 +140,16 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        event = UpdateEventUseCase().execute(event_id=event_id, event=event_data)
+        event = UpdateEventUseCase().execute(
+            token=token_to_uuid, event_id=event_id, event=event_data
+        )
         event_response = EventResponse.from_event(event).to_dict()
     except EventAlreadyExists:
         return HttpResponse(status=409, content="Event already exists")
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
+    except OnlyAuthorizedToOrganizer:
+        return HttpResponse(status=401, content="Only organizers can update events")
 
     return HttpResponse(
         status=200, content=json.dumps(event_response), content_type="application/json"
