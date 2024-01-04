@@ -1,3 +1,10 @@
+// eslint-disable-next-line no-shadow
+export enum UserRoles {
+  ORGANIZER_ADMIN = "Organizer admin",
+  ORGANIZER = "Organizer",
+  PARTICIPANT = "Participant",
+}
+
 export interface RegisterFields {
   email: string;
   password: string;
