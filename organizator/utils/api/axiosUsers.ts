@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  AllUserResponse,
   GetRoleResponse,
   LoginFormFields,
   LoginResponse,
@@ -7,6 +8,7 @@ import {
   RegisterFormFields,
   RegisterResponse,
   UpdateFormFields,
+  UpdateRoleResponse,
   UserInformationResponse,
 } from "../interfaces/Users";
 
@@ -158,6 +160,50 @@ export async function getUserRole(
     return {
       error: error.response.data,
       role: null,
+    };
+  }
+}
+
+export async function getAllUsersRoles(): Promise<AllUserResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${usersAPI}/`,
+    });
+    return {
+      error: null,
+      users: [...response.data],
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      users: null,
+    };
+  }
+}
+
+export async function updateRoleForUser(
+  id: string,
+  token: string,
+  role: string,
+): Promise<UpdateRoleResponse> {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${usersAPI}/update/role/${id}`,
+      data: { role },
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+      user: response.data,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      user: null,
     };
   }
 }
