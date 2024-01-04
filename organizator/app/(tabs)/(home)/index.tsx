@@ -11,6 +11,7 @@ import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
+import { UserRoles } from "../../../utils/interfaces/Users";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -68,7 +69,7 @@ export default function Home() {
     });
 
     fetchAdminFunction().then((response) => {
-      setIsAdmin(response.role === "Organizer admin");
+      setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
     });
   }, []);
 

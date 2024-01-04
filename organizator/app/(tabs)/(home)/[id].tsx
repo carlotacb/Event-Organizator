@@ -17,6 +17,9 @@ import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import Input from "../../../components/Input";
 import Button from "../../../components/ButtonWithIcon";
+import { getToken } from "../../../utils/sessionCalls";
+import { getUserRole } from "../../../utils/api/axiosUsers";
+import { UserRoles } from "../../../utils/interfaces/Users";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -94,10 +97,16 @@ export default function EventPage() {
     endDate: undefined,
     location: undefined,
   });
+  const [isOrganizer, setIsOrganizer] = React.useState(false);
+  const [isOrganizerAdmin, setIsOrganizerAdmin] = React.useState(false);
 
   useEffect(() => {
     // @ts-ignore
     const fetchData = async () => getEventById(id);
+    const fetchRoleFunction = async () => {
+      const t = await getToken();
+      return getUserRole(t);
+    };
 
     fetchData().then((response) => {
       setLoading(false);
@@ -110,6 +119,11 @@ export default function EventPage() {
         endDate: response.eventInformation?.endDate || "",
         location: response.eventInformation?.location || "",
       });
+    });
+
+    fetchRoleFunction().then((response) => {
+      setIsOrganizer(response.role === UserRoles.ORGANIZER);
+      setIsOrganizerAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
     });
   }, []);
 
@@ -337,14 +351,16 @@ export default function EventPage() {
                         </TextLine>
                       </BasicInfoContainer>
                       <ButtonsContainer>
-                        <Button
-                          title="Edit"
-                          onPress={() => {
-                            setIsEditable(true);
-                          }}
-                          color="#58a659"
-                          iconName="pencil"
-                        />
+                        {(isOrganizer || isOrganizerAdmin) && (
+                          <Button
+                            title="Edit"
+                            onPress={() => {
+                              setIsEditable(true);
+                            }}
+                            color="#58a659"
+                            iconName="pencil"
+                          />
+                        )}
                         <Button
                           title="Delete"
                           onPress={() => {
