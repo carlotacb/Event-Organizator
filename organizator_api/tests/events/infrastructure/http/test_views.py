@@ -2,8 +2,10 @@ import json
 import uuid
 from datetime import datetime
 
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
+from tests.users.domain.UserFactory import UserFactory
 
 
 class TestEventViews(ApiTests):
@@ -19,6 +21,22 @@ class TestEventViews(ApiTests):
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
         }
+        self.user_repository.clear()
+        self.user_admin_token = uuid.UUID("5b90906e-2894-467d-835e-3e4fbe42af9f")
+        user_admin = UserFactory().create(
+            token=self.user_admin_token, role=UserRoles.ORGANIZER_ADMIN
+        )
+        self.user_repository.create(user_admin)
+
+        self.user_participant_token = uuid.UUID("ebd8a0f2-eeba-4ddc-b4b9-ab5592ad8e75")
+        user_participant = UserFactory().create(
+            token=self.user_participant_token,
+            role=UserRoles.PARTICIPANT,
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            username="user_participant",
+            email="user@participant.com",
+        )
+        self.user_repository.create(user_participant)
 
     def test__given_unexpected_body__when_create_event__then_bad_request_is_returned(
         self,
@@ -27,29 +45,34 @@ class TestEventViews(ApiTests):
         body = {}  # type: ignore
 
         # When
+        header = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/new",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Unexpected body")
 
-    def test__given_a_event_with_the_same_name_as_one_already_created__when_create_event__then_returns_409(
+    def test__given_a_event_with_the_same_name_as_one_already_created_created_by_a_admin_user__when_create_event__then_returns_409(
         self,
     ) -> None:
         # When
+        header = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         self.client.post(
             "/organizator-api/events/new",
             json.dumps(self.request_body),
             content_type="application/json",
+            **header,  # type: ignore
         )
         response = self.client.post(
             "/organizator-api/events/new",
             json.dumps(self.request_body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -60,10 +83,12 @@ class TestEventViews(ApiTests):
         self,
     ) -> None:
         # When
+        header = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/new",
             json.dumps(self.request_body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -82,6 +107,52 @@ class TestEventViews(ApiTests):
         self.assertEqual(
             event.header_image, "https://www.hacknights.dev/images/hacknight.png"
         )
+
+    def test__given_a_json_body_with_an_event__when_create_event_without_header__then_it_returns_401(
+        self,
+    ) -> None:
+        # When
+        response = self.client.post(
+            "/organizator-api/events/new",
+            json.dumps(self.request_body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Unauthorized")
+
+    def test__given_a_json_body_with_an_event__when_create_event_with_a_invalid_header__then_it_returns_400(
+        self,
+    ) -> None:
+        # When
+        header = {"HTTP_AUTHORIZATION": "invalid_token"}
+        response = self.client.post(
+            "/organizator-api/events/new",
+            json.dumps(self.request_body),
+            content_type="application/json",
+            **header,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test__given_a_json_body_with_an_event__when_create_event_with_a_user_that_is_not_admin__then_it_returns_401(
+        self,
+    ) -> None:
+        # When
+        header = {"HTTP_AUTHORIZATION": f"{self.user_participant_token}"}
+        response = self.client.post(
+            "/organizator-api/events/new",
+            json.dumps(self.request_body),
+            content_type="application/json",
+            **header,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Only organizer admins can create events")
 
     def test__given_no_events_in_db__when_get_all_events__then_returns_empty_list(
         self,
