@@ -12,7 +12,7 @@ import {
   getEventById,
   updateEvent,
 } from "../../../utils/api/axiosEvents";
-import parseDate from "../../../utils/util-functions";
+import { parseDate } from "../../../utils/util-functions";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import Input from "../../../components/Input";
