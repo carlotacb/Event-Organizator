@@ -447,8 +447,10 @@ class TestEventViews(ApiTests):
         self.event_repository.create(event)
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
         )
 
         # Then
@@ -459,10 +461,54 @@ class TestEventViews(ApiTests):
         self,
     ) -> None:
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
         )
 
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"Event does not exist")
+
+    def test__given_a_event__when_delete_with_invalid_token__then_returns_400(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_AUTHORIZATION": "invalid_token"}
+        response = self.client.post(
+            "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test__given_a_event__when_delete_with_no_token__then_returns_401(self) -> None:
+        # When
+        response = self.client.post(
+            "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Unauthorized")
+
+    def test__given_a_event_and_a_participant_user__when_delete_with_token__then_returns_401(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+
+        # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_participant_token}"}
+        response = self.client.post(
+            "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Only organizer admins can delete events")
