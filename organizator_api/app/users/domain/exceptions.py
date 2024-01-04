@@ -12,3 +12,7 @@ class UserNotLoggedIn(Exception):
 
 class InvalidPassword(Exception):
     pass
+
+
+class OnlyAuthorizedToOrganizerAdmin(Exception):
+    pass

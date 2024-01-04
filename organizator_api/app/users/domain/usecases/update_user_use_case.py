@@ -26,7 +26,7 @@ class UpdateUserUseCase:
             created_at=original_user.created_at,
             updated_at=datetime.now(tz=timezone.utc),
             token=original_user.token,
-            role=UserRoles[user.role] if user.role else original_user.role,
+            role=original_user.role,
         )
 
         self.user_repository.update(new_user)
