@@ -13,10 +13,20 @@ from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
+from app.users.domain.exceptions import OnlyAuthorizedToOrganizerAdmin
 
 
 @require_http_methods(["POST"])
 def create_new_event(request: HttpRequest) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
     json_body = json.loads(request.body)
 
     try:
@@ -41,9 +51,13 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
     )
 
     try:
-        CreateEventUseCase().execute(event_data)
+        CreateEventUseCase().execute(token_to_uuid, event_data)
     except EventAlreadyExists:
         return HttpResponse(status=409, content="Event already exists")
+    except OnlyAuthorizedToOrganizerAdmin:
+        return HttpResponse(
+            status=401, content="Only organizer admins can create events"
+        )
 
     return HttpResponse(status=201, content="Event created correctly")
 
