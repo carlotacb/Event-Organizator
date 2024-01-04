@@ -171,5 +171,9 @@ def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
         DeleteEventUseCase().execute(token=token_to_uuid, event_id=event_id)
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
+    except OnlyAuthorizedToOrganizerAdmin:
+        return HttpResponse(
+            status=401, content="Only organizer admins can delete events"
+        )
 
     return HttpResponse(status=200, content="Event updated correctly to be deleted")
