@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  GetRoleResponse,
   LoginFormFields,
   LoginResponse,
   RegisterFields,
@@ -132,6 +133,29 @@ export async function updateMyInformation(
     return {
       error: error.response.data,
       userInformation: null,
+    };
+  }
+}
+
+export async function getUserRole(
+  token: string | null,
+): Promise<GetRoleResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${usersAPI}/me/role`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+      role: response.data.role,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      role: null,
     };
   }
 }

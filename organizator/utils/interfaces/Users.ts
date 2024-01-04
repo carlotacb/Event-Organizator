@@ -52,3 +52,8 @@ export interface UpdateFormFields {
   lastName: string;
   bio: string;
 }
+
+export interface GetRoleResponse {
+  readonly error: string | null;
+  readonly role: string | null;
+}

@@ -9,6 +9,8 @@ import { getAllUpcomingEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
+import { getToken } from "../../../utils/sessionCalls";
+import { getUserRole } from "../../../utils/api/axiosUsers";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -51,13 +53,22 @@ const CreateButtonText = styled.Text`
 export default function Home() {
   const [loading, setLoading] = React.useState(true);
   const [events, setEvents] = React.useState<EventAllInformation[]>([]);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => getAllUpcomingEvents();
+    const fetchAdminFunction = async () => {
+      const t = await getToken();
+      return getUserRole(t);
+    };
 
     fetchData().then((response) => {
       setLoading(false);
       setEvents(response.eventInformation || []);
+    });
+
+    fetchAdminFunction().then((response) => {
+      setIsAdmin(response.role === "Organizer admin");
     });
   }, []);
 
@@ -98,16 +109,18 @@ export default function Home() {
           </View>
         )}
       </ScrollView>
-      <CreateButtonContainer>
-        <CreateButton
-          onPress={() => {
-            router.push("/create");
-          }}
-        >
-          <FontAwesome name="plus" size={20} color="white" />
-          <CreateButtonText>Create new</CreateButtonText>
-        </CreateButton>
-      </CreateButtonContainer>
+      {isAdmin && (
+        <CreateButtonContainer>
+          <CreateButton
+            onPress={() => {
+              router.push("/create");
+            }}
+          >
+            <FontAwesome name="plus" size={20} color="white" />
+            <CreateButtonText>Create new</CreateButtonText>
+          </CreateButton>
+        </CreateButtonContainer>
+      )}
     </Container>
   );
 }
