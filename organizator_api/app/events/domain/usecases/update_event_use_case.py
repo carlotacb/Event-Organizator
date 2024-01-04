@@ -13,7 +13,9 @@ class UpdateEventUseCase:
     def __init__(self) -> None:
         self.event_repository = EventRepositoryFactory.create()
 
-    def execute(self, token:uuid.UUID, event_id: uuid.UUID, event: UpdateEventRequest) -> Event:
+    def execute(
+        self, token: uuid.UUID, event_id: uuid.UUID, event: UpdateEventRequest
+    ) -> Event:
         role = GetRoleByTokenUseCase().execute(token=token)
 
         if role != UserRoles.ORGANIZER and role != UserRoles.ORGANIZER_ADMIN:

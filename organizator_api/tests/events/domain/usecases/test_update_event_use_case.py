@@ -36,7 +36,9 @@ class TestUpdateEventUseCase(ApiTests):
 
         # When
         event = UpdateEventUseCase().execute(
-            self.user_token, uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
+            self.user_token,
+            uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"),
+            new_event,
         )
 
         # Then
@@ -57,7 +59,9 @@ class TestUpdateEventUseCase(ApiTests):
 
         # When
         event = UpdateEventUseCase().execute(
-            self.user_token, uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
+            self.user_token,
+            uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"),
+            new_event,
         )
 
         # Then

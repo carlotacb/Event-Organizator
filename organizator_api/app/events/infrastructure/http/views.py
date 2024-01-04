@@ -137,7 +137,9 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        event = UpdateEventUseCase().execute(token=token_to_uuid, event_id=event_id, event=event_data)
+        event = UpdateEventUseCase().execute(
+            token=token_to_uuid, event_id=event_id, event=event_data
+        )
         event_response = EventResponse.from_event(event).to_dict()
     except EventAlreadyExists:
         return HttpResponse(status=409, content="Event already exists")
