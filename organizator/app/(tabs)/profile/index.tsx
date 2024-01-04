@@ -250,12 +250,14 @@ export default function Index() {
                   color="#58a659"
                 />
               </ButtonContainer>
-              <Button
-                title="See all users"
-                onPress={() => router.push("/profile/users")}
-                iconName="user"
-                color="#233277"
-              />
+              {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
+                <Button
+                  title="See all users"
+                  onPress={() => router.push("/profile/users")}
+                  iconName="user"
+                  color="#233277"
+                />
+              )}
             </InputsContainer>
           </>
         )}

@@ -5,16 +5,11 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import { Dialog } from "react-native-simple-dialogs";
-import { router } from "expo-router";
 import {
   getAllUsersRoles,
-  getUserRole,
   updateRoleForUser,
 } from "../../../utils/api/axiosUsers";
-import {
-  UserRoleInformation,
-  UserRoles,
-} from "../../../utils/interfaces/Users";
+import { UserRoleInformation } from "../../../utils/interfaces/Users";
 import LoadingPage from "../../../components/LodingPage";
 import Button from "../../../components/ButtonWithIcon";
 import { getToken } from "../../../utils/sessionCalls";
@@ -101,7 +96,7 @@ export default function AllUsers() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <>
+          <View>
             {users?.map((user) => (
               <UserLine key={user.id}>
                 <Username>{user.username}</Username>
@@ -118,7 +113,7 @@ export default function AllUsers() {
                 </ButtonAndRole>
               </UserLine>
             ))}
-          </>
+          </View>
         )}
 
         <Dialog
