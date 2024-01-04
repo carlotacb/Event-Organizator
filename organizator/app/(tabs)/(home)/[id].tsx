@@ -361,14 +361,16 @@ export default function EventPage() {
                             iconName="pencil"
                           />
                         )}
-                        <Button
-                          title="Delete"
-                          onPress={() => {
-                            setShowAlert(true);
-                          }}
-                          color="#f07267"
-                          iconName="trash"
-                        />
+                        {isOrganizerAdmin && (
+                          <Button
+                            title="Delete"
+                            onPress={() => {
+                              setShowAlert(true);
+                            }}
+                            color="#f07267"
+                            iconName="trash"
+                          />
+                        )}
                       </ButtonsContainer>
                     </InformationContainer>
                   )}
