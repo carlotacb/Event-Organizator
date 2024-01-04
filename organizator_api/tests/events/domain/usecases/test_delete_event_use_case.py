@@ -1,8 +1,10 @@
 import uuid
 
 from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
+from tests.users.domain.UserFactory import UserFactory
 
 
 class TestDeleteEventUseCase(ApiTests):
@@ -14,13 +16,17 @@ class TestDeleteEventUseCase(ApiTests):
             name="HackUPC 2022",
         )
         self.event_repository.create(event)
+        self.user_repository.clear()
 
     def test__given_events_in_db__when_delete_use_case__then_(self) -> None:
         # Given
+        user_token = uuid.UUID("5b90906e-2894-467d-835e-3e4fbe42af9f")
+        user = UserFactory().create(token=user_token, role=UserRoles.ORGANIZER_ADMIN)
+        self.user_repository.create(user)
         event_id = uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a")
 
         # When
-        DeleteEventUseCase().execute(event_id)
+        DeleteEventUseCase().execute(user_token, event_id)
 
         # Then
         event = self.event_repository.get(event_id)

@@ -447,8 +447,10 @@ class TestEventViews(ApiTests):
         self.event_repository.create(event)
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
         )
 
         # Then
@@ -459,8 +461,10 @@ class TestEventViews(ApiTests):
         self,
     ) -> None:
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/delete/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            **headers,  # type: ignore
         )
 
         # Then

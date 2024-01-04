@@ -158,8 +158,17 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
 
 @require_http_methods(["POST"])
 def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
     try:
-        DeleteEventUseCase().execute(event_id=event_id)
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        DeleteEventUseCase().execute(token=token_to_uuid, event_id=event_id)
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
 
