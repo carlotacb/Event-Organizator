@@ -11,13 +11,12 @@ import {
   updateMyInformation,
 } from "../../utils/api/axiosUsers";
 import { getToken, removeToken } from "../../utils/sessionCalls";
-import { UserInformation } from "../../utils/interfaces/Users";
+import { UserInformation, UserRoles } from "../../utils/interfaces/Users";
 import Input from "../../components/Input";
 import Button from "../../components/StyledButton";
 import LoadingPage from "../../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
-  padding: 30px;
   background-color: white;
   flex: 1;
 `;
@@ -40,10 +39,32 @@ const InputsContainer = styled(View)`
   margin-top: 30px;
 `;
 
+const TagsContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
 const ButtonContainer = styled(View)`
   display: flex;
-  margin-top: 15px;
+  margin-top: 20px;
   align-items: center;
+`;
+
+const Tag = styled(View)<{ backgroundColor: string }>`
+  background-color: ${(props: { backgroundColor: string }) =>
+    props.backgroundColor};
+  border: 2px solid #233277;
+  border-radius: 50%;
+  padding: 5px 15px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 `;
 
 export default function Profile() {
@@ -146,6 +167,28 @@ export default function Profile() {
     setErrors((prevState) => ({ ...prevState, [input]: text }));
   };
 
+  const parseRole = (role: string): string => {
+    switch (role) {
+      case UserRoles.ORGANIZER_ADMIN:
+        return "ADMIN";
+      case UserRoles.ORGANIZER:
+        return "Organizer";
+      default:
+        return "User";
+    }
+  };
+
+  const getBackGroundColorForRole = (role: string): string => {
+    switch (role) {
+      case UserRoles.ORGANIZER_ADMIN:
+        return "#cea6aa";
+      case UserRoles.ORGANIZER:
+        return "#aba6ce";
+      default:
+        return "#a6cea6";
+    }
+  };
+
   return (
     <Container>
       <ScrollView contentContainerStyle={{ padding: 20 }}>
@@ -159,13 +202,20 @@ export default function Profile() {
                 <FontAwesome name="sign-out" size={30} color="red" />
               </Pressable>
             </TitleContainer>
+            <TagsContainer>
+              <Tag
+                backgroundColor={getBackGroundColorForRole(
+                  userInformation?.role || "",
+                )}
+              >
+                <Text>{parseRole(userInformation?.role || "")}</Text>
+              </Tag>
+              <Tag backgroundColor="transparent">
+                <FontAwesome name="at" size={15} color="#233277" />
+                <Text>{userInformation?.email}</Text>
+              </Tag>
+            </TagsContainer>
             <InputsContainer>
-              <Input
-                label="Email"
-                iconName="at"
-                value={userInformation?.email}
-                disabled
-              />
               <Input
                 label="First Name"
                 iconName="id-badge"

@@ -47,6 +47,7 @@ export interface UserInformation {
   readonly lastName: string;
   readonly bio: string;
   readonly profileImage: string;
+  readonly role: string;
 }
 
 export interface UserInformationResponse {

@@ -93,6 +93,7 @@ export async function getMyInformation(
         lastName: response.data.last_name,
         profileImage: response.data.profile_image,
         username: response.data.username,
+        role: response.data.role,
       },
     };
   } catch (error: any) {
@@ -127,6 +128,7 @@ export async function updateMyInformation(
         lastName: response.data.last_name,
         profileImage: response.data.profile_image,
         username: response.data.username,
+        role: response.data.role,
       },
     };
   } catch (error: any) {
