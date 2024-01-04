@@ -9,12 +9,12 @@ import {
   getMyInformation,
   logout,
   updateMyInformation,
-} from "../../utils/api/axiosUsers";
-import { getToken, removeToken } from "../../utils/sessionCalls";
-import { UserInformation, UserRoles } from "../../utils/interfaces/Users";
-import Input from "../../components/Input";
-import Button from "../../components/StyledButton";
-import LoadingPage from "../../components/LodingPage";
+} from "../../../utils/api/axiosUsers";
+import { getToken, removeToken } from "../../../utils/sessionCalls";
+import { UserInformation, UserRoles } from "../../../utils/interfaces/Users";
+import Input from "../../../components/Input";
+import Button from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/LodingPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -49,7 +49,9 @@ const TagsContainer = styled(View)`
 
 const ButtonContainer = styled(View)`
   display: flex;
-  margin-top: 20px;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
   align-items: center;
 `;
 
@@ -57,7 +59,7 @@ const Tag = styled(View)<{ backgroundColor: string }>`
   background-color: ${(props: { backgroundColor: string }) =>
     props.backgroundColor};
   border: 2px solid #233277;
-  border-radius: 50%;
+  border-radius: 100px;
   padding: 5px 15px;
   margin-top: 20px;
   display: flex;
@@ -67,7 +69,7 @@ const Tag = styled(View)<{ backgroundColor: string }>`
   gap: 5px;
 `;
 
-export default function Profile() {
+export default function Index() {
   const [loading, setLoading] = React.useState(true);
   const [token, setToken] = React.useState<string | null>(null);
   const [userInformation, setUserInformation] =
@@ -241,8 +243,19 @@ export default function Profile() {
                 error={errors.bio}
               />
               <ButtonContainer>
-                <Button title="Edit information" onPress={validate} />
+                <Button
+                  title="Save"
+                  onPress={validate}
+                  iconName="save"
+                  color="#58a659"
+                />
               </ButtonContainer>
+              <Button
+                title="See all users"
+                onPress={() => router.push("/profile/users")}
+                iconName="user"
+                color="#233277"
+              />
             </InputsContainer>
           </>
         )}
