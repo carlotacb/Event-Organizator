@@ -5,8 +5,10 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const ButtonContainer = styled(Pressable)<{ color: string }>`
   height: 55px;
-  width: 40%;
+  padding: 0 30px;
+  width: auto;
   background-color: ${(props: { color: string }) => props.color};
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   margin: 10px;
   justify-content: center;
   align-items: center;
