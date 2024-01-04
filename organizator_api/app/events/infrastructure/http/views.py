@@ -13,7 +13,10 @@ from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
-from app.users.domain.exceptions import OnlyAuthorizedToOrganizerAdmin
+from app.users.domain.exceptions import (
+    OnlyAuthorizedToOrganizerAdmin,
+    OnlyAuthorizedToOrganizer,
+)
 
 
 @require_http_methods(["POST"])
@@ -145,6 +148,8 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
         return HttpResponse(status=409, content="Event already exists")
     except EventNotFound:
         return HttpResponse(status=404, content="Event does not exist")
+    except OnlyAuthorizedToOrganizer:
+        return HttpResponse(status=401, content="Only organizers can update events")
 
     return HttpResponse(
         status=200, content=json.dumps(event_response), content_type="application/json"

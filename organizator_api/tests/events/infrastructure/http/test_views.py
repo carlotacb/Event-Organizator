@@ -371,6 +371,74 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"Event does not exist")
 
+    def test__given_a_event__when_update_with_invalid_token__then_returns_400(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+        request_body = {
+            "description": "The biggest student hackathon in Europe taking place in Barcelona",
+            "url": "https://2023.hackupc.com/",
+        }
+
+        # When
+        headers = {"HTTP_AUTHORIZATION": "wrong_token"}
+        response = self.client.post(
+            "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(request_body),
+            content_type="application/json",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test__given_a_event__when_update_with_a_user_that_is_not_admin__then_returns_401(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+        request_body = {
+            "description": "The biggest student hackathon in Europe taking place in Barcelona",
+            "url": "https://2023.hackupc.com/",
+        }
+
+        # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_participant_token}"}
+        response = self.client.post(
+            "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(request_body),
+            content_type="application/json",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Only organizers can update events")
+
+    def test__given_a_event__when_update_without_token__then_returns_401(self) -> None:
+        # Given
+        event = EventFactory().create()
+        self.event_repository.create(event)
+        request_body = {
+            "description": "The biggest student hackathon in Europe taking place in Barcelona",
+            "url": "https://2023.hackupc.com/",
+        }
+
+        # When
+        response = self.client.post(
+            "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            json.dumps(request_body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Unauthorized")
+
     def test__given_a_event__when_delete_event__then_the_event_is_deleted(
         self,
     ) -> None:
