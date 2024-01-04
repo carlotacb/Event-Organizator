@@ -4,13 +4,21 @@ from datetime import timezone, datetime
 from app.events.application.requests import UpdateEventRequest
 from app.events.domain.models.event import Event
 from app.events.infrastructure.repository_factories import EventRepositoryFactory
+from app.users.domain.exceptions import OnlyAuthorizedToOrganizer
+from app.users.domain.models.user import UserRoles
+from app.users.domain.usecases.get_role_by_token_use_case import GetRoleByTokenUseCase
 
 
 class UpdateEventUseCase:
     def __init__(self) -> None:
         self.event_repository = EventRepositoryFactory.create()
 
-    def execute(self, event_id: uuid.UUID, event: UpdateEventRequest) -> Event:
+    def execute(self, token:uuid.UUID, event_id: uuid.UUID, event: UpdateEventRequest) -> Event:
+        role = GetRoleByTokenUseCase().execute(token=token)
+
+        if role != UserRoles.ORGANIZER and role != UserRoles.ORGANIZER_ADMIN:
+            raise OnlyAuthorizedToOrganizer
+
         original_event = self.event_repository.get(event_id)
         new_event = Event(
             id=event_id,

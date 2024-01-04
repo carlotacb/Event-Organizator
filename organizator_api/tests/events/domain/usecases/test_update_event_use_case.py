@@ -3,8 +3,10 @@ from datetime import datetime
 
 from app.events.application.requests import UpdateEventRequest
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
+from tests.users.domain.UserFactory import UserFactory
 
 
 class TestUpdateEventUseCase(ApiTests):
@@ -19,6 +21,11 @@ class TestUpdateEventUseCase(ApiTests):
         self.event_repository.create(event)
         self.event_repository.create(event2)
 
+        self.user_repository.clear()
+        self.user_token = uuid.UUID("5b90906e-2894-467d-835e-3e4fbe42af9f")
+        user = UserFactory().create(token=self.user_token, role=UserRoles.ORGANIZER)
+        self.user_repository.create(user)
+
     def test__given_a_update_event_request_with_only_name__when_update_an_event_with_the_data__then_the_event_is_updated(
         self,
     ) -> None:
@@ -29,7 +36,7 @@ class TestUpdateEventUseCase(ApiTests):
 
         # When
         event = UpdateEventUseCase().execute(
-            uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
+            self.user_token, uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
         )
 
         # Then
@@ -50,7 +57,7 @@ class TestUpdateEventUseCase(ApiTests):
 
         # When
         event = UpdateEventUseCase().execute(
-            uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
+            self.user_token, uuid.UUID("fb95bfb6-3361-4628-8037-999d58b7183a"), new_event
         )
 
         # Then

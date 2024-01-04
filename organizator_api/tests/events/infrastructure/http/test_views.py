@@ -261,10 +261,12 @@ class TestEventViews(ApiTests):
         }
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
             json.dumps(request_body),
             content_type="application/json",
+            **headers,  # type: ignore
         )
 
         # Then
@@ -299,10 +301,12 @@ class TestEventViews(ApiTests):
         }
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
             json.dumps(request_body),
             content_type="application/json",
+            **headers,  # type: ignore
         )
 
         # Then
@@ -336,10 +340,12 @@ class TestEventViews(ApiTests):
         request_body = {"name": "HackUPC 2022"}
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
             json.dumps(request_body),
             content_type="application/json",
+            **headers,  # type: ignore
         )
 
         # Then
@@ -353,10 +359,12 @@ class TestEventViews(ApiTests):
         request_body = {"name": "HackUPC 2022"}
 
         # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
         response = self.client.post(
             "/organizator-api/events/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
             json.dumps(request_body),
             content_type="application/json",
+            **headers,  # type: ignore
         )
 
         # Then

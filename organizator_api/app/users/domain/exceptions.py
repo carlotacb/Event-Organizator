@@ -16,3 +16,6 @@ class InvalidPassword(Exception):
 
 class OnlyAuthorizedToOrganizerAdmin(Exception):
     pass
+
+class OnlyAuthorizedToOrganizer(Exception):
+    pass

@@ -107,6 +107,15 @@ def get_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
 
 @require_http_methods(["POST"])
 def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
     json_body = json.loads(request.body)
 
     name = json_body["name"] if "name" in json_body else None
@@ -128,7 +137,7 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        event = UpdateEventUseCase().execute(event_id=event_id, event=event_data)
+        event = UpdateEventUseCase().execute(token=token_to_uuid, event_id=event_id, event=event_data)
         event_response = EventResponse.from_event(event).to_dict()
     except EventAlreadyExists:
         return HttpResponse(status=409, content="Event already exists")
