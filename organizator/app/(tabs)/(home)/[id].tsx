@@ -200,7 +200,14 @@ export default function EventPage() {
     if (isValid) {
       setLoading(true);
       // @ts-ignore
-      updateEvent(inputs, id).then((response) => {
+
+      const fetchData = async () => {
+        const token = await getToken();
+        // @ts-ignore
+        return updateEvent(token || "", inputs, id);
+      };
+
+      fetchData().then((response) => {
         if (response.error) {
           Toast.show({
             type: "error",

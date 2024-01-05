@@ -108,6 +108,7 @@ export async function createEvent(
 }
 
 export async function updateEvent(
+  token: string,
   eventInformation: UpdateEventProps,
   eventId: string,
 ): Promise<updateEventResponse> {
@@ -122,6 +123,9 @@ export async function updateEvent(
         end_date: eventInformation.endDate,
         location: eventInformation.location,
         url: eventInformation.url,
+      },
+      headers: {
+        Authorization: token,
       },
     });
     return {
