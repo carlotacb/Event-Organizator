@@ -8,6 +8,7 @@ export default function EventsLayout() {
         name="index"
         options={{
           headerTitle: "All upcoming events",
+          headerShown: false,
         }}
       />
       <Stack.Screen
