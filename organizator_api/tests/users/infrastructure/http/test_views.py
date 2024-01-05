@@ -199,6 +199,24 @@ class TestUserViews(ApiTests):
             b"Unauthorized",
         )
 
+    def test__given_user_in_db__when_get_me_is_called_with_a_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.get("/organizator-api/users/me", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.content,
+            b"Invalid token",
+        )
+
     def test__given_non_existing_users_without_token__when_get_me__then_not_found_is_returned(
         self,
     ) -> None:
@@ -230,7 +248,7 @@ class TestUserViews(ApiTests):
             b'{"role": "Participant"}',
         )
 
-    def test__given_user_in_db__when_get_role_by_token_without_header__then_user_is_returned(
+    def test__given_user_in_db__when_get_role_by_token_without_header__then_unauthorized_is_returned(
         self,
     ) -> None:
         # Given
@@ -246,6 +264,17 @@ class TestUserViews(ApiTests):
             response.content,
             b"Unauthorized",
         )
+
+    def test__when_get_role_by_token_with_a_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.get("/organizator-api/users/me/role", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
 
     def test__given_non_existing_users_without_token__when_get_role_by_token__then_not_found_is_returned(
         self,
@@ -287,7 +316,8 @@ class TestUserViews(ApiTests):
 
     def test__given_user_in_db__when_update_user__then_user_is_updated(self) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         self.user_repository.create(user)
         body = {
             "username": "charlie",
@@ -298,10 +328,12 @@ class TestUserViews(ApiTests):
         }
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -315,15 +347,17 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
-        self.user_repository.create(user)
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         body = {"email": "carlota@hackupc.com"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -334,15 +368,18 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         self.user_repository.create(user)
         body = {"password": "carlotacb"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -353,7 +390,8 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         user2 = UserFactory().create(
             new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
             email="carkbra@gmail.com",
@@ -364,10 +402,12 @@ class TestUserViews(ApiTests):
         body = {"username": "carkbra"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -387,15 +427,53 @@ class TestUserViews(ApiTests):
         }
 
         # When
+        header = {"HTTP_Authorization": "baad2fe5-0122-459b-9572-625c3351d6ac"}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_user_body__when_update_user_with_a_invalid_token__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "charlie"}
+
+        # When
+        header = {"HTTP_Authorization": "wrong_token"}
+        response = self.client.post(
+            "/organizator-api/users/update/me",
+            json.dumps(body),
+            content_type="application/json",
+            **header,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test_given_user_body__when_update_without_header__then_unauthorized_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "charlie"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/me",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.content, b"Unauthorized")
 
     def test__given_user_in_db_and_correct_body__when_login_endpoint_is_called__then_token_is_created(
         self,
@@ -514,6 +592,17 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.content, b"Unauthorized")
+
+    def test__when_logout_with_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.post("/organizator-api/users/logout", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
 
     def test__given_a_user_with_token_and_admin_and_a_participant_user__when_update_participant_role_to_organizer__then_it_updates(
         self,

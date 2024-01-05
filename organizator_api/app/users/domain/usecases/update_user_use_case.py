@@ -10,10 +10,11 @@ class UpdateUserUseCase:
     def __init__(self) -> None:
         self.user_repository = UserRepositoryFactory.create()
 
-    def execute(self, user_id: uuid.UUID, user: UpdateUserRequest) -> User:
-        original_user = self.user_repository.get_by_id(user_id)
+    def execute(self, token: uuid.UUID, user: UpdateUserRequest) -> User:
+        original_user = self.user_repository.get_by_token(token)
+
         new_user = User(
-            id=user_id,
+            id=original_user.id,
             email=original_user.email,
             password=original_user.password,
             username=user.username.lower() if user.username else original_user.username,

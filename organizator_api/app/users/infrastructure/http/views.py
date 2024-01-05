@@ -108,7 +108,12 @@ def get_user_by_token(request: HttpRequest) -> HttpResponse:
         return HttpResponse(status=409, content="Unauthorized")
 
     try:
-        user = GetUserByTokenUseCase().execute(token=uuid.UUID(token))
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        user = GetUserByTokenUseCase().execute(token=token_to_uuid)
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
 
@@ -127,7 +132,12 @@ def get_role_by_token(request: HttpRequest) -> HttpResponse:
         return HttpResponse(status=409, content="Unauthorized")
 
     try:
-        role = GetRoleByTokenUseCase().execute(token=uuid.UUID(token))
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        role = GetRoleByTokenUseCase().execute(token=token_to_uuid)
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
 
@@ -139,7 +149,16 @@ def get_role_by_token(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["POST"])
-def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
+def update_my_user(request: HttpRequest) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=409, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
     json_body = json.loads(request.body)
 
     if "email" in json_body:
@@ -162,7 +181,7 @@ def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        user = UpdateUserUseCase().execute(user_id=user_id, user=user_data)
+        user = UpdateUserUseCase().execute(token=token_to_uuid, user=user_data)
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
     except UserAlreadyExists:
@@ -240,10 +259,14 @@ def login(request: HttpRequest) -> HttpResponse:
 @require_http_methods(["POST"])
 def logout(request: HttpRequest) -> HttpResponse:
     token = request.headers.get("Authorization")
-
     if not token:
         return HttpResponse(status=409, content="Unauthorized")
 
-    LogoutUseCase().execute(token=uuid.UUID(token))
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    LogoutUseCase().execute(token=token_to_uuid)
 
     return HttpResponse(status=200, content="User logged out correctly")
