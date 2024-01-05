@@ -13,6 +13,7 @@ import { UserRoleInformation } from "../../../utils/interfaces/Users";
 import LoadingPage from "../../../components/LodingPage";
 import Button from "../../../components/ButtonWithIcon";
 import { getToken } from "../../../utils/sessionCalls";
+import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -41,12 +42,27 @@ const ButtonAndRole = styled(View)`
   align-items: center;
 `;
 
+const ButtonsContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+`;
+
 export default function AllUsers() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserRoleInformation[] | null>(null);
   const [alertVisible, setAlertVisible] = useState(false);
   const [idToUpdate, setIdToUpdate] = useState<string | null>(null);
+  const [userToUpdate, setUserToUpdate] = useState<string | null>(null);
   const [trigger, setTrigger] = useState(false);
+  const [allUsers, setAllUsers] = useState<UserRoleInformation[] | null>(null);
+  const [active, setActive] = useState({
+    all: true,
+    organizerAdmin: false,
+    organizer: false,
+    participant: false,
+  });
 
   useEffect(() => {
     // @ts-ignore
@@ -55,6 +71,7 @@ export default function AllUsers() {
     fetchData().then((response) => {
       setLoading(false);
       setUsers(response.users || null);
+      setAllUsers(response.users || null);
     });
   }, [trigger]);
 
@@ -75,6 +92,12 @@ export default function AllUsers() {
         });
         setAlertVisible(false);
         setIdToUpdate(null);
+        setActive((prevState) => ({
+          all: true,
+          organizerAdmin: false,
+          organizer: false,
+          participant: false,
+        }));
         setTrigger(!trigger);
       })
       .catch((error) => {
@@ -97,6 +120,78 @@ export default function AllUsers() {
           <LoadingPage />
         ) : (
           <View>
+            <ButtonsContainer>
+              <FilterButton
+                title="All"
+                onPress={() => {
+                  setUsers(allUsers);
+                  setActive((prevState) => ({
+                    all: true,
+                    organizerAdmin: false,
+                    organizer: false,
+                    participant: false,
+                  }));
+                }}
+                color="#040240"
+                iconName="list"
+                active={active.all}
+              />
+              <FilterButton
+                title=""
+                onPress={() => {
+                  setUsers(
+                    allUsers?.filter(
+                      (user) => user.role === "Organizer admin",
+                    ) || [],
+                  );
+
+                  setActive((prevState) => ({
+                    all: false,
+                    organizerAdmin: true,
+                    organizer: false,
+                    participant: false,
+                  }));
+                }}
+                color="#040240"
+                iconName="star"
+                active={active.organizerAdmin}
+              />
+              <FilterButton
+                title=""
+                onPress={() => {
+                  setUsers(
+                    allUsers?.filter((user) => user.role === "Organizer") || [],
+                  );
+                  setActive((prevState) => ({
+                    all: false,
+                    organizerAdmin: false,
+                    organizer: true,
+                    participant: false,
+                  }));
+                }}
+                color="#040240"
+                iconName="user-secret"
+                active={active.organizer}
+              />
+              <FilterButton
+                title=""
+                onPress={() => {
+                  setUsers(
+                    allUsers?.filter((user) => user.role === "Participant") ||
+                      [],
+                  );
+                  setActive((prevState) => ({
+                    all: false,
+                    organizerAdmin: false,
+                    organizer: false,
+                    participant: true,
+                  }));
+                }}
+                color="#040240"
+                iconName="user"
+                active={active.participant}
+              />
+            </ButtonsContainer>
             {users?.map((user) => (
               <UserLine key={user.id}>
                 <Username>{user.username}</Username>
@@ -106,6 +201,7 @@ export default function AllUsers() {
                     onPress={() => {
                       setAlertVisible(true);
                       setIdToUpdate(user.id);
+                      setUserToUpdate(user.username);
                     }}
                   >
                     <FontAwesome name="edit" size={18} />
@@ -118,14 +214,16 @@ export default function AllUsers() {
 
         <Dialog
           visible={alertVisible}
-          title="Which role do you want to give?"
+          title={`Which role do you want to give to ${userToUpdate}?`}
           onTouchOutside={() => {
             setAlertVisible(false);
             setIdToUpdate(null);
+            setUserToUpdate(null);
           }}
           onRequestClose={() => {
             setAlertVisible(false);
             setIdToUpdate(null);
+            setUserToUpdate(null);
           }}
           contentInsetAdjustmentBehavior="automatic"
         >
