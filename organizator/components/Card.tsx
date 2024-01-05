@@ -31,7 +31,7 @@ const CardImage = styled.Image`
 `;
 
 const CardTextContainer = styled.View`
-  padding: 20px 25px 30px;
+  padding: 25px;
 `;
 
 const CardTitle = styled.Text`
