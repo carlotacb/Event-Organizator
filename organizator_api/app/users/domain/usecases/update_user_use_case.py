@@ -16,7 +16,7 @@ class UpdateUserUseCase:
             id=user_id,
             email=original_user.email,
             password=original_user.password,
-            username=user.username if user.username else original_user.username,
+            username=user.username.lower() if user.username else original_user.username,
             profile_image=user.profile_image
             if user.profile_image
             else original_user.profile_image,

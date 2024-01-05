@@ -93,3 +93,19 @@ class TestUpdateUserUseCase(ApiTests):
             user.profile_image,
         )
         self.assertEqual(self.user_token, user.token)
+
+    def test__given_update_user_request_with_username_with_uppercase_letters__when_update_user__then_the_user_is_updated_and_the_user_is_lowercase(
+        self,
+    ) -> None:
+        # Given
+        user_data = UpdateUserRequest(
+            username="CarlotaCB24",
+        )
+
+        # When
+        user = UpdateUserUseCase().execute(
+            user_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), user=user_data
+        )
+
+        # Then
+        self.assertEqual("carlotacb24", user.username)
