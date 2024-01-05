@@ -92,7 +92,7 @@ export default function AllUsers() {
         });
         setAlertVisible(false);
         setIdToUpdate(null);
-        setActive((prevState) => ({
+        setActive(() => ({
           all: true,
           organizerAdmin: false,
           organizer: false,
@@ -125,7 +125,7 @@ export default function AllUsers() {
                 title="All"
                 onPress={() => {
                   setUsers(allUsers);
-                  setActive((prevState) => ({
+                  setActive(() => ({
                     all: true,
                     organizerAdmin: false,
                     organizer: false,
@@ -145,7 +145,7 @@ export default function AllUsers() {
                     ) || [],
                   );
 
-                  setActive((prevState) => ({
+                  setActive(() => ({
                     all: false,
                     organizerAdmin: true,
                     organizer: false,
@@ -162,7 +162,7 @@ export default function AllUsers() {
                   setUsers(
                     allUsers?.filter((user) => user.role === "Organizer") || [],
                   );
-                  setActive((prevState) => ({
+                  setActive(() => ({
                     all: false,
                     organizerAdmin: false,
                     organizer: true,
@@ -180,7 +180,7 @@ export default function AllUsers() {
                     allUsers?.filter((user) => user.role === "Participant") ||
                       [],
                   );
-                  setActive((prevState) => ({
+                  setActive(() => ({
                     all: false,
                     organizerAdmin: false,
                     organizer: false,
