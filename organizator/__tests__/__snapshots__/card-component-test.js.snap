@@ -25,120 +25,172 @@ exports[`renders correctly a button 1`] = `
     ]
   }
 >
-  <Image
-    source={
-      {
-        "uri": "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D",
-      }
-    }
-    style={
-      [
-        {
-          "borderRadius": 20,
-          "height": 150,
-        },
-      ]
-    }
-  />
-  <View
-    style={
-      [
-        {
-          "paddingBottom": 30,
-          "paddingLeft": 25,
-          "paddingRight": 25,
-          "paddingTop": 20,
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "fontSize": 20,
-            "fontWeight": "bold",
-            "marginBottom": 10,
-            "textAlign": "center",
-          },
-        ]
-      }
-    >
-      Test event
-    </Text>
+  <View>
     <View
       style={
         [
           {
-            "display": "flex",
-            "flexDirection": "row",
-            "gap": 10,
-            "marginTop": 10,
+            "borderRadius": 20,
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "height": "100%",
+            "opacity": 0.5,
+            "width": "100%",
           },
         ]
       }
     >
-      <Text />
-      <Text
+      <Image
+        source={
+          {
+            "uri": "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D",
+          }
+        }
         style={
           [
             {
-              "fontSize": 16,
+              "borderRadius": 20,
+              "height": 150,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          [
+            {
+              "paddingBottom": 30,
+              "paddingLeft": 25,
+              "paddingRight": 25,
+              "paddingTop": 20,
             },
           ]
         }
       >
-        NaN-NaN-NaN at NaN:NaN h
-      </Text>
+        <Text
+          style={
+            [
+              {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "marginBottom": 10,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Test event
+        </Text>
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 10,
+                "marginTop": 10,
+              },
+            ]
+          }
+        >
+          <Text />
+          <Text
+            style={
+              [
+                {
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            NaN-NaN-NaN at NaN:NaN h
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 10,
+                "marginTop": 10,
+              },
+            ]
+          }
+        >
+          <Text />
+          <Text
+            style={
+              [
+                {
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            NaN-NaN-NaN at NaN:NaN h
+          </Text>
+        </View>
+        <View
+          style={
+            [
+              {
+                "display": "flex",
+                "flexDirection": "row",
+                "gap": 10,
+                "marginTop": 10,
+              },
+            ]
+          }
+        >
+          <Text />
+          <Text
+            style={
+              [
+                {
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            UPC campus nord
+          </Text>
+        </View>
+      </View>
     </View>
     <View
       style={
         [
           {
-            "display": "flex",
-            "flexDirection": "row",
-            "gap": 10,
-            "marginTop": 10,
+            "backgroundColor": "rgba(119, 35, 35, 0.8)",
+            "borderColor": "#772323",
+            "borderRadius": 20,
+            "borderStyle": "solid",
+            "borderWidth": 4,
+            "paddingBottom": 5,
+            "paddingLeft": 15,
+            "paddingRight": 15,
+            "paddingTop": 5,
+            "position": "absolute",
+            "right": 15,
+            "top": 15,
           },
         ]
       }
     >
-      <Text />
       <Text
         style={
           [
             {
-              "fontSize": 16,
+              "color": "white",
+              "fontSize": 20,
+              "fontWeight": "bold",
             },
           ]
         }
       >
-        NaN-NaN-NaN at NaN:NaN h
-      </Text>
-    </View>
-    <View
-      style={
-        [
-          {
-            "display": "flex",
-            "flexDirection": "row",
-            "gap": 10,
-            "marginTop": 10,
-          },
-        ]
-      }
-    >
-      <Text />
-      <Text
-        style={
-          [
-            {
-              "fontSize": 16,
-            },
-          ]
-        }
-      >
-        UPC campus nord
+        Past event
       </Text>
     </View>
   </View>
