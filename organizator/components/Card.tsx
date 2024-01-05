@@ -2,6 +2,7 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { View } from "react-native";
 import { parseDate } from "../utils/util-functions";
 
 interface CardProps {
@@ -51,27 +52,81 @@ const TextLine = styled.View`
   margin-top: 10px;
 `;
 
+const Overlay = styled.View`
+  flex: 1;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+`;
+
+const PastTag = styled.View`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: 4px solid #772323;
+  background-color: rgba(119, 35, 35, 0.8);
+  border-radius: 20px;
+  padding: 5px 15px;
+`;
+
+const PastText = styled.Text`
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
 export default function Card(props: CardProps) {
   const { title, startDate, endDate, location, headerImage } = props;
 
+  const isPast = () => startDate < new Date().toISOString();
+
   return (
     <CardContainer>
-      <CardImage source={{ uri: headerImage }} />
-      <CardTextContainer>
-        <CardTitle>{title}</CardTitle>
-        <TextLine>
-          <FontAwesome5 name="hourglass-start" size={16} />
-          <CardText>{parseDate(startDate)}</CardText>
-        </TextLine>
-        <TextLine>
-          <FontAwesome5 name="hourglass-end" size={16} />
-          <CardText>{parseDate(endDate)}</CardText>
-        </TextLine>
-        <TextLine>
-          <FontAwesome5 name="map-marker-alt" size={16} />
-          <CardText>{location}</CardText>
-        </TextLine>
-      </CardTextContainer>
+      {isPast() ? (
+        <View>
+          <Overlay>
+            <CardImage source={{ uri: headerImage }} />
+            <CardTextContainer>
+              <CardTitle>{title}</CardTitle>
+              <TextLine>
+                <FontAwesome5 name="hourglass-start" size={16} />
+                <CardText>{parseDate(startDate)}</CardText>
+              </TextLine>
+              <TextLine>
+                <FontAwesome5 name="hourglass-end" size={16} />
+                <CardText>{parseDate(endDate)}</CardText>
+              </TextLine>
+              <TextLine>
+                <FontAwesome5 name="map-marker-alt" size={16} />
+                <CardText>{location}</CardText>
+              </TextLine>
+            </CardTextContainer>
+          </Overlay>
+          <PastTag>
+            <PastText>Past event</PastText>
+          </PastTag>
+        </View>
+      ) : (
+        <>
+          <CardImage source={{ uri: headerImage }} />
+          <CardTextContainer>
+            <CardTitle>{title}</CardTitle>
+            <TextLine>
+              <FontAwesome5 name="hourglass-start" size={16} />
+              <CardText>{parseDate(startDate)}</CardText>
+            </TextLine>
+            <TextLine>
+              <FontAwesome5 name="hourglass-end" size={16} />
+              <CardText>{parseDate(endDate)}</CardText>
+            </TextLine>
+            <TextLine>
+              <FontAwesome5 name="map-marker-alt" size={16} />
+              <CardText>{location}</CardText>
+            </TextLine>
+          </CardTextContainer>
+        </>
+      )}
     </CardContainer>
   );
 }
