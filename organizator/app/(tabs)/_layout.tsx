@@ -31,6 +31,7 @@ export default function HomepageTabs() {
         options={{
           tabBarLabel: "Profile",
           headerTitle: "My profile",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="user" color={color} size={size} />
           ),

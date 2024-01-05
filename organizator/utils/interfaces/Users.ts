@@ -65,3 +65,19 @@ export interface GetRoleResponse {
   readonly error: string | null;
   readonly role: string | null;
 }
+
+export interface UserRoleInformation {
+  readonly id: string;
+  readonly username: string;
+  readonly role: string;
+}
+
+export interface AllUserResponse {
+  readonly error: string | null;
+  readonly users: UserRoleInformation[] | null;
+}
+
+export interface UpdateRoleResponse {
+  readonly error: string | null;
+  readonly user: UserRoleInformation | null;
+}
