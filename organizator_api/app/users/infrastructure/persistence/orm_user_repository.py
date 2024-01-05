@@ -17,7 +17,9 @@ class ORMUserRepository(UserRepository):
             raise UserAlreadyExists()
 
     def get_all(self) -> List[User]:
-        return [self._to_domain(user) for user in ORMUser.objects.all()]
+        return [
+            self._to_domain(user) for user in ORMUser.objects.all().order_by("username")
+        ]
 
     def get_by_id(self, user_id: uuid.UUID) -> User:
         try:
