@@ -410,6 +410,42 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
 
+    def test__given_user_body__when_update_user_with_a_invalid_token__then_error_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "charlie"}
+
+        # When
+        header = {"HTTP_Authorization": "wrong_token"}
+        response = self.client.post(
+            "/organizator-api/users/update/me",
+            json.dumps(body),
+            content_type="application/json",
+            **header,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test_given_user_body__when_update_without_header__then_unauthorized_is_returned(
+        self,
+    ) -> None:
+        # Given
+        body = {"username": "charlie"}
+
+        # When
+        response = self.client.post(
+            "/organizator-api/users/update/me",
+            json.dumps(body),
+            content_type="application/json",
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.content, b"Unauthorized")
+
     def test__given_user_in_db_and_correct_body__when_login_endpoint_is_called__then_token_is_created(
         self,
     ) -> None:
