@@ -139,7 +139,16 @@ def get_role_by_token(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["POST"])
-def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
+def update_my_user(request: HttpRequest) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=409, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
     json_body = json.loads(request.body)
 
     if "email" in json_body:
@@ -162,7 +171,7 @@ def update_user(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
     )
 
     try:
-        user = UpdateUserUseCase().execute(user_id=user_id, user=user_data)
+        user = UpdateUserUseCase().execute(token=token_to_uuid, user=user_data)
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
     except UserAlreadyExists:

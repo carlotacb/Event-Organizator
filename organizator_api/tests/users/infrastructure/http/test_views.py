@@ -287,7 +287,8 @@ class TestUserViews(ApiTests):
 
     def test__given_user_in_db__when_update_user__then_user_is_updated(self) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         self.user_repository.create(user)
         body = {
             "username": "charlie",
@@ -298,10 +299,12 @@ class TestUserViews(ApiTests):
         }
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -315,15 +318,17 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
-        self.user_repository.create(user)
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         body = {"email": "carlota@hackupc.com"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -334,15 +339,18 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         self.user_repository.create(user)
         body = {"password": "carlotacb"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -353,7 +361,8 @@ class TestUserViews(ApiTests):
         self,
     ) -> None:
         # Given
-        user = UserFactory().create()
+        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
+        user = UserFactory().create(token=uuid.UUID(token))
         user2 = UserFactory().create(
             new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
             email="carkbra@gmail.com",
@@ -364,10 +373,12 @@ class TestUserViews(ApiTests):
         body = {"username": "carkbra"}
 
         # When
+        header = {"HTTP_Authorization": token}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then
@@ -387,10 +398,12 @@ class TestUserViews(ApiTests):
         }
 
         # When
+        header = {"HTTP_Authorization": "baad2fe5-0122-459b-9572-625c3351d6ac"}
         response = self.client.post(
-            "/organizator-api/users/update/ef6f6fb3-ba12-43dd-a0da-95de8125b1cc",
+            "/organizator-api/users/update/me",
             json.dumps(body),
             content_type="application/json",
+            **header,  # type: ignore
         )
 
         # Then

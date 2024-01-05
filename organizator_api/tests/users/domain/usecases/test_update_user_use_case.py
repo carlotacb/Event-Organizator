@@ -27,9 +27,7 @@ class TestUpdateUserUseCase(ApiTests):
         )
 
         # When
-        user = UpdateUserUseCase().execute(
-            token=self.user_token, user=user_data
-        )
+        user = UpdateUserUseCase().execute(token=self.user_token, user=user_data)
 
         # Then
         self.assertEqual("carlota", user.username)
@@ -55,9 +53,7 @@ class TestUpdateUserUseCase(ApiTests):
         )
 
         # When
-        user = UpdateUserUseCase().execute(
-            token=self.user_token, user=user_data
-        )
+        user = UpdateUserUseCase().execute(token=self.user_token, user=user_data)
 
         # Then
         self.assertEqual("carlotacb", user.username)
@@ -79,9 +75,7 @@ class TestUpdateUserUseCase(ApiTests):
         )
 
         # When
-        user = UpdateUserUseCase().execute(
-            token=self.user_token, user=user_data
-        )
+        user = UpdateUserUseCase().execute(token=self.user_token, user=user_data)
 
         # Then
         self.assertEqual("carlotacb", user.username)
@@ -103,9 +97,7 @@ class TestUpdateUserUseCase(ApiTests):
         )
 
         # When
-        user = UpdateUserUseCase().execute(
-            token=self.user_token, user=user_data
-        )
+        user = UpdateUserUseCase().execute(token=self.user_token, user=user_data)
 
         # Then
         self.assertEqual("carlotacb24", user.username)
