@@ -5,13 +5,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const ButtonContainer = styled(Pressable)<{ color: string; active: boolean }>`
   height: 30px;
-  padding: 0 20px;
+  padding: 0 18px;
   width: auto;
   border: 2px solid ${(props: { color: string }) => props.color};
   background-color: ${(props: { color: string; active: boolean }) =>
     props.active ? props.color : "transparent"};
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  margin: 10px;
+  margin: 0 5px;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
