@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
@@ -6,13 +6,17 @@ import { router } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
-import { getAllUpcomingEvents } from "../../../utils/api/axiosEvents";
+import {
+  getAllEvents,
+  getAllUpcomingEvents,
+} from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
+import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -25,7 +29,7 @@ const CardsContainer = styled(View)`
   justify-content: center;
   gap: 20px;
   flex-direction: row;
-  margin: 30px 0;
+  margin: 20px 0;
 `;
 
 const CreateButtonContainer = styled(View)`
@@ -52,14 +56,29 @@ const CreateButtonText = styled.Text`
   font-weight: bold;
 `;
 
+const ButtonsContainer = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 10px;
+`;
+
 export default function Home() {
-  const [loading, setLoading] = React.useState(true);
-  const [events, setEvents] = React.useState<EventAllInformation[]>([]);
-  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<EventAllInformation[]>([]);
+  const [futureEvents, setFutureEvents] = useState<EventAllInformation[]>([]);
+  const [allEvents, setAllEvents] = useState<EventAllInformation[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const isFocused = useIsFocused();
+  const [active, setActive] = useState({
+    all: false,
+    past: false,
+    future: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => getAllUpcomingEvents();
+    const fetchAllEvents = async () => getAllEvents();
     const fetchAdminFunction = async () => {
       const t = await getToken();
       return getUserRole(t);
@@ -67,7 +86,13 @@ export default function Home() {
 
     fetchData().then((response) => {
       setLoading(false);
+      setActive({ all: false, past: false, future: true });
       setEvents(response.eventInformation || []);
+      setFutureEvents(response.eventInformation || []);
+    });
+
+    fetchAllEvents().then((response) => {
+      setAllEvents(response.eventInformation || []);
     });
 
     fetchAdminFunction().then((response) => {
@@ -81,34 +106,72 @@ export default function Home() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <View style={{ justifyContent: "center" }}>
-            {events.length === 0 ? (
-              <EmptyPage
-                title="There are no events"
-                subtitle="Come back in a few days... maybe we have news!"
-                image={require("../../../assets/empty.png")}
+          <View>
+            <ButtonsContainer>
+              <FilterButton
+                title="All"
+                onPress={() => {
+                  setActive({ all: true, past: false, future: false });
+                  setEvents(allEvents);
+                }}
+                color="#040240"
+                iconName="list"
+                active={active.all}
               />
-            ) : (
-              <CardsContainer>
-                {events.map((event) => (
-                  <Pressable
-                    onPress={() => {
-                      router.push(`/${event.id}`);
-                    }}
-                    key={event.id}
-                  >
-                    <Card
-                      title={event.name}
-                      startDate={event.start_date}
-                      endDate={event.end_date}
-                      location={event.location}
-                      id={event.id}
-                      headerImage={event.header_image}
-                    />
-                  </Pressable>
-                ))}
-              </CardsContainer>
-            )}
+              <FilterButton
+                title="Past"
+                onPress={() => {
+                  setActive({ all: false, past: true, future: false });
+                  setEvents(
+                    allEvents.filter(
+                      (e) => e.start_date < new Date().toISOString(),
+                    ),
+                  );
+                }}
+                color="#040240"
+                iconName="calendar-times-o"
+                active={active.past}
+              />
+              <FilterButton
+                title="Future"
+                onPress={() => {
+                  setActive({ all: false, past: false, future: true });
+                  setEvents(futureEvents);
+                }}
+                color="#040240"
+                iconName="calendar"
+                active={active.future}
+              />
+            </ButtonsContainer>
+            <View style={{ justifyContent: "center" }}>
+              {events.length === 0 ? (
+                <EmptyPage
+                  title="There are no events"
+                  subtitle="Come back in a few days... maybe we have news!"
+                  image={require("../../../assets/empty.png")}
+                />
+              ) : (
+                <CardsContainer>
+                  {events.map((event) => (
+                    <Pressable
+                      onPress={() => {
+                        router.push(`/${event.id}`);
+                      }}
+                      key={event.id}
+                    >
+                      <Card
+                        title={event.name}
+                        startDate={event.start_date}
+                        endDate={event.end_date}
+                        location={event.location}
+                        id={event.id}
+                        headerImage={event.header_image}
+                      />
+                    </Pressable>
+                  ))}
+                </CardsContainer>
+              )}
+            </View>
           </View>
         )}
       </ScrollView>
