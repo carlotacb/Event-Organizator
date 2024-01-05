@@ -22,7 +22,7 @@ class CreateUserUseCase:
             password=hashed_password,
             first_name=user_data.first_name,
             last_name=user_data.last_name,
-            username=user_data.username,
+            username=user_data.username.lower(),
             bio=user_data.bio,
             profile_image=user_data.profile_image,
             created_at=datetime.now(tz=timezone.utc),
