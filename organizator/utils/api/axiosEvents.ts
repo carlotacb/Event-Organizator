@@ -55,12 +55,16 @@ export async function getEventById(eventId: string): Promise<getEventResponse> {
 }
 
 export async function deleteEvent(
+  token: string,
   eventId: string,
 ): Promise<deleteEventResponse> {
   try {
     await axios({
       method: "post",
       url: `${eventsAPI}/delete/${eventId}`,
+      headers: {
+        Authorization: token,
+      },
     });
     return {
       error: null,

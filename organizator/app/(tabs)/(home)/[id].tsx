@@ -128,15 +128,16 @@ export default function EventPage() {
   }, []);
 
   const deleteThisEvent = () => {
-    // @ts-ignore
-    deleteEvent(id)
-      .then(() => {
-        setShowAlert(false);
-        router.replace("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchData = async () => {
+      const token = await getToken();
+      // @ts-ignore
+      return deleteEvent(token || "", id);
+    };
+
+    fetchData().then(() => {
+      setShowAlert(false);
+      router.replace("/");
+    });
   };
 
   const handleOnChange = (text: string, input: string) => {
