@@ -136,7 +136,7 @@ export default function EventPage() {
 
     fetchData().then(() => {
       setShowAlert(false);
-      router.replace("/");
+      router.back();
     });
   };
 

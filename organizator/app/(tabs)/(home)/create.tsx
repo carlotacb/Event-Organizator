@@ -162,7 +162,7 @@ export default function CreatePage() {
           text2: response.error,
         });
       } else {
-        router.replace("/");
+        router.back();
       }
     });
   };
