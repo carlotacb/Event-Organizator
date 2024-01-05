@@ -73,6 +73,7 @@ export async function deleteEvent(
 }
 
 export async function createEvent(
+  token: string,
   eventInformation: CreateEventProps,
 ): Promise<createEventResponse> {
   try {
@@ -87,6 +88,9 @@ export async function createEvent(
         location: eventInformation.location,
         header_image: eventInformation.headerImage,
         url: eventInformation.url,
+      },
+      headers: {
+        Authorization: token,
       },
     });
     return {
