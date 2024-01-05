@@ -108,17 +108,20 @@ export async function getMyInformation(
 
 export async function updateMyInformation(
   data: UpdateFormFields,
-  id: string,
+  token: string,
 ): Promise<UserInformationResponse> {
   try {
     const response = await axios({
       method: "post",
-      url: `${usersAPI}/update/${id}`,
+      url: `${usersAPI}/update/me`,
       data: JSON.stringify({
         first_name: data.firstName,
         last_name: data.lastName,
         bio: data.bio,
       }),
+      headers: {
+        Authorization: token,
+      },
     });
     return {
       error: null,

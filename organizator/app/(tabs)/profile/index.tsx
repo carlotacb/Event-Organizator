@@ -141,7 +141,8 @@ export default function Index() {
 
   const editProfile = () => {
     setLoading(true);
-    updateMyInformation(inputs, userInformation?.id || "").then((response) => {
+
+    updateMyInformation(inputs, token || "").then((response) => {
       if (response.error) {
         setLoading(false);
         Toast.show({
@@ -152,6 +153,12 @@ export default function Index() {
         });
       } else {
         setLoading(false);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your profile has been updated correctly",
+          visibilityTime: 8000,
+        });
       }
     });
   };
@@ -244,7 +251,7 @@ export default function Index() {
               />
               <ButtonContainer>
                 <Button
-                  title="Save"
+                  title="Change information"
                   onPress={validate}
                   iconName="save"
                   color="#58a659"
