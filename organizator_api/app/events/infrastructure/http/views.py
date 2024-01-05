@@ -71,7 +71,8 @@ def get_all_events(request: HttpRequest) -> HttpResponse:
 
     events_response = []
     for event in all_events:
-        events_response.append(EventResponse.from_event(event).to_dict())
+        if event.deleted_at is None:
+            events_response.append(EventResponse.from_event(event).to_dict())
 
     return HttpResponse(
         status=200, content=json.dumps(events_response), content_type="application/json"
