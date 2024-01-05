@@ -51,7 +51,10 @@ class ORMEventRepository(EventRepository):
             raise EventNotFound()
 
     def get_all(self) -> List[Event]:
-        return [self._to_domain_model(event) for event in ORMEvent.objects.all().order_by("start_date")]
+        return [
+            self._to_domain_model(event)
+            for event in ORMEvent.objects.all().order_by("start_date")
+        ]
 
     def _to_model(self, event: Event) -> ORMEvent:
         return ORMEvent(
