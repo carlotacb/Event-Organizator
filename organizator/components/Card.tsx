@@ -2,7 +2,6 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { View } from "react-native";
 import { parseDate } from "../utils/util-functions";
 
 interface CardProps {
@@ -51,14 +50,6 @@ const TextLine = styled.View`
   flex-direction: row;
   gap: 10px;
   margin-top: 10px;
-`;
-
-const Overlay = styled.View`
-  flex: 1;
-  opacity: 0.5;
-  height: 100%;
-  width: 100%;
-  border-radius: 20px;
 `;
 
 const PastTag = styled.View`
