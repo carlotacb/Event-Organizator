@@ -28,7 +28,7 @@ class TestUpdateUserUseCase(ApiTests):
 
         # When
         user = UpdateUserUseCase().execute(
-            user_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), user=user_data
+            token=self.user_token, user=user_data
         )
 
         # Then
@@ -56,7 +56,7 @@ class TestUpdateUserUseCase(ApiTests):
 
         # When
         user = UpdateUserUseCase().execute(
-            user_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), user=user_data
+            token=self.user_token, user=user_data
         )
 
         # Then
@@ -80,7 +80,7 @@ class TestUpdateUserUseCase(ApiTests):
 
         # When
         user = UpdateUserUseCase().execute(
-            user_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), user=user_data
+            token=self.user_token, user=user_data
         )
 
         # Then
@@ -104,7 +104,7 @@ class TestUpdateUserUseCase(ApiTests):
 
         # When
         user = UpdateUserUseCase().execute(
-            user_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), user=user_data
+            token=self.user_token, user=user_data
         )
 
         # Then
