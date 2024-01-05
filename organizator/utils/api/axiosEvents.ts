@@ -26,6 +26,21 @@ export async function getAllUpcomingEvents(): Promise<getAllEventResponse> {
   }
 }
 
+export async function getAllEvents(): Promise<getAllEventResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${eventsAPI}/`,
+    });
+    return { error: null, eventInformation: [...response.data] };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      eventInformation: null,
+    };
+  }
+}
+
 export async function getEventById(eventId: string): Promise<getEventResponse> {
   try {
     const response = await axios({
