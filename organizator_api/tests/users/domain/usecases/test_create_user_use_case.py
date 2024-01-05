@@ -50,3 +50,24 @@ class TestCreateUserUseCase(ApiTests):
         # Then
         users = self.user_repository.get_all()
         self.assertEqual(users[0].role, UserRoles.PARTICIPANT)
+
+    def test__given_create_user_with_username_in_uppercase__when_create_user__then_the_username_is_lowercased(
+        self,
+    ) -> None:
+        # Given
+        user_data = CreateUserRequest(
+            email="carlota@hackupc.com",
+            password="1234",
+            first_name="Carlota",
+            last_name="Catot",
+            username="CarLota",
+            bio="I'm a cat",
+            profile_image="https://www.hacknights.dev/images/hacknight.png",
+        )
+
+        # When
+        CreateUserUseCase().execute(user_data)
+
+        # Then
+        users = self.user_repository.get_all()
+        self.assertEqual(users[0].username, "carlota")
