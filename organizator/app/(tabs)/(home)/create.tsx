@@ -8,13 +8,13 @@ import LoadingPage from "../../../components/LodingPage";
 import Input from "../../../components/Input";
 import Button from "../../../components/ButtonWithIcon";
 import { createEvent } from "../../../utils/api/axiosEvents";
-import { createEventResponse } from "../../../utils/interfaces/Events";
 import {
   checkDate,
   checkDateRange,
   checkURL,
   dateToPlainString,
 } from "../../../utils/util-functions";
+import { getToken } from "../../../utils/sessionCalls";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -148,7 +148,12 @@ export default function CreatePage() {
 
   const createTheEvent = () => {
     setLoading(true);
-    createEvent(inputs).then((response: createEventResponse) => {
+    const fetchData = async () => {
+      const token = await getToken();
+      return createEvent(token || "", inputs);
+    };
+
+    fetchData().then((response) => {
       setLoading(false);
       if (response.error) {
         Toast.show({
@@ -157,7 +162,7 @@ export default function CreatePage() {
           text2: response.error,
         });
       } else {
-        router.replace("/");
+        router.back();
       }
     });
   };

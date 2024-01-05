@@ -55,12 +55,16 @@ export async function getEventById(eventId: string): Promise<getEventResponse> {
 }
 
 export async function deleteEvent(
+  token: string,
   eventId: string,
 ): Promise<deleteEventResponse> {
   try {
     await axios({
       method: "post",
       url: `${eventsAPI}/delete/${eventId}`,
+      headers: {
+        Authorization: token,
+      },
     });
     return {
       error: null,
@@ -73,6 +77,7 @@ export async function deleteEvent(
 }
 
 export async function createEvent(
+  token: string,
   eventInformation: CreateEventProps,
 ): Promise<createEventResponse> {
   try {
@@ -88,6 +93,9 @@ export async function createEvent(
         header_image: eventInformation.headerImage,
         url: eventInformation.url,
       },
+      headers: {
+        Authorization: token,
+      },
     });
     return {
       error: null,
@@ -100,6 +108,7 @@ export async function createEvent(
 }
 
 export async function updateEvent(
+  token: string,
   eventInformation: UpdateEventProps,
   eventId: string,
 ): Promise<updateEventResponse> {
@@ -114,6 +123,9 @@ export async function updateEvent(
         end_date: eventInformation.endDate,
         location: eventInformation.location,
         url: eventInformation.url,
+      },
+      headers: {
+        Authorization: token,
       },
     });
     return {

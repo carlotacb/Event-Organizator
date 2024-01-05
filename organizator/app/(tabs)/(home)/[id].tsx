@@ -128,15 +128,16 @@ export default function EventPage() {
   }, []);
 
   const deleteThisEvent = () => {
-    // @ts-ignore
-    deleteEvent(id)
-      .then(() => {
-        setShowAlert(false);
-        router.replace("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchData = async () => {
+      const token = await getToken();
+      // @ts-ignore
+      return deleteEvent(token || "", id);
+    };
+
+    fetchData().then(() => {
+      setShowAlert(false);
+      router.back();
+    });
   };
 
   const handleOnChange = (text: string, input: string) => {
@@ -199,7 +200,14 @@ export default function EventPage() {
     if (isValid) {
       setLoading(true);
       // @ts-ignore
-      updateEvent(inputs, id).then((response) => {
+
+      const fetchData = async () => {
+        const token = await getToken();
+        // @ts-ignore
+        return updateEvent(token || "", inputs, id);
+      };
+
+      fetchData().then((response) => {
         if (response.error) {
           Toast.show({
             type: "error",

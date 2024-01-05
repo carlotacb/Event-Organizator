@@ -4,6 +4,7 @@ import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 import styled from "styled-components/native";
 import { router } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useIsFocused } from "@react-navigation/native";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import { getAllUpcomingEvents } from "../../../utils/api/axiosEvents";
 import Card from "../../../components/Card";
@@ -55,6 +56,7 @@ export default function Home() {
   const [loading, setLoading] = React.useState(true);
   const [events, setEvents] = React.useState<EventAllInformation[]>([]);
   const [isAdmin, setIsAdmin] = React.useState(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => getAllUpcomingEvents();
@@ -71,7 +73,7 @@ export default function Home() {
     fetchAdminFunction().then((response) => {
       setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
     });
-  }, []);
+  }, [isFocused]);
 
   return (
     <Container>
