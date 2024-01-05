@@ -199,6 +199,24 @@ class TestUserViews(ApiTests):
             b"Unauthorized",
         )
 
+    def test__given_user_in_db__when_get_me_is_called_with_a_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create()
+        self.user_repository.create(user)
+
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.get("/organizator-api/users/me", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.content,
+            b"Invalid token",
+        )
+
     def test__given_non_existing_users_without_token__when_get_me__then_not_found_is_returned(
         self,
     ) -> None:
@@ -230,7 +248,7 @@ class TestUserViews(ApiTests):
             b'{"role": "Participant"}',
         )
 
-    def test__given_user_in_db__when_get_role_by_token_without_header__then_user_is_returned(
+    def test__given_user_in_db__when_get_role_by_token_without_header__then_unauthorized_is_returned(
         self,
     ) -> None:
         # Given
@@ -246,6 +264,17 @@ class TestUserViews(ApiTests):
             response.content,
             b"Unauthorized",
         )
+
+    def test__when_get_role_by_token_with_a_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.get("/organizator-api/users/me/role", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
 
     def test__given_non_existing_users_without_token__when_get_role_by_token__then_not_found_is_returned(
         self,
@@ -563,6 +592,17 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.content, b"Unauthorized")
+
+    def test__when_logout_with_invalid_token__then_invalid_token_is_returned(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_Authorization": "invalid_token"}
+        response = self.client.post("/organizator-api/users/logout", **headers)  # type: ignore
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
 
     def test__given_a_user_with_token_and_admin_and_a_participant_user__when_update_participant_role_to_organizer__then_it_updates(
         self,
