@@ -55,3 +55,18 @@ class TestLoginUseCase(ApiTests):
         user = self.user_repository.get_all()[0]
         self.assertEqual(token, uuid.UUID("60d99f6a-7fb6-4bec-87da-bc5c8a44fb4d"))
         self.assertEqual(token, user.token)
+
+    def test__given_a_username_with_uppercase_letters_and_a_valid_password__then_when_login__then_the_user_have_a_valid_token(
+        self,
+    ) -> None:
+        # Given
+        user = UserFactory().create(username="carlota")
+        self.user_repository.create(user)
+
+        # When
+        token = LoginUseCase().execute(username="Carlota", password="123456")
+
+        # Then
+        user = self.user_repository.get_all()[0]
+        self.assertIsNotNone(user.token)
+        self.assertEqual(token, user.token)
