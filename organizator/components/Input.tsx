@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, TextInputProps } from "react-native";
+import { View, Text, TextInput, TextInputProps, Platform } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -102,7 +102,11 @@ export default function Input(props: InputProps) {
         {iconName && <InputIcon name={iconName} disabled={disabled} />}
         <InputStyled
           disabled={disabled}
-          style={{ outlineStyle: "none", padding: 10 }}
+          style={[
+            Platform.OS === "web"
+              ? { outlineStyle: "none", padding: 10 }
+              : { padding: 10 },
+          ]}
           onFocus={() => {
             if (!disabled) setIsFocused(true);
           }}

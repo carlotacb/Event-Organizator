@@ -79,7 +79,6 @@ exports[`renders correctly a input with label and value 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -171,7 +170,6 @@ exports[`renders correctly a input with label and value and error 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -256,7 +254,6 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -348,7 +345,6 @@ exports[`renders correctly a input with label and value that is password 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -468,7 +464,6 @@ exports[`renders correctly a input with label and value that is required 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -558,7 +553,6 @@ exports[`renders correctly a input with only label 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
@@ -648,7 +642,6 @@ exports[`renders correctly a input with value and icon 1`] = `
             "marginRight": 10,
           },
           {
-            "outlineStyle": "none",
             "padding": 10,
           },
         ]
