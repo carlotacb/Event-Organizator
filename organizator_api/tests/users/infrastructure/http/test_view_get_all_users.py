@@ -10,7 +10,7 @@ class TestViewGetAllUsers(ApiTests):
         self.user_repository.clear()
 
     def test__given_no_users_in_db__when_get_all_users__then_empty_list_is_returned(
-            self,
+        self,
     ) -> None:
         # When
         response = self.client.get("/organizator-api/users/")
@@ -20,7 +20,7 @@ class TestViewGetAllUsers(ApiTests):
         self.assertEqual(response.content, b"[]")
 
     def test__given_users_in_db__when_get_all_users__then_all_users_are_returned(
-            self,
+        self,
     ) -> None:
         # Given
         user = UserFactory().create()

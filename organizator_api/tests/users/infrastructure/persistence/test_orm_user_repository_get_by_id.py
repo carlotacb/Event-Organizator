@@ -38,12 +38,16 @@ class TestORMUserRepositoryGetById(ApiTests):
         self.assertEqual(user.profile_image, "profile_picture.png")
         self.assertEqual(user.token, None)
         self.assertEqual(user.role, UserRoles.PARTICIPANT)
-        self.assertEqual(user.date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(
+            user.date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(user.study, True)
         self.assertEqual(user.work, False)
         self.assertEqual(user.university, "Universitat Politècnica de Catalunya")
         self.assertEqual(user.degree, "Computer Science")
-        self.assertEqual(user.expected_graduation, datetime(2024, 5, 1,0,0, tzinfo=timezone.utc))
+        self.assertEqual(
+            user.expected_graduation, datetime(2024, 5, 1, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(user.current_job_role, None)
         self.assertEqual(user.tshirt, None)
         self.assertEqual(user.gender, None)

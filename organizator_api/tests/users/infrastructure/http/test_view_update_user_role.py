@@ -27,7 +27,7 @@ class TestViewUpdateUserRole(ApiTests):
         self.user_repository.create(user)
 
     def test__given_body_to_change_role__when_update_role_without_header__then_unauthorized_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "ORGANIZER"}
@@ -44,7 +44,7 @@ class TestViewUpdateUserRole(ApiTests):
         self.assertEqual(response.content, b"Unauthorized")
 
     def test__given_body_to_change_role__when_update_role_with_a_invalid_token_in_header__then_invalid_token_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "ORGANIZER"}
@@ -63,7 +63,7 @@ class TestViewUpdateUserRole(ApiTests):
         self.assertEqual(response.content, b"Invalid token")
 
     def test__given_a_invalid_body__when_update_role__then_unexpected_body_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"test": "test"}
@@ -84,9 +84,8 @@ class TestViewUpdateUserRole(ApiTests):
             b"Unexpected body",
         )
 
-
     def test__given_body_to_modify_participant_to_organizer__when_update_role__then_user_does_not_exist_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "ORGANIZER"}
@@ -108,7 +107,7 @@ class TestViewUpdateUserRole(ApiTests):
         )
 
     def test__given_body_to_modify_participant_to_organizer__when_update_role_by_organizer_user__then_only_authorized_to_organizer_admin_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "ORGANIZER"}
@@ -129,9 +128,8 @@ class TestViewUpdateUserRole(ApiTests):
             b"Only authorized to organizer admin",
         )
 
-
     def test__given_body_with_a_invalid_role__when_update_role_by_admin__then_invalid_role_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "INVALID_ROLE"}
@@ -153,7 +151,7 @@ class TestViewUpdateUserRole(ApiTests):
         )
 
     def test__given_body_with_organizer_as_new_role__when_update_participant_role_by_admin_user__then_it_updates(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"role": "ORGANIZER"}
@@ -173,11 +171,3 @@ class TestViewUpdateUserRole(ApiTests):
             response.content,
             b'{"id": "60d99f6a-7fb6-4bec-87da-bc5c8a44fb4e", "username": "charlie", "email": "carlota@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Organizer", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}',
         )
-
-
-
-
-
-
-
-

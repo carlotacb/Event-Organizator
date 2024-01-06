@@ -60,6 +60,3 @@ class TestViewGetMyRole(ApiTests):
             response.content,
             b'{"role": "Participant"}',
         )
-
-
-

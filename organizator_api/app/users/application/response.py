@@ -46,11 +46,15 @@ class UserResponse:
             work=user.work,
             university=user.university if user.university else "",
             degree=user.degree if user.degree else "",
-            expected_graduation=user.expected_graduation if user.expected_graduation else None,
+            expected_graduation=user.expected_graduation
+            if user.expected_graduation
+            else None,
             current_job_role=user.current_job_role if user.current_job_role else "",
             tshirt=user.tshirt.value if user.tshirt else "",
             gender=user.gender.value if user.gender else "",
-            alimentary_restrictions=user.alimentary_restrictions if user.alimentary_restrictions else "",
+            alimentary_restrictions=user.alimentary_restrictions
+            if user.alimentary_restrictions
+            else "",
             github=user.github if user.github else "",
             linkedin=user.linkedin if user.linkedin else "",
             devpost=user.devpost if user.devpost else "",
@@ -72,7 +76,9 @@ class UserResponse:
             "work": self.work,
             "university": self.university,
             "degree": self.degree,
-            "expected_graduation": self.expected_graduation.strftime("%d/%m/%Y") if self.expected_graduation else None,
+            "expected_graduation": self.expected_graduation.strftime("%d/%m/%Y")
+            if self.expected_graduation
+            else None,
             "current_job_role": self.current_job_role,
             "tshirt": self.tshirt,
             "gender": self.gender,

@@ -1,6 +1,9 @@
 from datetime import date
 
-from app.events.domain.exceptions import MissingStudyInformationToCreateUser, MissingWorkInformationToCreateUser
+from app.events.domain.exceptions import (
+    MissingStudyInformationToCreateUser,
+    MissingWorkInformationToCreateUser,
+)
 from app.users.application.requests import CreateUserRequest
 from app.users.domain.models.user import UserRoles
 from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
@@ -26,7 +29,7 @@ class TestCreateUserUseCase(ApiTests):
             profile_image="https://www.hacknights.dev/images/hacknight.png",
             study=False,
             work=False,
-            date_of_birth="07/05/1996"
+            date_of_birth="07/05/1996",
         )
 
         # When
@@ -50,7 +53,7 @@ class TestCreateUserUseCase(ApiTests):
             profile_image="https://www.hacknights.dev/images/hacknight.png",
             study=False,
             work=False,
-            date_of_birth="07/05/1996"
+            date_of_birth="07/05/1996",
         )
 
         # When
@@ -74,7 +77,7 @@ class TestCreateUserUseCase(ApiTests):
             profile_image="https://www.hacknights.dev/images/hacknight.png",
             study=False,
             work=False,
-            date_of_birth="07/05/1996"
+            date_of_birth="07/05/1996",
         )
 
         # When
@@ -98,7 +101,7 @@ class TestCreateUserUseCase(ApiTests):
             profile_image="https://www.hacknights.dev/images/hacknight.png",
             study=True,
             work=False,
-            date_of_birth="07/05/1996"
+            date_of_birth="07/05/1996",
         )
 
         # When / Then
@@ -120,7 +123,7 @@ class TestCreateUserUseCase(ApiTests):
             study=True,
             work=False,
             date_of_birth="07/05/1996",
-            university="Universitat Politècnica de Catalunya"
+            university="Universitat Politècnica de Catalunya",
         )
 
         # When / Then
@@ -143,7 +146,7 @@ class TestCreateUserUseCase(ApiTests):
             work=False,
             date_of_birth="07/05/1996",
             university="Universitat Politècnica de Catalunya",
-            degree="Computer Science"
+            degree="Computer Science",
         )
 
         # When / Then
@@ -167,7 +170,7 @@ class TestCreateUserUseCase(ApiTests):
             date_of_birth="07/05/1996",
             university="Universitat Politècnica de Catalunya",
             degree="Computer Science",
-            expected_graduation="01/05/2024"
+            expected_graduation="01/05/2024",
         )
 
         # When
@@ -198,8 +201,9 @@ class TestCreateUserUseCase(ApiTests):
         with self.assertRaises(MissingWorkInformationToCreateUser):
             CreateUserUseCase().execute(user_data)
 
-    def test__given_create_user_with_work_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(self) -> None:
-
+    def test__given_create_user_with_work_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(
+        self,
+    ) -> None:
         # Given
         user_data = CreateUserRequest(
             email="carlota@hackupc.com",
@@ -212,7 +216,7 @@ class TestCreateUserUseCase(ApiTests):
             study=False,
             work=True,
             date_of_birth="07/05/1996",
-            current_job_role="Software Engineer"
+            current_job_role="Software Engineer",
         )
 
         # When

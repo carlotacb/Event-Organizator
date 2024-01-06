@@ -12,7 +12,9 @@ class TestViewLogin(ApiTests):
         user = UserFactory().create()
         self.user_repository.create(user)
 
-    def test__given_a_body_with_only_password__when_login__then_username_is_required_is_returned(self) -> None:
+    def test__given_a_body_with_only_password__when_login__then_username_is_required_is_returned(
+        self,
+    ) -> None:
         # Given
         body = {"password": "password"}
 
@@ -27,7 +29,9 @@ class TestViewLogin(ApiTests):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.content, b"Username is required")
 
-    def test__given_a_body_with_only_username__when_login__then_password_is_required_is_returned(self) -> None:
+    def test__given_a_body_with_only_username__when_login__then_password_is_required_is_returned(
+        self,
+    ) -> None:
         # Given
         body = {"username": "username"}
 
@@ -91,14 +95,6 @@ class TestViewLogin(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.user_repository.get_all()[0].token, uuid.UUID(response.json()["token"]))
-
-
-
-
-
-
-
-
-
-
+        self.assertEqual(
+            self.user_repository.get_all()[0].token, uuid.UUID(response.json()["token"])
+        )

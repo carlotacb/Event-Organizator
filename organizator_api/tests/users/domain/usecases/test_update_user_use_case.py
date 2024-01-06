@@ -96,7 +96,9 @@ class TestUpdateUserUseCase(ApiTests):
         # Then
         self.assertEqual("carlotacb24", user.username)
 
-    def test__given_user_with_basic_information_and_update_user_request_with_the_rest_of_information__when_update_user__then_the_user_is_updated_with_all_the_information(self) -> None:
+    def test__given_user_with_basic_information_and_update_user_request_with_the_rest_of_information__when_update_user__then_the_user_is_updated_with_all_the_information(
+        self,
+    ) -> None:
         # Given
         user_data = UpdateUserRequest(
             tshirt="XS",
@@ -126,7 +128,7 @@ class TestUpdateUserUseCase(ApiTests):
         self.assertEqual("Computer Science", user.degree)
         self.assertEqual(datetime(2024, 5, 1, 0, 0), user.expected_graduation)
         self.assertEqual(None, user.current_job_role)
-        self.assertEqual("XS", user.tshirt.value) # type: ignore
+        self.assertEqual("XS", user.tshirt.value)  # type: ignore
         self.assertEqual(GenderOptions.FEMALE, user.gender)
         self.assertEqual("No restrictions", user.alimentary_restrictions)
         self.assertEqual("http://github.com/carlotacb", user.github)

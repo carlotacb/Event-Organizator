@@ -50,12 +50,17 @@ class TestORMUserRepositoryGetAll(ApiTests):
         self.assertEqual(users[0].bio, "The user that is using this application")
         self.assertEqual(users[0].profile_image, "profile_picture.png")
         self.assertEqual(users[0].role, UserRoles.PARTICIPANT)
-        self.assertEqual(users[0].date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(
+            users[0].date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(users[0].study, True)
         self.assertEqual(users[0].work, False)
         self.assertEqual(users[0].university, "Universitat Politècnica de Catalunya")
         self.assertEqual(users[0].degree, "Computer Science")
-        self.assertEqual(users[0].expected_graduation, datetime(2024, 5, 1,0,0, tzinfo=timezone.utc))
+        self.assertEqual(
+            users[0].expected_graduation,
+            datetime(2024, 5, 1, 0, 0, tzinfo=timezone.utc),
+        )
         self.assertEqual(users[0].current_job_role, None)
 
         self.assertEqual(users[1].id, uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"))
@@ -66,7 +71,9 @@ class TestORMUserRepositoryGetAll(ApiTests):
         self.assertEqual(users[1].bio, "The user that is using this application")
         self.assertEqual(users[1].profile_image, "profile_picture.png")
         self.assertEqual(users[1].role, UserRoles.ORGANIZER)
-        self.assertEqual(users[1].date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(
+            users[1].date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(users[1].study, False)
         self.assertEqual(users[1].work, True)
         self.assertEqual(users[1].university, None)

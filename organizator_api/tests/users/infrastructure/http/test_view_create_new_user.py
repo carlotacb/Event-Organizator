@@ -238,7 +238,9 @@ class TestViewCreateNewUser(ApiTests):
         self.assertEqual(user.expected_graduation, None)
         self.assertEqual(user.current_job_role, "Software Engineer")
 
-    def test__given_user_body_that_is_not_studying_neither_working__when_create_user__then_the_user_is_created_and_stored_in_db(self) -> None:
+    def test__given_user_body_that_is_not_studying_neither_working__when_create_user__then_the_user_is_created_and_stored_in_db(
+        self,
+    ) -> None:
         # Given
         body = {
             "email": "carkbra@hackupc.com",

@@ -27,10 +27,8 @@ class TestViewUpdateMyUser(ApiTests):
         )
         self.user_repository.create(user_worker)
 
-
-
     def test_given_user_body__when_update_without_header__then_unauthorized_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"username": "charlie"}
@@ -47,7 +45,7 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.content, b"Unauthorized")
 
     def test__given_user_body__when_update_user_with_a_invalid_token__then_error_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"username": "charlie"}
@@ -66,7 +64,7 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.content, b"Invalid token")
 
     def test__given_user_in_db_and_body_with_email__when_update__then_email_cannot_be_updated_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"email": "carlota@hackupc.com"}
@@ -85,7 +83,7 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.content, b"The email cannot be updated")
 
     def test__given_user_in_db_and_body_with_password__when_update__then_password_cannot_be_updated_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"password": "carlotacb"}
@@ -103,7 +101,9 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.content, b"The password cannot be updated")
 
-    def test__given_student_user_in_db_and_body_that_change_to_work__when_update__then_missing_work_information_to_create_user_is_returned(self) -> None:
+    def test__given_student_user_in_db_and_body_that_change_to_work__when_update__then_missing_work_information_to_create_user_is_returned(
+        self,
+    ) -> None:
         # Given
         body = {"work": True}
 
@@ -120,7 +120,9 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.content, b"Missing work information to create user")
 
-    def test__given_worker_user_in_db_and_body_that_change_to_study__when_update__then_missing_study_information_to_create_user_is_returned(self) -> None:
+    def test__given_worker_user_in_db_and_body_that_change_to_study__when_update__then_missing_study_information_to_create_user_is_returned(
+        self,
+    ) -> None:
         # Given
         body = {"study": True}
 
@@ -137,12 +139,11 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.content, b"Missing study information to create user")
 
-
     def test__given_a_user_body__when_update_with_a_non_existing_token__then_user_does_not_exist_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
-        body = { "bio": "I'm Charlie" }
+        body = {"bio": "I'm Charlie"}
 
         # When
         header = {"HTTP_Authorization": "baad2fe5-0122-459b-9572-625c3351d7dd"}
@@ -157,9 +158,8 @@ class TestViewUpdateMyUser(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
 
-
     def test__given_body_changing_username_that_already_exists_in_db__when_update_user__then_the_username_you_are_using_is_already_taken_is_returned(
-            self,
+        self,
     ) -> None:
         # Given
         body = {"username": "carkbra"}
@@ -175,7 +175,9 @@ class TestViewUpdateMyUser(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 409)
-        self.assertEqual(response.content, b"The username you are using is already taken")
+        self.assertEqual(
+            response.content, b"The username you are using is already taken"
+        )
 
     def test__given_user_in_db__when_update_user__then_user_is_updated(self) -> None:
         # Given
@@ -202,6 +204,3 @@ class TestViewUpdateMyUser(ApiTests):
             response.content,
             b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "charlie", "email": "carlota@hackupc.com", "first_name": "Charlie", "last_name": "Brown", "bio": "I\'m Charlie", "profile_image": "https://www.google.com", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}',
         )
-
-
-

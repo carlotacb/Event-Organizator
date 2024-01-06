@@ -29,12 +29,16 @@ class TestORMUserRepositoryGetByToken(ApiTests):
         self.assertEqual(user.profile_image, "profile_picture.png")
         self.assertEqual(user.token, uuid.UUID("8e0af048-073a-47e7-8de8-db7a17718e95"))
         self.assertEqual(user.role, UserRoles.PARTICIPANT)
-        self.assertEqual(user.date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(
+            user.date_of_birth, datetime(1996, 5, 7, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(user.study, True)
         self.assertEqual(user.work, False)
         self.assertEqual(user.university, "Universitat Politècnica de Catalunya")
         self.assertEqual(user.degree, "Computer Science")
-        self.assertEqual(user.expected_graduation, datetime(2024, 5, 1, 0, 0, tzinfo=timezone.utc))
+        self.assertEqual(
+            user.expected_graduation, datetime(2024, 5, 1, 0, 0, tzinfo=timezone.utc)
+        )
         self.assertEqual(user.current_job_role, None)
         self.assertEqual(user.tshirt, None)
         self.assertEqual(user.gender, None)
@@ -45,14 +49,14 @@ class TestORMUserRepositoryGetByToken(ApiTests):
         self.assertEqual(user.webpage, None)
 
     def test__when_get_by_token_is_called_without_a_token__then_user_not_logged_in_is_raised(
-            self,
+        self,
     ) -> None:
         # Then
         with self.assertRaises(UserNotLoggedIn):
             ORMUserRepository().get_by_token(None)
 
     def test__given_a_non_existing_token__when_get_by_token__then_user_not_found_is_raised(
-            self,
+        self,
     ) -> None:
         # Then
         with self.assertRaises(UserNotFound):

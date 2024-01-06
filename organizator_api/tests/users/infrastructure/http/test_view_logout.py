@@ -43,10 +43,3 @@ class TestViewLogout(ApiTests):
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.user_repository.get_all()[0].token, None)
-
-
-
-
-
-
-
