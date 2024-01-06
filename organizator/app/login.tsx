@@ -6,7 +6,7 @@ import { SafeAreaView, Text, ScrollView, View, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
 import Input from "../components/Input";
-import Button from "../components/StyledButton";
+import Button from "../components/ButtonWithIcon";
 import { loginUser } from "../utils/api/axiosUsers";
 import { LoginResponse } from "../utils/interfaces/Users";
 import { getToken, storeToken } from "../utils/sessionCalls";
@@ -39,11 +39,11 @@ const ButtonContainer = styled(View)`
 
 const RegisterTextContainer = styled(View)`
   display: flex;
-  flex-direction: row;
-  gap: 5px;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 40px;
 `;
 
 const RegisterText = styled(Text)`
@@ -53,7 +53,9 @@ const RegisterText = styled(Text)`
 
 const RegisterButton = styled(Text)`
   font-weight: bold;
-  color: blue;
+  text-decoration: underline #6161e0;
+  font-size: 18px;
+  color: #6161e0;
 `;
 
 export default function LoginPage() {
@@ -157,7 +159,12 @@ export default function LoginPage() {
               password
             />
             <ButtonContainer>
-              <Button title="Log in" onPress={validate} />
+              <Button
+                title="Log in"
+                onPress={validate}
+                iconName="sign-in"
+                color="#58a659"
+              />
             </ButtonContainer>
             <RegisterTextContainer>
               <RegisterText>You don't have an account yet? </RegisterText>
