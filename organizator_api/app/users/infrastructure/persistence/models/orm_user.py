@@ -1,6 +1,6 @@
 from django.db import models
 
-from app.users.domain.models.user import UserRoles
+from app.users.domain.models.user import UserRoles, TShirtSizes, GenderOptions
 
 
 class ORMUser(models.Model):
@@ -21,3 +21,17 @@ class ORMUser(models.Model):
     )
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+    tshirt = models.CharField(max_length=120, choices=TShirtSizes.choices(), null=True, default=None)
+    alimentary_restrictions = models.CharField(max_length=255, null=True, default=None)
+    date_of_birth = models.DateField(null=True, default=None)
+    study = models.BooleanField(default=False)
+    work = models.BooleanField(default=False)
+    gender = models.CharField(max_length=120, choices=GenderOptions.choices(), null=True, default=None)
+    github = models.CharField(max_length=255, null=True, default=None)
+    linkedin = models.CharField(max_length=255, null=True, default=None)
+    devpost = models.CharField(max_length=255, null=True, default=None)
+    webpage = models.CharField(max_length=255, null=True, default=None)
+    university = models.CharField(max_length=255, null=True, default=None)
+    degree = models.CharField(max_length=255, null=True, default=None)
+    expected_graduation = models.DateField(null=True, default=None)
+    current_job_role = models.CharField(max_length=255, null=True, default=None)
