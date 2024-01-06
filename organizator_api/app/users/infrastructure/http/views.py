@@ -312,7 +312,7 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request: HttpRequest) -> HttpResponse:
     token = request.headers.get("Authorization")
     if not token:
-        return HttpResponse(status=409, content="Unauthorized")
+        return HttpResponse(status=401, content="Unauthorized")
 
     try:
         token_to_uuid = uuid.UUID(token)
