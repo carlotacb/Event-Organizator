@@ -4,7 +4,7 @@ from typing import List, Optional
 from django.db import IntegrityError
 
 from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
-from app.users.domain.models.user import User, UserRoles
+from app.users.domain.models.user import User, UserRoles, TShirtSizes, GenderOptions
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
 
@@ -75,6 +75,20 @@ class ORMUserRepository(UserRepository):
             created_at=user.created_at,
             updated_at=user.updated_at,
             role=user.role.name,
+            tshirt=user.tshirt.name if user.tshirt else None,
+            alimentary_restrictions=user.alimentary_restrictions,
+            date_of_birth=user.date_of_birth,
+            study=user.study,
+            work=user.work,
+            gender=user.gender.name if user.gender else None,
+            github=user.github,
+            linkedin=user.linkedin,
+            devpost=user.devpost,
+            webpage=user.webpage,
+            university=user.university,
+            degree=user.degree,
+            expected_graduation=user.expected_graduation,
+            current_job_role=user.current_job_role,
         )
 
     def _to_domain(self, user: ORMUser) -> User:
@@ -91,4 +105,18 @@ class ORMUserRepository(UserRepository):
             created_at=user.created_at,
             updated_at=user.updated_at,
             role=UserRoles[user.role],
+            tshirt=TShirtSizes[user.tshirt] if user.tshirt else None,
+            alimentary_restrictions=user.alimentary_restrictions,
+            date_of_birth=user.date_of_birth,
+            study=user.study,
+            work=user.work,
+            gender=GenderOptions[user.gender] if user.gender else None,
+            github=user.github,
+            linkedin=user.linkedin,
+            devpost=user.devpost,
+            webpage=user.webpage,
+            university=user.university,
+            degree=user.degree,
+            expected_graduation=user.expected_graduation,
+            current_job_role=user.current_job_role,
         )
