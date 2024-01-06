@@ -13,6 +13,13 @@ export interface RegisterFields {
   username: string;
   bio: string;
   profile_image: string;
+  date_of_birth: string;
+  current_job_role: string | null;
+  university: string | null;
+  degree: string | null;
+  expected_graduation: string | null;
+  study: boolean;
+  work: boolean;
 }
 
 export interface RegisterFormFields {
@@ -23,6 +30,11 @@ export interface RegisterFormFields {
   firstName: string;
   lastName: string;
   bio: string;
+  dateOfBirth: string;
+  currentJobRole: string;
+  university: string;
+  degree: string;
+  graduationYear: string;
 }
 
 export interface RegisterResponse {

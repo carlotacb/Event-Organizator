@@ -13,15 +13,21 @@ import {
 } from "../interfaces/Users";
 
 const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
+const baseImage =
+  "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D";
 
 export async function registerUser(
   data: RegisterFormFields,
+  isWorking: boolean,
+  isStudying: boolean,
 ): Promise<RegisterResponse> {
   try {
     await axios({
       method: "post",
       url: `${usersAPI}/new`,
-      data: JSON.stringify(serializerToRegisterFields(data)),
+      data: JSON.stringify(
+        serializerToRegisterFields(data, isWorking, isStudying),
+      ),
     });
     return { error: null };
   } catch (error: any) {
@@ -31,7 +37,11 @@ export async function registerUser(
   }
 }
 
-function serializerToRegisterFields(data: RegisterFormFields): RegisterFields {
+function serializerToRegisterFields(
+  data: RegisterFormFields,
+  isWorking: boolean,
+  isStudying: boolean,
+): RegisterFields {
   return {
     email: data.email,
     password: data.password,
@@ -39,8 +49,14 @@ function serializerToRegisterFields(data: RegisterFormFields): RegisterFields {
     last_name: data.lastName,
     username: data.username,
     bio: data.bio,
-    profile_image:
-      "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D",
+    profile_image: baseImage,
+    date_of_birth: data.dateOfBirth,
+    current_job_role: isWorking ? data.currentJobRole : null,
+    university: isStudying ? data.university : null,
+    degree: isStudying ? data.degree : null,
+    expected_graduation: isStudying ? data.graduationYear : null,
+    study: isStudying,
+    work: isWorking,
   };
 }
 
