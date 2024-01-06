@@ -18,14 +18,15 @@ export function dateToPlainString(date: Date) {
     .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
 }
 
-export function checkDate(dateAsString: string): {
+export function checkDateWithTime(dateAsString: string): {
   valid: boolean;
   error: string;
 } {
   const regex = /^(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2})$/;
 
   if (regex.test(dateAsString)) {
-    const { day, month, year, hours, minutes } = separateDate(dateAsString);
+    const { day, month, year, hours, minutes } =
+      separateDateWithTime(dateAsString);
 
     if (day < 1 || day > 31) {
       return { valid: false, error: "Invalid day. Please enter a valid day." };
@@ -55,6 +56,94 @@ export function checkDate(dateAsString: string): {
   };
 }
 
+export function checkDateBirth(dateAsString: string): {
+  valid: boolean;
+  error: string;
+} {
+  const regex = /^(\d{2}\/\d{2}\/\d{4})$/;
+
+  if (regex.test(dateAsString)) {
+    const { day, month, year } = separateDate(dateAsString);
+    const maxYear = new Date().getFullYear() - 12;
+
+    if (day < 1 || day > 31) {
+      return { valid: false, error: "Invalid day. Please enter a valid day." };
+    }
+    if (month < 0 || month > 11) {
+      return {
+        valid: false,
+        error: "Invalid month. Please enter a valid month.",
+      };
+    }
+    if (year > maxYear) {
+      return {
+        valid: false,
+        error: `Invalid year. The maximum year is ${maxYear}`,
+      };
+    }
+
+    const parsedDate = new Date(year, month, day);
+
+    if (!Number.isNaN(parsedDate.getTime())) {
+      return { valid: true, error: "" };
+    }
+
+    return {
+      valid: false,
+      error: "Invalid datetime. Please enter a valid datetime.",
+    };
+  }
+
+  return {
+    valid: false,
+    error: "Invalid datetime format. Please enter DD/MM/YYYY.",
+  };
+}
+
+export function checkDateGraduation(dateAsString: string): {
+  valid: boolean;
+  error: string;
+} {
+  const regex = /^(\d{2}\/\d{2}\/\d{4})$/;
+
+  if (regex.test(dateAsString)) {
+    const { day, month, year } = separateDate(dateAsString);
+    const thisYear = new Date().getFullYear();
+
+    if (day < 1 || day > 31) {
+      return { valid: false, error: "Invalid day. Please enter a valid day." };
+    }
+    if (month < 0 || month > 11) {
+      return {
+        valid: false,
+        error: "Invalid month. Please enter a valid month.",
+      };
+    }
+    if (year < thisYear) {
+      return {
+        valid: false,
+        error: `Invalid year. The minimum year is ${thisYear}`,
+      };
+    }
+
+    const parsedDate = new Date(year, month, day);
+
+    if (!Number.isNaN(parsedDate.getTime())) {
+      return { valid: true, error: "" };
+    }
+
+    return {
+      valid: false,
+      error: "Invalid datetime. Please enter a valid datetime.",
+    };
+  }
+
+  return {
+    valid: false,
+    error: "Invalid datetime format. Please enter DD/MM/YYYY.",
+  };
+}
+
 export function checkDateRange(
   startDate: string,
   endDate: string,
@@ -72,7 +161,7 @@ export function checkDateRange(
   return { valid: true, error: "" };
 }
 
-function separateDate(dateToSeparate: string): {
+function separateDateWithTime(dateToSeparate: string): {
   day: number;
   month: number;
   year: number;
@@ -95,6 +184,24 @@ function separateDate(dateToSeparate: string): {
     year,
     hours,
     minutes,
+  };
+}
+
+function separateDate(dateToSeparate: string): {
+  day: number;
+  month: number;
+  year: number;
+} {
+  const [dayString, monthString, yearString] = dateToSeparate.split("/");
+
+  const day = parseInt(dayString, 10);
+  const month = parseInt(monthString, 10) - 1;
+  const year = parseInt(yearString, 10);
+
+  return {
+    day,
+    month,
+    year,
   };
 }
 

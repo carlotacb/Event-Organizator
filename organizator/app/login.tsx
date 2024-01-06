@@ -6,7 +6,7 @@ import { SafeAreaView, Text, ScrollView, View, Pressable } from "react-native";
 import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
 import Input from "../components/Input";
-import Button from "../components/StyledButton";
+import Button from "../components/ButtonWithIcon";
 import { loginUser } from "../utils/api/axiosUsers";
 import { LoginResponse } from "../utils/interfaces/Users";
 import { getToken, storeToken } from "../utils/sessionCalls";
@@ -39,11 +39,11 @@ const ButtonContainer = styled(View)`
 
 const RegisterTextContainer = styled(View)`
   display: flex;
-  flex-direction: row;
-  gap: 5px;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 40px;
 `;
 
 const RegisterText = styled(Text)`
@@ -53,7 +53,9 @@ const RegisterText = styled(Text)`
 
 const RegisterButton = styled(Text)`
   font-weight: bold;
-  color: blue;
+  text-decoration: underline #6161e0;
+  font-size: 18px;
+  color: #6161e0;
 `;
 
 export default function LoginPage() {
@@ -76,22 +78,20 @@ export default function LoginPage() {
   });
 
   const validate = () => {
-    let isValid = false;
+    let isValid = true;
 
     if (!inputs.username) {
       handleError("Please enter your username", "username");
+      isValid = false;
     } else {
       handleError(undefined, "username");
     }
 
     if (!inputs.password) {
       handleError("Please enter a password", "password");
+      isValid = false;
     } else {
       handleError(undefined, "password");
-    }
-
-    if (errors.username === undefined && errors.password === undefined) {
-      isValid = true;
     }
 
     if (isValid) {
@@ -157,13 +157,26 @@ export default function LoginPage() {
               password
             />
             <ButtonContainer>
-              <Button title="Log in" onPress={validate} />
+              <Button
+                title="Log in"
+                onPress={validate}
+                iconName="sign-in"
+                color="#58a659"
+              />
             </ButtonContainer>
             <RegisterTextContainer>
               <RegisterText>You don't have an account yet? </RegisterText>
               <Link href="/register" asChild>
                 <Pressable>
                   <RegisterButton>Register now</RegisterButton>
+                </Pressable>
+              </Link>
+            </RegisterTextContainer>
+            <RegisterTextContainer>
+              <RegisterText>You don't to register now? </RegisterText>
+              <Link href="/" asChild>
+                <Pressable>
+                  <RegisterButton>HomePage</RegisterButton>
                 </Pressable>
               </Link>
             </RegisterTextContainer>
