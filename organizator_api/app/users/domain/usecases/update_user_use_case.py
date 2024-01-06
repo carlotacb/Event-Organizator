@@ -36,7 +36,7 @@ class UpdateUserUseCase:
             work=user_data.work if user_data.work is not None else original_user.work,
             university=user_data.university if user_data.university else original_user.university,
             degree=user_data.degree if user_data.degree else original_user.degree,
-            expected_graduation=datetime.strptime(user_data.date_of_birth, "%d/%m/%Y") if user_data.expected_graduation else original_user.expected_graduation,
+            expected_graduation=datetime.strptime(user_data.expected_graduation, "%d/%m/%Y") if user_data.expected_graduation else original_user.expected_graduation,
             current_job_role=user_data.current_job_role if user_data.current_job_role else original_user.current_job_role,
             tshirt=TShirtSizes[user_data.tshirt] if user_data.tshirt else original_user.tshirt,
             gender=GenderOptions[user_data.gender] if user_data.gender else original_user.gender,

@@ -126,7 +126,7 @@ class TestUpdateUserUseCase(ApiTests):
         self.assertEqual("Computer Science", user.degree)
         self.assertEqual(datetime(2024, 5, 1, 0, 0), user.expected_graduation)
         self.assertEqual(None, user.current_job_role)
-        self.assertEqual("XS", user.tshirt.value)
+        self.assertEqual("XS", user.tshirt.value) # type: ignore
         self.assertEqual(GenderOptions.FEMALE, user.gender)
         self.assertEqual("No restrictions", user.alimentary_restrictions)
         self.assertEqual("http://github.com/carlotacb", user.github)
