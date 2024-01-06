@@ -250,7 +250,7 @@ def update_my_user(request: HttpRequest) -> HttpResponse:
 def update_role(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
     token = request.headers.get("Authorization")
     if not token:
-        return HttpResponse(status=409, content="Unauthorized")
+        return HttpResponse(status=401, content="Unauthorized")
 
     try:
         token_to_uuid = uuid.UUID(token)
@@ -262,7 +262,7 @@ def update_role(request: HttpRequest, user_id: uuid.UUID) -> HttpResponse:
     try:
         role = json_body["role"]
     except (TypeError, KeyError):
-        return HttpResponse(status=400, content="Unexpected body")
+        return HttpResponse(status=422, content="Unexpected body")
 
     try:
         user = UpdateUserRoleUseCase().execute(
