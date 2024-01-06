@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone, date
 import bcrypt
 
-from app.events.domain.exceptions import MissingParametersToCreateUser
+from app.events.domain.exceptions import MissingWorkInformationToCreateUser, MissingStudyInformationToCreateUser
 from app.users.application.requests import CreateUserRequest
 from app.users.domain.models.user import User, UserRoles
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
@@ -18,10 +18,10 @@ class CreateUserUseCase:
         )
 
         if user_data.work and user_data.current_job_role is None:
-            raise MissingParametersToCreateUser
+            raise MissingWorkInformationToCreateUser
 
         if user_data.study and (user_data.university is None or user_data.degree is None or user_data.expected_graduation is None):
-            raise MissingParametersToCreateUser
+            raise MissingStudyInformationToCreateUser
 
         user = User(
             id=uuid.uuid4(),

@@ -5,5 +5,8 @@ class EventNotFound(Exception):
 class EventAlreadyExists(Exception):
     pass
 
-class MissingParametersToCreateUser(Exception):
+class MissingWorkInformationToCreateUser(Exception):
+    pass
+
+class MissingStudyInformationToCreateUser(Exception):
     pass

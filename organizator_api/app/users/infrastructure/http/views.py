@@ -4,6 +4,7 @@ import uuid
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 
+from app.events.domain.exceptions import MissingWorkInformationToCreateUser, MissingStudyInformationToCreateUser
 from app.users.application.requests import CreateUserRequest, UpdateUserRequest
 from app.users.application.response import UserResponse
 from app.users.domain.exceptions import (
@@ -38,8 +39,15 @@ def create_new_user(request: HttpRequest) -> HttpResponse:
         username = json_body["username"]
         bio = json_body["bio"]
         profile_image = json_body["profile_image"]
+        date_of_birth = json_body["date_of_birth"]
+        study = json_body["study"] if "study" in json_body else False
+        work = json_body["work"] if "work" in json_body else False
+        university = json_body["university"] if "university" in json_body else None
+        degree = json_body["degree"] if "degree" in json_body else None
+        expected_graduation = json_body["expected_graduation"] if "expected_graduation" in json_body else None
+        current_job_role = json_body["current_job_role"] if "current_job_role" in json_body else None
     except (TypeError, KeyError):
-        return HttpResponse(status=400, content="Unexpected body")
+        return HttpResponse(status=422, content="Unexpected body")
 
     user_data = CreateUserRequest(
         email=email,
@@ -49,10 +57,21 @@ def create_new_user(request: HttpRequest) -> HttpResponse:
         username=username,
         bio=bio,
         profile_image=profile_image,
+        date_of_birth=date_of_birth,
+        study=study,
+        work=work,
+        university=university,
+        degree=degree,
+        expected_graduation=expected_graduation,
+        current_job_role=current_job_role,
     )
 
     try:
         CreateUserUseCase().execute(user_data)
+    except MissingWorkInformationToCreateUser:
+        return HttpResponse(status=422, content="Missing work information to create user")
+    except MissingStudyInformationToCreateUser:
+        return HttpResponse(status=422, content="Missing study information to create user")
     except UserAlreadyExists:
         return HttpResponse(status=409, content="User already exists")
 
