@@ -287,9 +287,9 @@ def login(request: HttpRequest) -> HttpResponse:
     json_body = json.loads(request.body)
 
     if "username" not in json_body:
-        return HttpResponse(status=400, content="Username is required")
+        return HttpResponse(status=422, content="Username is required")
     if "password" not in json_body:
-        return HttpResponse(status=400, content="Password is required")
+        return HttpResponse(status=422, content="Password is required")
 
     username = json_body["username"]
     password = json_body["password"]
