@@ -1,9 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from app.users.domain.models.user import UserRoles
-
-
 @dataclass
 class CreateUserRequest:
     email: str
@@ -13,7 +10,13 @@ class CreateUserRequest:
     username: str
     bio: str
     profile_image: str
-    role: Optional[str] = UserRoles.PARTICIPANT.name
+    date_of_birth: str
+    study: bool
+    work: bool
+    university: Optional[str] = None
+    degree: Optional[str] = None
+    expected_graduation: Optional[str] = None
+    current_job_role: Optional[str] = None
 
 
 @dataclass
