@@ -23,7 +23,7 @@ class ORMUser(models.Model):
     updated_at = models.DateTimeField()
     tshirt = models.CharField(max_length=120, choices=TShirtSizes.choices(), null=True, default=None)
     alimentary_restrictions = models.CharField(max_length=255, null=True, default=None)
-    date_of_birth = models.DateTimeField(null=True, default=None)
+    date_of_birth = models.DateTimeField()
     study = models.BooleanField(default=False)
     work = models.BooleanField(default=False)
     gender = models.CharField(max_length=120, choices=GenderOptions.choices(), null=True, default=None)
