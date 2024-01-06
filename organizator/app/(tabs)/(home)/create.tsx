@@ -9,7 +9,7 @@ import Input from "../../../components/Input";
 import Button from "../../../components/ButtonWithIcon";
 import { createEvent } from "../../../utils/api/axiosEvents";
 import {
-  checkDate,
+  checkDateWithTime,
   checkDateRange,
   checkURL,
   dateToPlainString,
@@ -89,7 +89,7 @@ export default function CreatePage() {
       handleError("Please enter a starting date for the event", "startDate");
       isValid = false;
     } else {
-      const dateChecker = checkDate(inputs.startDate);
+      const dateChecker = checkDateWithTime(inputs.startDate);
       if (!dateChecker.valid) {
         handleError(dateChecker.error, "startDate");
         isValid = false;
@@ -112,7 +112,7 @@ export default function CreatePage() {
       handleError("Please enter a ending date for the event", "endDate");
       isValid = false;
     } else {
-      const dateChecker = checkDate(inputs.endDate);
+      const dateChecker = checkDateWithTime(inputs.endDate);
       if (!dateChecker.valid) {
         handleError(dateChecker.error, "endDate");
         isValid = false;
