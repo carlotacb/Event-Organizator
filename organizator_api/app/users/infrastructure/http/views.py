@@ -171,7 +171,7 @@ def get_role_by_token(request: HttpRequest) -> HttpResponse:
 def update_my_user(request: HttpRequest) -> HttpResponse:
     token = request.headers.get("Authorization")
     if not token:
-        return HttpResponse(status=409, content="Unauthorized")
+        return HttpResponse(status=401, content="Unauthorized")
 
     try:
         token_to_uuid = uuid.UUID(token)
@@ -181,15 +181,30 @@ def update_my_user(request: HttpRequest) -> HttpResponse:
     json_body = json.loads(request.body)
 
     if "email" in json_body:
-        return HttpResponse(status=400, content="The email cannot be updated")
+        return HttpResponse(status=403, content="The email cannot be updated")
     if "password" in json_body:
-        return HttpResponse(status=400, content="The password cannot be updated")
+        return HttpResponse(status=403, content="The password cannot be updated")
 
-    username = json_body["username"] if "username" in json_body else None
     first_name = json_body["first_name"] if "first_name" in json_body else None
     last_name = json_body["last_name"] if "last_name" in json_body else None
+    username = json_body["username"] if "username" in json_body else None
     bio = json_body["bio"] if "bio" in json_body else None
     profile_image = json_body["profile_image"] if "profile_image" in json_body else None
+    date_of_birth = json_body["date_of_birth"] if "date_of_birth" in json_body else None
+    study = json_body["study"] if "study" in json_body else None
+    work = json_body["work"] if "work" in json_body else None
+    university = json_body["university"] if "university" in json_body else None
+    degree = json_body["degree"] if "degree" in json_body else None
+    expected_graduation = json_body["expected_graduation"] if "expected_graduation" in json_body else None
+    current_job_role = json_body["current_job_role"] if "current_job_role" in json_body else None
+    tshirt = json_body["tshirt"] if "tshirt" in json_body else None
+    gender = json_body["gender"] if "gender" in json_body else None
+    alimentary_restrictions = json_body["alimentary_restrictions"] if "alimentary_restrictions" in json_body else None
+    github = json_body["github"] if "github" in json_body else None
+    linkedin = json_body["linkedin"] if "linkedin" in json_body else None
+    devpost = json_body["devpost"] if "devpost" in json_body else None
+    webpage = json_body["webpage"] if "webpage" in json_body else None
+
 
     user_data = UpdateUserRequest(
         username=username,
@@ -197,14 +212,32 @@ def update_my_user(request: HttpRequest) -> HttpResponse:
         last_name=last_name,
         bio=bio,
         profile_image=profile_image,
+        date_of_birth=date_of_birth,
+        study=study,
+        work=work,
+        university=university,
+        degree=degree,
+        expected_graduation=expected_graduation,
+        current_job_role=current_job_role,
+        tshirt=tshirt,
+        gender=gender,
+        alimentary_restrictions=alimentary_restrictions,
+        github=github,
+        linkedin=linkedin,
+        devpost=devpost,
+        webpage=webpage,
     )
 
     try:
-        user = UpdateUserUseCase().execute(token=token_to_uuid, user=user_data)
+        user = UpdateUserUseCase().execute(token=token_to_uuid, user_data=user_data)
+    except MissingWorkInformationToCreateUser:
+        return HttpResponse(status=422, content="Missing work information to create user")
+    except MissingStudyInformationToCreateUser:
+        return HttpResponse(status=422, content="Missing study information to create user")
     except UserNotFound:
         return HttpResponse(status=404, content="User does not exist")
     except UserAlreadyExists:
-        return HttpResponse(status=409, content="User already exists")
+        return HttpResponse(status=409, content="The username you are using is already taken")
 
     return HttpResponse(
         status=200,

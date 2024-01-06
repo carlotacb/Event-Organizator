@@ -14,10 +14,10 @@ class UpdateUserUseCase:
     def execute(self, token: uuid.UUID, user_data: UpdateUserRequest) -> User:
         original_user = self.user_repository.get_by_token(token)
 
-        if user_data.work and user_data.current_job_role is None:
+        if user_data.work and (user_data.current_job_role is None and original_user.current_job_role is None):
             raise MissingWorkInformationToCreateUser
 
-        if user_data.study and (user_data.university is None or user_data.degree is None or user_data.expected_graduation is None):
+        if user_data.study and ((user_data.university is None and original_user.university is None) or (user_data.degree is None and original_user.degree) or (user_data.expected_graduation is None and original_user.expected_graduation is None)):
             raise MissingStudyInformationToCreateUser
 
         new_user = User(
@@ -32,8 +32,8 @@ class UpdateUserUseCase:
             if user_data.profile_image
             else original_user.profile_image,
             date_of_birth=datetime.strptime(user_data.date_of_birth, "%d/%m/%Y") if user_data.date_of_birth else original_user.date_of_birth,
-            study=user_data.study if user_data.study else original_user.study,
-            work=user_data.work if user_data.work else original_user.work,
+            study=user_data.study if user_data.study is not None else original_user.study,
+            work=user_data.work if user_data.work is not None else original_user.work,
             university=user_data.university if user_data.university else original_user.university,
             degree=user_data.degree if user_data.degree else original_user.degree,
             expected_graduation=datetime.strptime(user_data.date_of_birth, "%d/%m/%Y") if user_data.expected_graduation else original_user.expected_graduation,

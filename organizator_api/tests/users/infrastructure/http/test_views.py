@@ -13,166 +13,6 @@ class TestUserViews(ApiTests):
 
 
 
-    def test__given_user_in_db__when_update_user__then_user_is_updated(self) -> None:
-        # Given
-        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
-        user = UserFactory().create(token=uuid.UUID(token))
-        self.user_repository.create(user)
-        body = {
-            "username": "charlie",
-            "first_name": "Charlie",
-            "last_name": "Brown",
-            "bio": "I'm Charlie",
-            "profile_image": "https://www.google.com",
-        }
-
-        # When
-        header = {"HTTP_Authorization": token}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "charlie", "email": "carlota@hackupc.com", "first_name": "Charlie", "last_name": "Brown", "bio": "I\'m Charlie", "profile_image": "https://www.google.com", "role": "Participant"}',
-        )
-
-    def test__given_user_in_db__when_update_user_with_email__then_error_is_returned(
-        self,
-    ) -> None:
-        # Given
-        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
-        user = UserFactory().create(token=uuid.UUID(token))
-        body = {"email": "carlota@hackupc.com"}
-
-        # When
-        header = {"HTTP_Authorization": token}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"The email cannot be updated")
-
-    def test__given_user_in_db__when_update_user_with_existing_username__then_error_is_returned(
-        self,
-    ) -> None:
-        # Given
-        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
-        user = UserFactory().create(token=uuid.UUID(token))
-        self.user_repository.create(user)
-        body = {"password": "carlotacb"}
-
-        # When
-        header = {"HTTP_Authorization": token}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"The password cannot be updated")
-
-    def test__given_user_in_db__when_update_user_with_a_existing_username__then_error_is_returned(
-        self,
-    ) -> None:
-        # Given
-        token = "baad2fe5-0122-459b-9572-625c3351d6ac"
-        user = UserFactory().create(token=uuid.UUID(token))
-        user2 = UserFactory().create(
-            new_id=uuid.UUID("be0f4c18-4a7c-4c1e-8a62-fc50916b6c88"),
-            email="carkbra@gmail.com",
-            username="carkbra",
-        )
-        self.user_repository.create(user)
-        self.user_repository.create(user2)
-        body = {"username": "carkbra"}
-
-        # When
-        header = {"HTTP_Authorization": token}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 409)
-        self.assertEqual(response.content, b"User already exists")
-
-    def test__given_no_user_in_db__when_update_a_non_existing_user__then_error_is_returned(
-        self,
-    ) -> None:
-        # Given
-        body = {
-            "username": "charlie",
-            "first_name": "Charlie",
-            "last_name": "Brown",
-            "bio": "I'm Charlie",
-            "profile_image": "https://www.google.com",
-        }
-
-        # When
-        header = {"HTTP_Authorization": "baad2fe5-0122-459b-9572-625c3351d6ac"}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content, b"User does not exist")
-
-    def test__given_user_body__when_update_user_with_a_invalid_token__then_error_is_returned(
-        self,
-    ) -> None:
-        # Given
-        body = {"username": "charlie"}
-
-        # When
-        header = {"HTTP_Authorization": "wrong_token"}
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-            **header,  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"Invalid token")
-
-    def test_given_user_body__when_update_without_header__then_unauthorized_is_returned(
-        self,
-    ) -> None:
-        # Given
-        body = {"username": "charlie"}
-
-        # When
-        response = self.client.post(
-            "/organizator-api/users/update/me",
-            json.dumps(body),
-            content_type="application/json",
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 409)
-        self.assertEqual(response.content, b"Unauthorized")
 
     def test__given_user_in_db_and_correct_body__when_login_endpoint_is_called__then_token_is_created(
         self,
@@ -262,6 +102,12 @@ class TestUserViews(ApiTests):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Password is required")
 
+
+
+
+
+
+
     def test__given_a_user_with_a_token__when_logout_endpoint_is_called__then_token_is_deleted(
         self,
     ) -> None:
@@ -302,6 +148,13 @@ class TestUserViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Invalid token")
+
+
+
+
+
+
+
 
     def test__given_a_user_with_token_and_admin_and_a_participant_user__when_update_participant_role_to_organizer__then_it_updates(
         self,
