@@ -150,6 +150,33 @@ class TestCreateUserUseCase(ApiTests):
         with self.assertRaises(MissingParametersToCreateUser):
             CreateUserUseCase().execute(user_data)
 
+    def test__given_create_user_with_study_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(
+        self,
+    ) -> None:
+        # Given
+        user_data = CreateUserRequest(
+            email="carlota@hackupc.com",
+            password="1234",
+            first_name="Carlota",
+            last_name="Catot",
+            username="CarLota",
+            bio="I'm a cat",
+            profile_image="https://www.hacknights.dev/images/hacknight.png",
+            study=True,
+            work=False,
+            date_of_birth="07/05/1996",
+            university="Universitat Politècnica de Catalunya",
+            degree="Computer Science",
+            expected_graduation="01/05/2024"
+        )
+
+        # When
+        CreateUserUseCase().execute(user_data)
+
+        # Then
+        users = self.user_repository.get_all()
+        self.assertEqual(len(users), 1)
+
     def test__given_create_user_with_work_true_if_current_job_role_is_not_defined__when_create_user__then_MissingParametersToCreateUser_exception_is_raised(
         self,
     ) -> None:
@@ -170,3 +197,27 @@ class TestCreateUserUseCase(ApiTests):
         # When / Then
         with self.assertRaises(MissingParametersToCreateUser):
             CreateUserUseCase().execute(user_data)
+
+    def test__given_create_user_with_work_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(self) -> None:
+
+        # Given
+        user_data = CreateUserRequest(
+            email="carlota@hackupc.com",
+            password="1234",
+            first_name="Carlota",
+            last_name="Catot",
+            username="CarLota",
+            bio="I'm a cat",
+            profile_image="https://www.hacknights.dev/images/hacknight.png",
+            study=False,
+            work=True,
+            date_of_birth="07/05/1996",
+            current_job_role="Software Engineer"
+        )
+
+        # When
+        CreateUserUseCase().execute(user_data)
+
+        # Then
+        users = self.user_repository.get_all()
+        self.assertEqual(len(users), 1)
