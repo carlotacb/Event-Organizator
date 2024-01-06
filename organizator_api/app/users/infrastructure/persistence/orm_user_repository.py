@@ -52,9 +52,24 @@ class ORMUserRepository(UserRepository):
             orm_user.username = user.username
             orm_user.bio = user.bio
             orm_user.profile_image = user.profile_image
-            orm_user.updated_at = user.updated_at
-            orm_user.token = user.token
             orm_user.role = UserRoles(user.role).name
+            orm_user.updated_at = user.updated_at
+            orm_user.date_of_birth = user.date_of_birth
+            orm_user.study = user.study
+            orm_user.work = user.work
+            orm_user.university = user.university
+            orm_user.degree = user.degree
+            orm_user.expected_graduation = user.expected_graduation
+            orm_user.current_job_role = user.current_job_role
+            orm_user.tshirt = TShirtSizes(user.tshirt).name if user.tshirt else None
+            orm_user.gender = GenderOptions(user.gender).name if user.gender else None
+            orm_user.alimentary_restrictions = user.alimentary_restrictions
+            orm_user.github = user.github
+            orm_user.linkedin = user.linkedin
+            orm_user.devpost = user.devpost
+            orm_user.webpage = user.webpage
+            orm_user.token = user.token
+
             orm_user.save()
         except ORMUser.DoesNotExist:
             raise UserNotFound()

@@ -1,22 +1,13 @@
 import uuid
-from datetime import datetime
 
-from app.users.domain.exceptions import UserAlreadyExists, UserNotFound, UserNotLoggedIn
+from app.users.domain.exceptions import UserNotFound, UserAlreadyExists
 from app.users.domain.models.user import UserRoles
-from app.users.infrastructure.persistence.models.orm_user import ORMUser
 from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from tests.api_tests import ApiTests
 from tests.users.domain.UserFactory import UserFactory
 
 
-class TestORMUserRepository(ApiTests):
-
-
-
-
-
-
-
+class TestORMUserRepositoryUpdate(ApiTests):
     def test__given_a_user__when_update__then_user_is_updated(self) -> None:
         # Given
         user = UserFactory().create()
