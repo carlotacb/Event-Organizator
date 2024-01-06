@@ -4,3 +4,11 @@ class EventNotFound(Exception):
 
 class EventAlreadyExists(Exception):
     pass
+
+
+class MissingWorkInformationToCreateUser(Exception):
+    pass
+
+
+class MissingStudyInformationToCreateUser(Exception):
+    pass
