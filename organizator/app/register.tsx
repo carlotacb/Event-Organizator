@@ -21,16 +21,17 @@ const Container = styled(SafeAreaView)`
 `;
 
 const Title = styled(Text)`
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   color: black;
   text-align: center;
+  text-transform: uppercase;
 `;
 
 const SubTitle = styled(Text)`
-  font-size: 18px;
+  font-size: 15px;
   color: gray;
-  margin: 5px 0 20px 0;
+  margin: 10px 0 30px 0;
   text-align: center;
 `;
 
@@ -234,15 +235,17 @@ export default function RegisterPage() {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <ScrollView
+        contentContainerStyle={{ paddingVertical: 30, paddingHorizontal: 20 }}
+      >
         {loading ? (
           <LoadingPage />
         ) : (
           <>
-            <Title>Welcome!</Title>
+            <Title>Welcome on board</Title>
             <SubTitle>
-              We are happy to have you here! Please fill in the following
-              details
+              To be able to register in our events we need some information
+              about you!
             </SubTitle>
             <Input
               label="Username"

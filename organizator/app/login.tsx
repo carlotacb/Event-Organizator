@@ -78,22 +78,20 @@ export default function LoginPage() {
   });
 
   const validate = () => {
-    let isValid = false;
+    let isValid = true;
 
     if (!inputs.username) {
       handleError("Please enter your username", "username");
+      isValid = false;
     } else {
       handleError(undefined, "username");
     }
 
     if (!inputs.password) {
       handleError("Please enter a password", "password");
+      isValid = false;
     } else {
       handleError(undefined, "password");
-    }
-
-    if (errors.username === undefined && errors.password === undefined) {
-      isValid = true;
     }
 
     if (isValid) {
@@ -171,6 +169,14 @@ export default function LoginPage() {
               <Link href="/register" asChild>
                 <Pressable>
                   <RegisterButton>Register now</RegisterButton>
+                </Pressable>
+              </Link>
+            </RegisterTextContainer>
+            <RegisterTextContainer>
+              <RegisterText>You don't to register now? </RegisterText>
+              <Link href="/" asChild>
+                <Pressable>
+                  <RegisterButton>HomePage</RegisterButton>
                 </Pressable>
               </Link>
             </RegisterTextContainer>
