@@ -8,7 +8,7 @@ from tests.api_tests import ApiTests
 class TestViewCreateNewUser(ApiTests):
     def setUp(self) -> None:
         super().setUp()
-        self.event_repository.clear()
+        self.user_repository.clear()
 
     def test__given_unexpected_body__when_create_user__then_unexpected_body_is_returned(
         self,
