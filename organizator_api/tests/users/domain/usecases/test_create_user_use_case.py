@@ -1,6 +1,6 @@
 from datetime import date
 
-from app.events.domain.exceptions import MissingParametersToCreateUser
+from app.events.domain.exceptions import MissingStudyInformationToCreateUser, MissingWorkInformationToCreateUser
 from app.users.application.requests import CreateUserRequest
 from app.users.domain.models.user import UserRoles
 from app.users.domain.usecases.create_user_use_case import CreateUserUseCase
@@ -102,7 +102,7 @@ class TestCreateUserUseCase(ApiTests):
         )
 
         # When / Then
-        with self.assertRaises(MissingParametersToCreateUser):
+        with self.assertRaises(MissingStudyInformationToCreateUser):
             CreateUserUseCase().execute(user_data)
 
     def test__given_create_user_with_study_true_if_degree_is_not_defined__when_create_user__then_MissingParametersToCreateUser_exception_is_raised(
@@ -124,7 +124,7 @@ class TestCreateUserUseCase(ApiTests):
         )
 
         # When / Then
-        with self.assertRaises(MissingParametersToCreateUser):
+        with self.assertRaises(MissingStudyInformationToCreateUser):
             CreateUserUseCase().execute(user_data)
 
     def test__given_create_user_with_study_true_if_expected_graduation_is_not_defined__when_create_user__then_MissingParametersToCreateUser_exception_is_raised(
@@ -147,7 +147,7 @@ class TestCreateUserUseCase(ApiTests):
         )
 
         # When / Then
-        with self.assertRaises(MissingParametersToCreateUser):
+        with self.assertRaises(MissingStudyInformationToCreateUser):
             CreateUserUseCase().execute(user_data)
 
     def test__given_create_user_with_study_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(
@@ -195,7 +195,7 @@ class TestCreateUserUseCase(ApiTests):
         )
 
         # When / Then
-        with self.assertRaises(MissingParametersToCreateUser):
+        with self.assertRaises(MissingWorkInformationToCreateUser):
             CreateUserUseCase().execute(user_data)
 
     def test__given_create_user_with_work_true_and_all_the_required_parameters__when_create_user__then_the_user_is_created(self) -> None:
