@@ -3,24 +3,10 @@ import { View, Text, TextInput, TextInputProps, Platform } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import InputLabel from "./InputLabel";
 
 const Container = styled(View)`
   margin-bottom: 20px;
-`;
-
-const TextContainerRow = styled(View)`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-`;
-
-const TextLabel = styled(Text)`
-  margin-bottom: 8px;
-  margin-left: 15px;
-`;
-
-const TextRequiredLabel = styled(Text)`
-  color: red;
 `;
 
 const TextError = styled(Text)`
@@ -36,6 +22,12 @@ const ErrorIcon = styled(FontAwesome)`
   margin-left: 15px;
 `;
 
+const TextContainerRow = styled(View)`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
+
 const TextInputContainer = styled(View)<{
   isFocus: boolean;
   disabled: boolean;
@@ -45,11 +37,11 @@ const TextInputContainer = styled(View)<{
   align-items: center;
   background-color: ${(props: { isFocus: boolean; disabled: boolean }) =>
     props.isFocus ? "transparent" : props.disabled ? "#969696" : "#eaeaea"};
-  border-radius: 20px;
+  border-radius: 15px;
   border-width: 2px;
   border-color: ${(props: { isFocus: boolean }) =>
     props.isFocus ? "#a9a9a9" : "#eaeaea"};
-  padding: 5px 20px;
+  padding: 3px 20px;
 `;
 
 const InputStyled = styled(TextInput)<{
@@ -92,12 +84,7 @@ export default function Input(props: InputProps) {
 
   return (
     <Container>
-      {disabled ? null : (
-        <TextContainerRow>
-          <TextLabel>{label}</TextLabel>
-          <TextRequiredLabel>{required ? "*" : ""}</TextRequiredLabel>
-        </TextContainerRow>
-      )}
+      {disabled ? null : <InputLabel label={label} required={required} />}
       <TextInputContainer isFocus={isFocused} error={error} disabled={disabled}>
         {iconName && <InputIcon name={iconName} disabled={disabled} />}
         <InputStyled
