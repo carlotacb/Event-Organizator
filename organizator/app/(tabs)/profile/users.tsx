@@ -46,6 +46,7 @@ const ButtonsContainer = styled(View)`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  gap: 5px;
   margin-bottom: 20px;
 `;
 
