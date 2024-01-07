@@ -217,6 +217,39 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
   }
 >
   <View
+    style={
+      [
+        {
+          "display": "flex",
+          "flexDirection": "row",
+          "gap": 5,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "marginBottom": 8,
+            "marginLeft": 15,
+          },
+        ]
+      }
+    >
+      username
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "red",
+          },
+        ]
+      }
+    />
+  </View>
+  <View
     disabled={true}
     isFocus={false}
     style={

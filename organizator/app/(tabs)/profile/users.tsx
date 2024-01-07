@@ -5,6 +5,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import { Dialog } from "react-native-simple-dialogs";
+import { router } from "expo-router";
 import {
   getAllUsersRoles,
   updateRoleForUser,
@@ -12,7 +13,7 @@ import {
 import { UserRoleInformation } from "../../../utils/interfaces/Users";
 import LoadingPage from "../../../components/LodingPage";
 import Button from "../../../components/ButtonWithIcon";
-import { getToken } from "../../../utils/sessionCalls";
+import { getToken, removeToken } from "../../../utils/sessionCalls";
 import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
@@ -46,6 +47,7 @@ const ButtonsContainer = styled(View)`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  gap: 5px;
   margin-bottom: 20px;
 `;
 
@@ -81,36 +83,46 @@ export default function AllUsers() {
       return updateRoleForUser(idToUpdate || "", token || "", role);
     };
 
-    fetchData()
-      .then((response) => {
-        Toast.show({
-          type: "success",
-          text1: "Role updated",
-          text2: `The user ${response.user?.username} has been updated to ${role}`,
-          visibilityTime: 3000,
-          autoHide: true,
-        });
-        setAlertVisible(false);
-        setIdToUpdate(null);
-        setActive(() => ({
-          all: true,
-          organizerAdmin: false,
-          organizer: false,
-          participant: false,
-        }));
-        setTrigger(!trigger);
-      })
-      .catch((error) => {
+    fetchData().then((response) => {
+      if (response.error) {
+        if (response.error === "Only authorized to organizer admin") {
+          router.back();
+        }
+        if (
+          response.error === "Unauthorized" ||
+          response.error === "Invalid token" ||
+          response.error === "User does not exist"
+        ) {
+          removeToken();
+          router.replace("/login");
+        }
         setAlertVisible(false);
         setIdToUpdate(null);
         Toast.show({
           type: "error",
           text1: "Error",
-          text2: `The user has not been updated because ${error}`,
+          text2: `The user has not been updated because ${response.error}`,
           visibilityTime: 3000,
           autoHide: true,
         });
+      }
+      Toast.show({
+        type: "success",
+        text1: "Role updated",
+        text2: `The user ${response.user?.username} has been updated to ${role}`,
+        visibilityTime: 3000,
+        autoHide: true,
       });
+      setAlertVisible(false);
+      setIdToUpdate(null);
+      setActive(() => ({
+        all: true,
+        organizerAdmin: false,
+        organizer: false,
+        participant: false,
+      }));
+      setTrigger(!trigger);
+    });
   };
 
   return (
