@@ -68,7 +68,7 @@ const EyeIcon = styled(FontAwesome)`
 `;
 
 interface InputProps extends TextInputProps {
-  label: string;
+  label?: string;
   error?: string;
   iconName?: string | never;
   password?: boolean;
@@ -84,7 +84,9 @@ export default function Input(props: InputProps) {
 
   return (
     <Container>
-      {disabled ? null : <InputLabel label={label} required={required} />}
+      {disabled && !label ? null : (
+        <InputLabel label={label || ""} required={required} />
+      )}
       <TextInputContainer isFocus={isFocused} error={error} disabled={disabled}>
         {iconName && <InputIcon name={iconName} disabled={disabled} />}
         <InputStyled
