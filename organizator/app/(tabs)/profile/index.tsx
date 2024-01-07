@@ -183,13 +183,12 @@ export default function Index() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const t = await getToken();
-      if (t === null) {
-        router.replace("/login");
+      const tkn = await getToken();
+      if (tkn !== null) {
+        setToken(tkn);
       }
 
-      setToken(t);
-      return getMyInformation(t);
+      return getMyInformation(tkn);
     };
 
     fetchData().then((response) => {
