@@ -2,6 +2,7 @@ from unittest import mock
 
 from django.test import TestCase
 
+from tests.applications.mocks.application_repository_mock import ApplicationRepositoryMock
 from tests.events.mocks.event_repository_mock import EventRepositoryMock
 from tests.users.mocks.user_repository_mock import UserRepositoryMock
 
@@ -26,7 +27,16 @@ class ApiTests(TestCase):
         )
         self.user_repository_patcher.start()
 
+        # Applications
+        self.application_repository = ApplicationRepositoryMock()
+        self.application_repository_patcher = mock.patch(
+            "app.applications.infrastructure.repository_factories.ApplicationRepositoryFactory.create",
+            return_value=self.application_repository,
+        )
+        self.application_repository_patcher.start()
+
     def tearDown(self) -> None:
         super().tearDown()
         self.event_repository_patcher.stop()
         self.user_repository_patcher.stop()
+        self.application_repository_patcher.stop()
