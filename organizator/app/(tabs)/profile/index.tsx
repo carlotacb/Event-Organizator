@@ -227,11 +227,11 @@ export default function Index() {
             response.userInformation?.alimentaryRestrictions !==
               "Gluten free" &&
             response.userInformation?.alimentaryRestrictions !==
-              "NO_RESTRICTIONS" &&
+              "No restrictions" &&
             response.userInformation?.alimentaryRestrictions !== null,
           NOTHING:
             response.userInformation?.alimentaryRestrictions ===
-            "NO_RESTRICTIONS",
+            "No restrictions",
         });
         setInputs({
           firstName: response.userInformation?.firstName || "",
@@ -346,6 +346,14 @@ export default function Index() {
     updateMyInformation(inputs, token || "", isStudying, isWorking).then(
       (response) => {
         if (response.error) {
+          if (
+            response.error === "Invalid token" ||
+            response.error === "Unauthorized" ||
+            response.error === "User does not exist"
+          ) {
+            removeToken();
+            router.replace("/login");
+          }
           setLoading(false);
           Toast.show({
             type: "error",
@@ -726,7 +734,7 @@ export default function Index() {
                       OTHER: false,
                       NOTHING: false,
                     });
-                    handleOnChange("VEGAN", "alimentaryRestrictions");
+                    handleOnChange("Vegan", "alimentaryRestrictions");
                   }}
                   color="dimgray"
                   active={activeDiet.VEGAN}
@@ -741,7 +749,7 @@ export default function Index() {
                       OTHER: false,
                       NOTHING: false,
                     });
-                    handleOnChange("VEGETARIAN", "alimentaryRestrictions");
+                    handleOnChange("Vegeterian", "alimentaryRestrictions");
                   }}
                   color="dimgray"
                   active={activeDiet.VEGETARIAN}
@@ -756,7 +764,7 @@ export default function Index() {
                       OTHER: false,
                       NOTHING: false,
                     });
-                    handleOnChange("GLUTEN_FREE", "alimentaryRestrictions");
+                    handleOnChange("Gluten free", "alimentaryRestrictions");
                   }}
                   color="dimgray"
                   active={activeDiet.GLUTEN_FREE}
@@ -771,7 +779,7 @@ export default function Index() {
                       NOTHING: true,
                       OTHER: false,
                     });
-                    handleOnChange("NO_RESTRICTIONS", "alimentaryRestrictions");
+                    handleOnChange("No restrictions", "alimentaryRestrictions");
                   }}
                   color="dimgray"
                   active={activeDiet.NOTHING}
