@@ -319,8 +319,7 @@ export default function RegisterPage() {
               error={errors.bio}
             />
 
-            <InputLabel label={"Currently I'm..."} required />
-
+            <InputLabel label="Currently I'm..." required />
             <ButtonsWSContainer>
               <FilterButton
                 title="Study"
