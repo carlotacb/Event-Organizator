@@ -106,7 +106,7 @@ export default function LoginPage() {
       if (response.error) {
         Toast.show({
           type: "error",
-          text1: "There is an error!!",
+          text1: "Error",
           text2: response.error,
         });
       } else {
