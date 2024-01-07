@@ -60,6 +60,20 @@ export interface UserInformation {
   readonly bio: string;
   readonly profileImage: string;
   readonly role: string;
+  readonly tShirtSize: string;
+  readonly alimentaryRestrictions: string;
+  readonly dateOfBirth: string;
+  readonly gender: string;
+  readonly github: string;
+  readonly linkedin: string;
+  readonly devpost: string;
+  readonly webpage: string;
+  readonly study: boolean;
+  readonly university: string;
+  readonly degree: string;
+  readonly expectedGraduation: string;
+  readonly work: boolean;
+  readonly currentJobRole: string;
 }
 
 export interface UserInformationResponse {
@@ -71,6 +85,18 @@ export interface UpdateFormFields {
   firstName: string;
   lastName: string;
   bio: string;
+  tShirtSize: string;
+  alimentaryRestrictions: string;
+  dateOfBirth: string;
+  gender: string;
+  github: string;
+  linkedin: string;
+  devpost: string;
+  webpage: string;
+  university: string;
+  degree: string;
+  expectedGraduation: string;
+  currentJobRole: string;
 }
 
 export interface GetRoleResponse {
