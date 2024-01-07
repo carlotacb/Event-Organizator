@@ -16,6 +16,8 @@ class ApplicationRepositoryMock(ApplicationRepository):
 
         self.applications.append(application)
 
+    def get_all(self) -> List[Application]:
+        return self.applications
 
     def clear(self) -> None:
         self.applications = []
