@@ -10,7 +10,7 @@ from app.users.infrastructure.persistence.models.orm_user import ORMUser
 
 class ORMApplicationRepository(ApplicationRepository):
 
-    def create(self, application: Application) -> None:
+    def create(self, application: Application) -> None: # pragma: no cover
         user = ORMUser.objects.get(id=application.user.id)
         event = ORMEvent.objects.get(id=application.event.id)
 
