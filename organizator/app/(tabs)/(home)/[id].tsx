@@ -257,7 +257,7 @@ export default function EventPage() {
     }
   };
 
-  const applyToEvent = (eventId: string) => {
+  const applyToEvent = () => {
     const fetchData = async () => {
       const token = await getToken();
       // @ts-ignore
@@ -481,7 +481,7 @@ export default function EventPage() {
         <ApplyButtonContainer>
           <ApplyButton
             onPress={() => {
-              applyToEvent(events?.id || "");
+              applyToEvent();
             }}
           >
             <ApplyButtonText>Apply now</ApplyButtonText>
