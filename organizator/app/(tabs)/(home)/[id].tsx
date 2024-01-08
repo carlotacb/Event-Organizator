@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Link, router, useLocalSearchParams } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
@@ -20,6 +20,7 @@ import Button from "../../../components/ButtonWithIcon";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
+import { createNewApplication } from "../../../utils/api/axiosApplications";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -75,6 +76,30 @@ const ButtonsContainer = styled.View`
   justify-content: center;
 `;
 
+const ApplyButtonContainer = styled(View)`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  align-items: center;
+  display: flex;
+`;
+
+const ApplyButton = styled(Pressable)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 30px;
+  border-radius: 20px;
+  gap: 10px;
+  background-color: #58a659;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+`;
+
+const ApplyButtonText = styled.Text`
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+`;
+
 export default function EventPage() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = React.useState(true);
@@ -99,6 +124,7 @@ export default function EventPage() {
   });
   const [isOrganizer, setIsOrganizer] = React.useState(false);
   const [isOrganizerAdmin, setIsOrganizerAdmin] = React.useState(false);
+  const [isParticipant, setIsParticipant] = React.useState(false);
 
   useEffect(() => {
     // @ts-ignore
@@ -124,6 +150,7 @@ export default function EventPage() {
     fetchRoleFunction().then((response) => {
       setIsOrganizer(response.role === UserRoles.ORGANIZER);
       setIsOrganizerAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
+      setIsParticipant(response.role === UserRoles.PARTICIPANT);
     });
   }, []);
 
@@ -228,6 +255,32 @@ export default function EventPage() {
         }
       });
     }
+  };
+
+  const applyToEvent = () => {
+    const fetchData = async () => {
+      const token = await getToken();
+      // @ts-ignore
+      return createNewApplication(id, token || "");
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: response.error,
+          visibilityTime: 2000,
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "You have applied to this event",
+          visibilityTime: 2000,
+        });
+      }
+    });
   };
 
   return (
@@ -424,6 +477,17 @@ export default function EventPage() {
           onRequestClose={() => setShowAlert(false)}
         />
       </ScrollView>
+      {!loading && !events?.deleted && isParticipant && (
+        <ApplyButtonContainer>
+          <ApplyButton
+            onPress={() => {
+              applyToEvent();
+            }}
+          >
+            <ApplyButtonText>Apply now</ApplyButtonText>
+          </ApplyButton>
+        </ApplyButtonContainer>
+      )}
       <Toast />
     </Container>
   );

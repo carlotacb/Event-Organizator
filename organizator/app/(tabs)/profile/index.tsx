@@ -303,15 +303,15 @@ export default function Index() {
     }
 
     if (!inputs.expectedGraduation && isStudying) {
-      handleError("Please enter your graduation year", "graduationYear");
+      handleError("Please enter your graduation year", "expectedGraduation");
       isValid = false;
     } else {
       const dateChecker = checkDateGraduation(inputs.expectedGraduation);
       if (!dateChecker.valid && isStudying) {
-        handleError(dateChecker.error, "graduationYear");
+        handleError(dateChecker.error, "expectedGraduation");
         isValid = false;
       } else {
-        handleError(undefined, "graduationYear");
+        handleError(undefined, "expectedGraduations");
       }
     }
 
