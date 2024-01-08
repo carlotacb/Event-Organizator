@@ -4,7 +4,7 @@ from app.applications.domain.exceptions import ApplicationAlreadyExists
 from app.applications.domain.models.application import Application
 from app.applications.domain.repositories import ApplicationRepository
 from app.applications.infrastructure.persistence.models.orm_application import (
-    ORMApplication,
+    ORMEventApplication,
 )
 from app.events.infrastructure.persistence.models.orm_event import ORMEvent
 from app.users.infrastructure.persistence.models.orm_user import ORMUser
@@ -16,7 +16,7 @@ class ORMApplicationRepository(ApplicationRepository):
         event = ORMEvent.objects.get(id=application.event.id)
 
         try:
-            ORMApplication(
+            ORMEventApplication(
                 id=application.id,
                 user=user,
                 event=event,
