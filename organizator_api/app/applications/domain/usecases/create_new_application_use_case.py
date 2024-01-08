@@ -16,14 +16,14 @@ class CreateNewApplicationUseCase:
 
     def execute(self, token: uuid.UUID, event_id: uuid.UUID) -> None:
         user = GetUserByTokenUseCase().execute(token=token)
-        event = GetEventUseCase().execute(event_id=event_id)
-
         if (
             user.gender is None
             or user.tshirt is None
             or user.alimentary_restrictions is None
         ):
             raise ProfileNotComplete
+
+        event = GetEventUseCase().execute(event_id=event_id)
 
         application = Application(
             id=uuid.uuid4(),

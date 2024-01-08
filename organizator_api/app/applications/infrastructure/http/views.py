@@ -4,7 +4,10 @@ import uuid
 from django.http import HttpResponse, HttpRequest
 from django.views.decorators.http import require_http_methods
 
-from app.applications.domain.exceptions import ProfileNotComplete
+from app.applications.domain.exceptions import (
+    ProfileNotComplete,
+    ApplicationAlreadyExists,
+)
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
@@ -33,13 +36,15 @@ def create_new_application(request: HttpRequest) -> HttpResponse:
     try:
         CreateNewApplicationUseCase().execute(
             token=token_to_uuid,
-            event_id=event_id,
+            event_id=uuid.UUID(event_id),
         )
-    except ProfileNotComplete:
-        return HttpResponse(status=422, content="Profile not complete")
     except UserNotFound:
         return HttpResponse(status=404, content="User not found")
+    except ProfileNotComplete:
+        return HttpResponse(status=422, content="Profile not complete")
     except EventNotFound:
         return HttpResponse(status=404, content="Event not found")
+    except ApplicationAlreadyExists:
+        return HttpResponse(status=409, content="Application already exists")
 
     return HttpResponse(status=201, content="Application created correctly")
