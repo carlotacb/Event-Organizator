@@ -136,6 +136,16 @@ export async function getMyInformation(
   }
 }
 
+function parseCorrectGender(gender: string): string {
+  let parsed = gender;
+  if (gender === "Male") parsed = "MALE";
+  if (gender === "Female") parsed = "FEMALE";
+  if (gender === "No-binary") parsed = "NO_BINARY";
+  if (gender === "Prefer not to say") parsed = "PREFER_NOT_TO_SAY";
+
+  return parsed;
+}
+
 export async function updateMyInformation(
   data: UpdateFormFields,
   token: string,
@@ -153,7 +163,7 @@ export async function updateMyInformation(
         tshirt: data.tShirtSize,
         alimentary_restrictions: data.alimentaryRestrictions,
         date_of_birth: data.dateOfBirth,
-        gender: data.gender,
+        gender: parseCorrectGender(data.gender),
         github: data.github,
         linkedin: data.linkedin,
         devpost: data.devpost,
