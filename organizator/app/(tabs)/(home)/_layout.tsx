@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { Platform } from "react-native";
 
 export default function EventsLayout() {
   return (
@@ -13,7 +14,11 @@ export default function EventsLayout() {
       />
       <Stack.Screen
         name="[id]"
-        options={{ headerShown: false, presentation: "modal" }}
+        options={{
+          headerShown: Platform.OS === "web",
+          presentation: "modal",
+          headerTitle: "",
+        }}
       />
       <Stack.Screen
         name="create"
