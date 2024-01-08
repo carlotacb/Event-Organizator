@@ -10,7 +10,9 @@ from app.events.infrastructure.repository_factories import EventRepositoryFactor
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
-from tests.applications.mocks.application_repository_mock import ApplicationRepositoryMock
+from tests.applications.mocks.application_repository_mock import (
+    ApplicationRepositoryMock,
+)
 from tests.events.domain.EventFactory import EventFactory
 from tests.events.mocks.event_repository_mock import EventRepositoryMock
 from tests.users.domain.UserFactory import UserFactory
@@ -51,7 +53,13 @@ class ApiTests(TestCase):
         self.user_repository_patcher.stop()
         self.application_repository_patcher.stop()
 
-    def given_user_in_repository(self, new_id: uuid.UUID, email: str, username: str, token: Optional[uuid.UUID] = None) -> User:
+    def given_user_in_repository(
+        self,
+        new_id: uuid.UUID,
+        email: str,
+        username: str,
+        token: Optional[uuid.UUID] = None,
+    ) -> User:
         user = UserFactory.create(
             new_id=new_id,
             email=email,

@@ -11,7 +11,7 @@ class ApplicationRepositoryMock(ApplicationRepository):
 
     def create(self, application: Application) -> None:
         for a in self.applications:
-            if application.user_id == a.user_id and application.event_id == a.event_id:
+            if application.user.id == a.user.id and application.event.id == a.event.id:
                 raise ApplicationAlreadyExists
 
         self.applications.append(application)
