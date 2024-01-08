@@ -1,9 +1,19 @@
+import uuid
+from typing import Optional
 from unittest import mock
 
 from django.test import TestCase
 
+from app.events.domain.models.event import Event
+from app.events.domain.repositories import EventRepository
+from app.events.infrastructure.repository_factories import EventRepositoryFactory
+from app.users.domain.models.user import User
+from app.users.domain.repositories import UserRepository
+from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from tests.applications.mocks.application_repository_mock import ApplicationRepositoryMock
+from tests.events.domain.EventFactory import EventFactory
 from tests.events.mocks.event_repository_mock import EventRepositoryMock
+from tests.users.domain.UserFactory import UserFactory
 from tests.users.mocks.user_repository_mock import UserRepositoryMock
 
 
@@ -40,3 +50,27 @@ class ApiTests(TestCase):
         self.event_repository_patcher.stop()
         self.user_repository_patcher.stop()
         self.application_repository_patcher.stop()
+
+    def given_user_in_repository(self, new_id: uuid.UUID, email: str, username: str, token: Optional[uuid.UUID] = None) -> User:
+        user = UserFactory.create(
+            new_id=new_id,
+            email=email,
+            username=username,
+            token=token,
+        )
+
+        user_repository: UserRepository = UserRepositoryFactory.create()
+        user_repository.create(user=user)
+
+        return user
+
+    def given_event_in_repository(self, new_id: uuid.UUID, name: str) -> Event:
+        event = EventFactory.create(
+            new_id=new_id,
+            name=name,
+        )
+
+        event_repository: EventRepository = EventRepositoryFactory.create()
+        event_repository.create(event=event)
+
+        return event
