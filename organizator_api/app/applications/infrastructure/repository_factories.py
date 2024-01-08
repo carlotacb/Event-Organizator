@@ -8,7 +8,7 @@ class ApplicationRepositoryFactory:
     _applications_repository = None
 
     @staticmethod
-    def create() -> ApplicationRepository: # pragma: no cover
+    def create() -> ApplicationRepository:  # pragma: no cover
         if ApplicationRepositoryFactory._applications_repository is None:
             ApplicationRepositoryFactory._applications_repository = (
                 ORMApplicationRepository()
