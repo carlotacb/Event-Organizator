@@ -5,10 +5,12 @@ from unittest import mock
 from django.test import TestCase
 
 from app.events.domain.models.event import Event
-from app.events.domain.repositories import EventRepository
-from app.events.infrastructure.repository_factories import EventRepositoryFactory
+from app.events.infrastructure.persistence.orm_event_repository import (
+    ORMEventRepository,
+)
 from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
+from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
 from tests.applications.mocks.application_repository_mock import (
     ApplicationRepositoryMock,
@@ -72,13 +74,30 @@ class ApiTests(TestCase):
 
         return user
 
-    def given_event_in_repository(self, new_id: uuid.UUID, name: str) -> Event:
+    def given_user_in_orm(
+        self,
+        new_id: uuid.UUID,
+        email: str,
+        username: str,
+        token: Optional[uuid.UUID] = None,
+    ) -> User:
+        user = UserFactory.create(
+            new_id=new_id,
+            email=email,
+            username=username,
+            token=token,
+        )
+
+        ORMUserRepository().create(user=user)
+
+        return user
+
+    def given_event_in_orm(self, new_id: uuid.UUID, name: str) -> Event:
         event = EventFactory.create(
             new_id=new_id,
             name=name,
         )
 
-        event_repository: EventRepository = EventRepositoryFactory.create()
-        event_repository.create(event=event)
+        ORMEventRepository().create(event=event)
 
         return event
