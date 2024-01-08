@@ -14,15 +14,15 @@ class CreateNewApplicationUseCase:
 
     def execute(self, token: uuid.UUID, event_id: uuid.UUID) -> None:
         user = GetUserByTokenUseCase().execute(token=token)
-        GetEventUseCase().execute(event_id=event_id)
+        event = GetEventUseCase().execute(event_id=event_id)
 
         if user.gender is None or user.tshirt is None or user.alimentary_restrictions is None:
             raise ProfileNotComplete
 
         application = Application(
             id=uuid.uuid4(),
-            user_id=user.id,
-            event_id=event_id,
+            user=user,
+            event=event,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
