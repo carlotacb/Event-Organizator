@@ -17,5 +17,5 @@ class ApplicationRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_event(self, event_id: uuid.UUID) -> Application:
+    def get_by_event(self, event_id: uuid.UUID) -> List[Application]:
         pass
