@@ -16,3 +16,8 @@ class ORMEvent(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     deleted_at = models.DateTimeField(null=True)
+    open_for_participants = models.BooleanField(default=False)
+    max_participants = models.IntegerField(null=True, blank=True)
+    expected_attrition_rate = models.FloatField(null=True, blank=True)
+    students_only = models.BooleanField(default=False)
+    age_restrictions = models.IntegerField(null=True, blank=True)
