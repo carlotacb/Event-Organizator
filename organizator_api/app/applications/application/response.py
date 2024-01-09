@@ -5,6 +5,7 @@ from typing import Any
 from app.applications.domain.models.application import Application
 from app.events.application.response import EventResponse
 from app.events.domain.models.event import Event
+from app.users.application.response import UserResponse
 from app.users.domain.models.user import User
 
 
@@ -30,6 +31,14 @@ class ApplicationResponse:
         return {
             "id": self.id,
             "event": EventResponse.from_event(self.event).to_dict(),
+            "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+
+    def to_dict_without_event(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "user": UserResponse.from_user(self.user).to_dict(),
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
