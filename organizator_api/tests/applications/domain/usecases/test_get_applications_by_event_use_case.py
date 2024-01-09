@@ -48,6 +48,13 @@ class TestGetApplicationsByEventUseCase(ApiTests):
         with self.assertRaises(OnlyAuthorizedToOrganizer):
             GetApplicationsByEventUseCase().execute(event_id=self.event_id, token=self.user_token_participant)
 
+    def test__given_a_non_existing_event__when_get_application_by_event_id__then_event_not_found_is_raised(
+        self,
+    ) -> None:
+        # When / Then
+        with self.assertRaises(EventNotFound):
+            GetApplicationsByEventUseCase().execute(event_id=uuid.uuid4(), token=self.user_token_organizer)
+
     def test__given_applications_in_the_bd__when_get_applications_by_event_id__then_a_list_of_applications_is_returned(
         self,
     ) -> None:
