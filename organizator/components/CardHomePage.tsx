@@ -68,7 +68,7 @@ const PastText = styled.Text`
   font-size: 20px;
 `;
 
-export default function Card(props: CardProps) {
+export default function CardHomePage(props: CardProps) {
   const { title, startDate, endDate, location, headerImage } = props;
 
   const isPast = () => startDate < new Date().toISOString();

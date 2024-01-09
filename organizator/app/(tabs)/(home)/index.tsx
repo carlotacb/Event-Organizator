@@ -10,7 +10,7 @@ import {
   getAllEvents,
   getAllUpcomingEvents,
 } from "../../../utils/api/axiosEvents";
-import Card from "../../../components/Card";
+import CardHomePage from "../../../components/CardHomePage";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import { getToken } from "../../../utils/sessionCalls";
@@ -160,7 +160,7 @@ export default function Home() {
                       }}
                       key={event.id}
                     >
-                      <Card
+                      <CardHomePage
                         title={event.name}
                         startDate={event.start_date}
                         endDate={event.end_date}
