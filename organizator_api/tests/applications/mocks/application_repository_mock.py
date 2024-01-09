@@ -3,6 +3,7 @@ from typing import List
 from app.applications.domain.exceptions import ApplicationAlreadyExists
 from app.applications.domain.models.application import Application
 from app.applications.domain.repositories import ApplicationRepository
+from app.users.domain.models.user import User
 
 
 class ApplicationRepositoryMock(ApplicationRepository):
@@ -15,6 +16,14 @@ class ApplicationRepositoryMock(ApplicationRepository):
                 raise ApplicationAlreadyExists
 
         self.applications.append(application)
+
+    def get_by_user(self, user: User) -> List[Application]:
+        applications = []
+        for a in self.applications:
+            if user.id == a.user.id:
+                applications.append(a)
+
+        return applications
 
     def get_all(self) -> List[Application]:
         return self.applications

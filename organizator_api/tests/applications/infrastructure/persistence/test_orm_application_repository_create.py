@@ -13,7 +13,7 @@ from app.events.domain.exceptions import EventNotFound
 from tests.api_tests import ApiTests
 
 
-class TestORMApplicationRepository(ApiTests):
+class TestORMApplicationRepositoryCreate(ApiTests):
     def test__given_a_application_with_a_valid_user_and_event__when_create__then_application_is_saved(
         self,
     ) -> None:
