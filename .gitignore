@@ -20,7 +20,6 @@ db.sqlite3-journal
 .python-version
 
 # enviroments
-.env
 venv/
 
 # distribution / packaging
