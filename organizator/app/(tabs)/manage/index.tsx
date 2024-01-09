@@ -15,12 +15,10 @@ const Container = styled(SafeAreaView)`
 export default function ListPage() {
   const [isOrganizer, setIsOrganizer] = useState(false);
   const [isNotLogged, setIsNotLogged] = useState(false);
-  const [token, setToken] = useState("");
 
   useEffect(() => {
     const fetchAdminFunction = async () => {
       const t = await getToken();
-      setToken(t || "");
       return getUserRole(t);
     };
 
