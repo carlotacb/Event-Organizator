@@ -51,7 +51,9 @@ class TestViewGetParticipantsInEvents(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Unauthorized")
 
-    def test__given_a_invalid_token__when_get_participants_in_events__then_invalid_token_is_returned(self) -> None:
+    def test__given_a_invalid_token__when_get_participants_in_events__then_invalid_token_is_returned(
+        self,
+    ) -> None:
         # When
         headers = {"HTTP_Authorization": "invalid_token"}
         response = self.client.get(
@@ -81,7 +83,9 @@ class TestViewGetParticipantsInEvents(ApiTests):
         self.assertEqual(response.content, b"Event not found")
         self.assertEqual(response.status_code, 404)
 
-    def test__given_a_participant_user_and_a_existing_event__when_get_participants_in_events__then_only_authorized_to_organizers_is_returned(self) -> None:
+    def test__given_a_participant_user_and_a_existing_event__when_get_participants_in_events__then_only_authorized_to_organizers_is_returned(
+        self,
+    ) -> None:
         # Given
         headers = {"HTTP_Authorization": self.user_token_participant}
 
@@ -96,7 +100,9 @@ class TestViewGetParticipantsInEvents(ApiTests):
         self.assertEqual(response.content, b"Only authorized to organizer")
         self.assertEqual(response.status_code, 401)
 
-    def test__given_a_organizer_user_and_a_existing_event_without_participants__when_get_participants_in_events__then_empty_list_is_returned(self) -> None:
+    def test__given_a_organizer_user_and_a_existing_event_without_participants__when_get_participants_in_events__then_empty_list_is_returned(
+        self,
+    ) -> None:
         # Given
         headers = {"HTTP_Authorization": self.user_token_organizer}
 
@@ -109,9 +115,11 @@ class TestViewGetParticipantsInEvents(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'[]')
+        self.assertEqual(response.content, b"[]")
 
-    def test__given_a_organizer_user_and_a_existing_event_with_participants__when_get_participants_in_events__then_participants_list_is_returned(self) -> None:
+    def test__given_a_organizer_user_and_a_existing_event_with_participants__when_get_participants_in_events__then_participants_list_is_returned(
+        self,
+    ) -> None:
         # Given
         application1 = ApplicationFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
@@ -140,4 +148,7 @@ class TestViewGetParticipantsInEvents(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'[{"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "created_at": "2024-01-09T10:47:00Z", "updated_at": "2024-01-09T10:47:00Z"}, {"id": "eb41b762-5988-4fa3-8942-7a91ccb00687", "user": {"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "created_at": "2024-01-09T10:47:00Z", "updated_at": "2024-01-09T10:47:00Z"}]')
+        self.assertEqual(
+            response.content,
+            b'[{"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "created_at": "2024-01-09T10:47:00Z", "updated_at": "2024-01-09T10:47:00Z"}, {"id": "eb41b762-5988-4fa3-8942-7a91ccb00687", "user": {"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "username": "carlotacb", "email": "carlota@hackupc.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "created_at": "2024-01-09T10:47:00Z", "updated_at": "2024-01-09T10:47:00Z"}]',
+        )

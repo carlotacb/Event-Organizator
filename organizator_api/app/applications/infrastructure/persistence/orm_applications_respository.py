@@ -47,7 +47,6 @@ class ORMApplicationRepository(ApplicationRepository):
             for application in ORMEventApplication.objects.filter(event=event_orm)
         ]
 
-
     def _to_domain_model(self, orm_application: ORMEventApplication) -> Application:
         return Application(
             id=orm_application.id,

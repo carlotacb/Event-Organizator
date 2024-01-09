@@ -34,7 +34,6 @@ class ApplicationRepositoryMock(ApplicationRepository):
 
         return applications
 
-
     def get_all(self) -> List[Application]:
         return self.applications
 

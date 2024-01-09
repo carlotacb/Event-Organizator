@@ -2,7 +2,9 @@ import uuid
 from datetime import datetime, timezone
 
 from app.applications.domain.models.application import Application
-from app.applications.infrastructure.persistence.orm_applications_respository import ORMApplicationRepository
+from app.applications.infrastructure.persistence.orm_applications_respository import (
+    ORMApplicationRepository,
+)
 from tests.api_tests import ApiTests
 
 

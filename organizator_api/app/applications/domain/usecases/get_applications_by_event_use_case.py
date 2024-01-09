@@ -2,7 +2,9 @@ import uuid
 from typing import List
 
 from app.applications.domain.models.application import Application
-from app.applications.infrastructure.repository_factories import ApplicationRepositoryFactory
+from app.applications.infrastructure.repository_factories import (
+    ApplicationRepositoryFactory,
+)
 from app.events.domain.models.event import Event
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
 from app.users.domain.exceptions import OnlyAuthorizedToOrganizer

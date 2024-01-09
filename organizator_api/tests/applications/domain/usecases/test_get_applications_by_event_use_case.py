@@ -1,6 +1,8 @@
 import uuid
 
-from app.applications.domain.usecases.get_applications_by_event_use_case import GetApplicationsByEventUseCase
+from app.applications.domain.usecases.get_applications_by_event_use_case import (
+    GetApplicationsByEventUseCase,
+)
 from app.events.domain.exceptions import EventNotFound
 from app.users.domain.exceptions import OnlyAuthorizedToOrganizer
 from app.users.domain.models.user import UserRoles
@@ -46,14 +48,18 @@ class TestGetApplicationsByEventUseCase(ApiTests):
     ) -> None:
         # When / Then
         with self.assertRaises(OnlyAuthorizedToOrganizer):
-            GetApplicationsByEventUseCase().execute(event_id=self.event_id, token=self.user_token_participant)
+            GetApplicationsByEventUseCase().execute(
+                event_id=self.event_id, token=self.user_token_participant
+            )
 
     def test__given_a_non_existing_event__when_get_application_by_event_id__then_event_not_found_is_raised(
         self,
     ) -> None:
         # When / Then
         with self.assertRaises(EventNotFound):
-            GetApplicationsByEventUseCase().execute(event_id=uuid.uuid4(), token=self.user_token_organizer)
+            GetApplicationsByEventUseCase().execute(
+                event_id=uuid.uuid4(), token=self.user_token_organizer
+            )
 
     def test__given_applications_in_the_bd__when_get_applications_by_event_id__then_a_list_of_applications_is_returned(
         self,
@@ -73,10 +79,11 @@ class TestGetApplicationsByEventUseCase(ApiTests):
         self.application_repository.create(application2)
 
         # When
-        applications = GetApplicationsByEventUseCase().execute(event_id=self.event_id, token=self.user_token_organizer)
+        applications = GetApplicationsByEventUseCase().execute(
+            event_id=self.event_id, token=self.user_token_organizer
+        )
 
         # Then
         self.assertEqual(len(applications), 2)
         self.assertEqual(applications[0].id, application1.id)
         self.assertEqual(applications[1].id, application2.id)
-

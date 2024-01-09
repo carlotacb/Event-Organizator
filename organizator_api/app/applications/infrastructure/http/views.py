@@ -12,7 +12,9 @@ from app.applications.domain.exceptions import (
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
-from app.applications.domain.usecases.get_applications_by_event_use_case import GetApplicationsByEventUseCase
+from app.applications.domain.usecases.get_applications_by_event_use_case import (
+    GetApplicationsByEventUseCase,
+)
 from app.applications.domain.usecases.get_applications_by_token_use_case import (
     GetApplicationsByTokenUseCase,
 )
@@ -79,8 +81,11 @@ def get_applications_by_token(request: HttpRequest) -> HttpResponse:
 
     return HttpResponse(status=200, content=json.dumps(applications_response))
 
+
 @require_http_methods(["GET"])
-def get_applications_by_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+def get_applications_by_event(
+    request: HttpRequest, event_id: uuid.UUID
+) -> HttpResponse:
     token = request.headers.get("Authorization")
     if not token:
         return HttpResponse(status=401, content="Unauthorized")
@@ -91,7 +96,9 @@ def get_applications_by_event(request: HttpRequest, event_id: uuid.UUID) -> Http
         return HttpResponse(status=400, content="Invalid token")
 
     try:
-        applications = GetApplicationsByEventUseCase().execute(token=token_to_uuid, event_id=event_id)
+        applications = GetApplicationsByEventUseCase().execute(
+            token=token_to_uuid, event_id=event_id
+        )
     except EventNotFound:
         return HttpResponse(status=404, content="Event not found")
     except OnlyAuthorizedToOrganizer:
