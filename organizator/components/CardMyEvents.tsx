@@ -66,7 +66,6 @@ const PastText = styled.Text`
 
 export default function CardMyEvents(props: CardProps) {
   const { title, startDate, headerImage } = props;
-  console.log(startDate, title, headerImage);
 
   const isPast = () => startDate < new Date().toISOString();
 
