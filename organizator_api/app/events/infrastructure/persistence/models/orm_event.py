@@ -21,4 +21,3 @@ class ORMEvent(models.Model):
     expected_attrition_rate = models.FloatField(null=True, blank=True)
     students_only = models.BooleanField(default=False)
     age_restrictions = models.IntegerField(null=True, blank=True)
-
