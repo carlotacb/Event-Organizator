@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 from django.db import IntegrityError
@@ -37,6 +38,15 @@ class ORMApplicationRepository(ApplicationRepository):
             self._to_domain_model(application)
             for application in ORMEventApplication.objects.filter(user=user_orm)
         ]
+
+    def get_by_event(self, event_id: uuid.UUID) -> List[Application]:
+        event_orm = ORMEvent.objects.get(id=event_id)
+
+        return [
+            self._to_domain_model(application)
+            for application in ORMEventApplication.objects.filter(event=event_orm)
+        ]
+
 
     def _to_domain_model(self, orm_application: ORMEventApplication) -> Application:
         return Application(
