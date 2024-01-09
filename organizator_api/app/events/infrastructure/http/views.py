@@ -40,6 +40,11 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         end_date = json_body["end_date"]
         location = json_body["location"]
         header_image = json_body["header_image"]
+        open_for_participants = json_body["open_for_participants"]
+        max_participants = json_body["max_participants"]
+        expected_attrition_rate = json_body["expected_attrition_rate"]
+        students_only = json_body["students_only"]
+        age_restrictions = json_body["age_restrictions"]
     except (TypeError, KeyError):
         return HttpResponse(status=400, content="Unexpected body")
 
@@ -51,6 +56,11 @@ def create_new_event(request: HttpRequest) -> HttpResponse:
         end_date=end_date,
         location=location,
         header_image=header_image,
+        open_for_participants=open_for_participants,
+        max_participants=max_participants,
+        expected_attrition_rate=expected_attrition_rate,
+        students_only=students_only,
+        age_restrictions=age_restrictions,
     )
 
     try:

@@ -30,6 +30,11 @@ class CreateEventUseCase:
             header_image=event_data.header_image,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
+            open_for_participants=event_data.open_for_participants,
+            max_participants=event_data.max_participants,
+            expected_attrition_rate=event_data.expected_attrition_rate,
+            students_only=event_data.students_only,
+            age_restrictions=event_data.age_restrictions,
         )
 
         self.event_repository.create(event)

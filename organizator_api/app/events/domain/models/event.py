@@ -17,3 +17,8 @@ class Event:
     created_at: datetime
     updated_at: datetime
     deleted_at: Optional[datetime] = None
+    open_for_participants: bool = False
+    max_participants: Optional[int] = None
+    expected_attrition_rate: Optional[float] = None
+    students_only: bool = False
+    age_restrictions: Optional[int] = None

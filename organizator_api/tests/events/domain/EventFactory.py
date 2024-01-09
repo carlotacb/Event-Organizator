@@ -19,6 +19,11 @@ class EventFactory:
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
         deleted_at: Optional[datetime] = None,
+        open_for_participants: bool = True,
+        max_participants: int = 100,
+        expected_attrition_rate: float = 0.1,
+        students_only: bool = True,
+        age_restrictions: int = 16,
     ) -> Event:
         return Event(
             id=new_id,
@@ -32,4 +37,9 @@ class EventFactory:
             created_at=created_at,
             updated_at=updated_at,
             deleted_at=deleted_at,
+            open_for_participants=open_for_participants,
+            max_participants=max_participants,
+            expected_attrition_rate=expected_attrition_rate,
+            students_only=students_only,
+            age_restrictions=age_restrictions,
         )
