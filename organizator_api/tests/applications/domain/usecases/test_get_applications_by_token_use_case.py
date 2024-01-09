@@ -1,6 +1,8 @@
 import uuid
 
-from app.applications.domain.usecases.get_applications_by_token_use_case import GetApplicationsByTokenUseCase
+from app.applications.domain.usecases.get_applications_by_token_use_case import (
+    GetApplicationsByTokenUseCase,
+)
 from app.users.domain.exceptions import UserNotFound
 from tests.api_tests import ApiTests
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
@@ -26,7 +28,7 @@ class TestGetApplicationsByTokenUseCase(ApiTests):
         )
         self.user_repository.create(self.user_participant)
 
-        self.user_organizer =  UserFactory().create(
+        self.user_organizer = UserFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00687"),
             token=self.user_token_organizer,
             username="jane",
@@ -38,12 +40,16 @@ class TestGetApplicationsByTokenUseCase(ApiTests):
         self.event = EventFactory().create(new_id=self.event_id, name="HackUPC 2024")
         self.event_repository.create(self.event)
 
-    def test__given_a_invalid_token__when_get_application_by_token__then_user_not_found_is_raised(self) -> None:
+    def test__given_a_invalid_token__when_get_application_by_token__then_user_not_found_is_raised(
+        self,
+    ) -> None:
         # When / Then
         with self.assertRaises(UserNotFound):
             GetApplicationsByTokenUseCase().execute(token=uuid.uuid4())
 
-    def test__given_applications_in_the_bd__when_get_applications_by_token__then_a_list_of_applications_is_returned(self) -> None:
+    def test__given_applications_in_the_bd__when_get_applications_by_token__then_a_list_of_applications_is_returned(
+        self,
+    ) -> None:
         # Given
         application1 = ApplicationFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
@@ -65,15 +71,11 @@ class TestGetApplicationsByTokenUseCase(ApiTests):
         self.application_repository.create(application3)
 
         # When
-        applications = GetApplicationsByTokenUseCase().execute(token=self.user_token_participant)
+        applications = GetApplicationsByTokenUseCase().execute(
+            token=self.user_token_participant
+        )
 
         # Then
         self.assertEqual(len(applications), 2)
         self.assertEqual(applications[0].event.name, "HackUPC 2023")
         self.assertEqual(applications[1].event.name, "HackUPC 2024")
-
-
-
-
-
-

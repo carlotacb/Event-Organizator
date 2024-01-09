@@ -2,7 +2,9 @@ import uuid
 from datetime import timezone, datetime
 
 from app.applications.domain.models.application import Application
-from app.applications.infrastructure.persistence.orm_applications_respository import ORMApplicationRepository
+from app.applications.infrastructure.persistence.orm_applications_respository import (
+    ORMApplicationRepository,
+)
 from tests.api_tests import ApiTests
 
 
@@ -40,7 +42,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             user=user,
             event=event,
             created_at=datetime.now(tz=timezone.utc),
-            updated_at=datetime.now(tz=timezone.utc)
+            updated_at=datetime.now(tz=timezone.utc),
         )
 
         ORMApplicationRepository().create(application=application)
@@ -68,7 +70,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
         user2 = self.given_user_in_orm(
             new_id=uuid.UUID("ef6f6fb3-ba14-43dd-a0da-95de8125b1cc"),
             username="jane",
-            email="jane@test.com"
+            email="jane@test.com",
         )
         event = self.given_event_in_orm(
             new_id=uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cc"), name="event"
@@ -79,7 +81,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             user=user,
             event=event,
             created_at=datetime.now(tz=timezone.utc),
-            updated_at=datetime.now(tz=timezone.utc)
+            updated_at=datetime.now(tz=timezone.utc),
         )
 
         application2 = Application(
@@ -87,7 +89,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             user=user2,
             event=event,
             created_at=datetime.now(tz=timezone.utc),
-            updated_at=datetime.now(tz=timezone.utc)
+            updated_at=datetime.now(tz=timezone.utc),
         )
 
         ORMApplicationRepository().create(application=application)
@@ -103,5 +105,3 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
         self.assertEqual(application.event.id, response[0].event.id)
         self.assertEqual(application.created_at, response[0].created_at)
         self.assertEqual(application.updated_at, response[0].updated_at)
-
-

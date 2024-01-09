@@ -12,7 +12,9 @@ from app.applications.domain.exceptions import (
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
-from app.applications.domain.usecases.get_applications_by_token_use_case import GetApplicationsByTokenUseCase
+from app.applications.domain.usecases.get_applications_by_token_use_case import (
+    GetApplicationsByTokenUseCase,
+)
 from app.events.domain.exceptions import EventNotFound
 from app.users.domain.exceptions import UserNotFound
 
@@ -51,6 +53,7 @@ def create_new_application(request: HttpRequest) -> HttpResponse:
 
     return HttpResponse(status=201, content="Application created correctly")
 
+
 @require_http_methods(["GET"])
 def get_applications_by_token(request: HttpRequest) -> HttpResponse:
     token = request.headers.get("Authorization")
@@ -69,6 +72,8 @@ def get_applications_by_token(request: HttpRequest) -> HttpResponse:
 
     applications_response = []
     for application in applications:
-        applications_response.append(ApplicationResponse.from_application(application).to_dict_without_user())
+        applications_response.append(
+            ApplicationResponse.from_application(application).to_dict_without_user()
+        )
 
     return HttpResponse(status=200, content=json.dumps(applications_response))

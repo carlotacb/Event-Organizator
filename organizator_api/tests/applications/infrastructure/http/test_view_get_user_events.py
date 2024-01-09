@@ -8,7 +8,7 @@ from tests.users.domain.UserFactory import UserFactory
 
 
 class TestViewGetUserEvents(ApiTests):
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         self.application_repository.clear()
         self.user_repository.clear()
@@ -28,7 +28,9 @@ class TestViewGetUserEvents(ApiTests):
         self.event = EventFactory().create(new_id=self.event_id, name="HackUPC 2024")
         self.event_repository.create(self.event)
 
-    def test__when_get_user_events_without_header__then_unauthorized_is_returned(self) -> None:
+    def test__when_get_user_events_without_header__then_unauthorized_is_returned(
+        self,
+    ) -> None:
         # When
         response = self.client.get(
             "/organizator-api/applications/myevents",
@@ -39,7 +41,9 @@ class TestViewGetUserEvents(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Unauthorized")
 
-    def test__given_a_invalid_token__when_get_user_events__then_invalid_token_is_returned(self) -> None:
+    def test__given_a_invalid_token__when_get_user_events__then_invalid_token_is_returned(
+        self,
+    ) -> None:
         # When
         headers = {"HTTP_Authorization": "invalid_token"}
         response = self.client.get(
@@ -52,7 +56,9 @@ class TestViewGetUserEvents(ApiTests):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Invalid token")
 
-    def test__given_a_non_existing_user_token__when_get_user_events__then_user_not_found_is_returned(self) -> None:
+    def test__given_a_non_existing_user_token__when_get_user_events__then_user_not_found_is_returned(
+        self,
+    ) -> None:
         # Given
         user_token = "eb41b762-5988-4fa3-8942-7a91ccb00688"
 
@@ -68,7 +74,9 @@ class TestViewGetUserEvents(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User not found")
 
-    def test__given_a_valid_token_and_some_applications_for_a_user__when_get_user_events__then_user_events_are_returned(self) -> None:
+    def test__given_a_valid_token_and_some_applications_for_a_user__when_get_user_events__then_user_events_are_returned(
+        self,
+    ) -> None:
         # Given
         application = ApplicationFactory().create(
             user=self.user_participant,
@@ -98,5 +106,5 @@ class TestViewGetUserEvents(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "event": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "name": "HackUPC 2024", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, "created_at": "2024-01-09T00:52:29Z", "updated_at": "2024-01-09T00:52:29Z"}, {"id": "eb41b762-5988-4fa3-8942-7a91ccb00687", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "event": {"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, "created_at": "2024-01-09T00:52:29Z", "updated_at": "2024-01-09T00:52:29Z"}]'
+            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "event": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "name": "HackUPC 2024", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, "created_at": "2024-01-09T00:52:29Z", "updated_at": "2024-01-09T00:52:29Z"}, {"id": "eb41b762-5988-4fa3-8942-7a91ccb00687", "user": {"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "username": "john", "email": "john@test.com", "first_name": "Carlota", "last_name": "Catot", "bio": "The user that is using this application", "profile_image": "profile_picture.png", "role": "Participant", "date_of_birth": "07/05/1996", "study": true, "work": false, "university": "Universitat Polit\\u00e8cnica de Catalunya", "degree": "Computer Science", "expected_graduation": "01/05/2024", "current_job_role": "", "tshirt": "", "gender": "", "alimentary_restrictions": "", "github": "", "linkedin": "", "devpost": "", "webpage": ""}, "event": {"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, "created_at": "2024-01-09T00:52:29Z", "updated_at": "2024-01-09T00:52:29Z"}]',
         )

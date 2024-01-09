@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 from app.applications.domain.models.application import Application
 from app.events.application.response import EventResponse
@@ -25,11 +26,10 @@ class ApplicationResponse:
             updated_at=application.updated_at,
         )
 
-    def to_dict_without_user(self) -> dict[str, str]:
+    def to_dict_without_user(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "event": EventResponse.from_event(self.event).to_dict(),
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
-

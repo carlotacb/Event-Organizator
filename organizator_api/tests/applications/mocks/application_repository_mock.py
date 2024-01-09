@@ -7,7 +7,6 @@ from app.users.domain.models.user import User
 
 
 class ApplicationRepositoryMock(ApplicationRepository):
-
     def __init__(self) -> None:
         self.applications: List[Application] = []
 
