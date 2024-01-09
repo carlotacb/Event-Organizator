@@ -81,5 +81,4 @@ class ORMApplicationRepository(ApplicationRepository):
             ),
             created_at=orm_application.created_at,
             updated_at=orm_application.updated_at,
-            deleted_at=orm_application.deleted_at,
         )
