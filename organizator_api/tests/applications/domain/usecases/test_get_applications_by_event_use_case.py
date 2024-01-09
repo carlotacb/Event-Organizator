@@ -2,6 +2,8 @@ import uuid
 
 from app.applications.domain.usecases.get_applications_by_event_use_case import GetApplicationsByEventUseCase
 from app.events.domain.exceptions import EventNotFound
+from app.users.domain.exceptions import OnlyAuthorizedToOrganizer
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.events.domain.EventFactory import EventFactory
@@ -31,6 +33,7 @@ class TestGetApplicationsByEventUseCase(ApiTests):
             token=self.user_token_organizer,
             username="jane",
             email="jane@test.com",
+            role=UserRoles.ORGANIZER,
         )
         self.user_repository.create(self.user_organizer)
 
@@ -38,12 +41,12 @@ class TestGetApplicationsByEventUseCase(ApiTests):
         self.event = EventFactory().create(new_id=self.event_id, name="HackUPC 2024")
         self.event_repository.create(self.event)
 
-    def test__given_a_invalid_token__when_get_application_by_event_id__then_event_not_found_is_raised(
+    def test__given_a_participant_token__when_get_application_by_event_id__then_only_authorized_to_organizer_is_raised(
         self,
     ) -> None:
         # When / Then
-        with self.assertRaises(EventNotFound):
-            GetApplicationsByEventUseCase().execute(event_id=uuid.uuid4())
+        with self.assertRaises(OnlyAuthorizedToOrganizer):
+            GetApplicationsByEventUseCase().execute(event_id=self.event_id, token=self.user_token_participant)
 
     def test__given_applications_in_the_bd__when_get_applications_by_event_id__then_a_list_of_applications_is_returned(
         self,
@@ -63,7 +66,7 @@ class TestGetApplicationsByEventUseCase(ApiTests):
         self.application_repository.create(application2)
 
         # When
-        applications = GetApplicationsByEventUseCase().execute(event_id=self.event_id)
+        applications = GetApplicationsByEventUseCase().execute(event_id=self.event_id, token=self.user_token_organizer)
 
         # Then
         self.assertEqual(len(applications), 2)
