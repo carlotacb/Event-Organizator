@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 from app.applications.domain.exceptions import ApplicationAlreadyExists
@@ -21,6 +22,14 @@ class ApplicationRepositoryMock(ApplicationRepository):
         applications = []
         for a in self.applications:
             if user.id == a.user.id:
+                applications.append(a)
+
+        return applications
+
+    def get_by_event(self, event_id: uuid.UUID) -> List[Application]:
+        applications = []
+        for a in self.applications:
+            if event_id == a.event.id:
                 applications.append(a)
 
         return applications
