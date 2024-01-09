@@ -4,13 +4,12 @@ import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 import styled from "styled-components/native";
 import { router } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useIsFocused } from "@react-navigation/native";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import {
   getAllEvents,
   getAllUpcomingEvents,
 } from "../../../utils/api/axiosEvents";
-import Card from "../../../components/Card";
+import CardHomePage from "../../../components/CardHomePage";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import { getToken } from "../../../utils/sessionCalls";
@@ -70,7 +69,6 @@ export default function Home() {
   const [futureEvents, setFutureEvents] = useState<EventAllInformation[]>([]);
   const [allEvents, setAllEvents] = useState<EventAllInformation[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
-  const isFocused = useIsFocused();
   const [active, setActive] = useState({
     all: false,
     past: false,
@@ -99,7 +97,7 @@ export default function Home() {
     fetchAdminFunction().then((response) => {
       setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
     });
-  }, [isFocused]);
+  }, []);
 
   return (
     <Container>
@@ -160,7 +158,7 @@ export default function Home() {
                       }}
                       key={event.id}
                     >
-                      <Card
+                      <CardHomePage
                         title={event.name}
                         startDate={event.start_date}
                         endDate={event.end_date}

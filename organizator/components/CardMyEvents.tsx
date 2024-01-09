@@ -5,12 +5,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { parseDate } from "../utils/util-functions";
 
 interface CardProps {
-  // eslint-disable-next-line react/no-unused-prop-types
-  id: string;
   title: string;
   startDate: string;
-  endDate: string;
-  location: string;
   headerImage: string;
 }
 
@@ -68,8 +64,8 @@ const PastText = styled.Text`
   font-size: 20px;
 `;
 
-export default function Card(props: CardProps) {
-  const { title, startDate, endDate, location, headerImage } = props;
+export default function CardMyEvents(props: CardProps) {
+  const { title, startDate, headerImage } = props;
 
   const isPast = () => startDate < new Date().toISOString();
 
@@ -82,14 +78,6 @@ export default function Card(props: CardProps) {
           <TextLine>
             <FontAwesome5 name="hourglass-start" size={16} />
             <CardText>{parseDate(startDate)}</CardText>
-          </TextLine>
-          <TextLine>
-            <FontAwesome5 name="hourglass-end" size={16} />
-            <CardText>{parseDate(endDate)}</CardText>
-          </TextLine>
-          <TextLine>
-            <FontAwesome5 name="map-marker-alt" size={16} />
-            <CardText>{location}</CardText>
           </TextLine>
         </CardTextContainer>
       </CardContainer>

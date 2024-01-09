@@ -6,7 +6,7 @@ import { getUserRole } from "../../utils/api/axiosUsers";
 import { UserRoles } from "../../utils/interfaces/Users";
 
 export default function HomepageTabs() {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isOrganizer, setIsOrganizer] = useState(false);
   const [isNotLogged, setIsNotLogged] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,10 @@ export default function HomepageTabs() {
         setIsNotLogged(true);
         return;
       }
-      setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
+      setIsOrganizer(
+        response.role === UserRoles.ORGANIZER_ADMIN ||
+          response.role === UserRoles.ORGANIZER,
+      );
     });
   }, []);
 
@@ -38,12 +41,16 @@ export default function HomepageTabs() {
         }}
       />
       <Tabs.Screen
-        name="list"
+        name="manage"
         options={{
-          tabBarLabel: "News",
+          tabBarLabel: isOrganizer ? "Manage" : "My Events",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="list" color={color} size={size} />
+            <FontAwesome
+              name={isOrganizer ? "pie-chart" : "list"}
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

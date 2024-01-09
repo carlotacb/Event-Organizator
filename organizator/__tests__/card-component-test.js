@@ -1,12 +1,12 @@
 import * as React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import renderer from "react-test-renderer";
-import Card from "../components/Card";
+import CardHomePage from "../components/CardHomePage";
 
 it(`renders correctly a button`, () => {
   const tree = renderer
     .create(
-      <Card
+      <CardHomePage
         title="Test event"
         startDate="2023-12-2200:36:41.562401TZ"
         endDate="2023-12-2117:27:38.081421TZ"

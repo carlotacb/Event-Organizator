@@ -7,6 +7,7 @@ export default function NewsLayout() {
         name="index"
         options={{
           headerTitle: "News",
+          headerShown: false,
         }}
       />
     </Stack>
