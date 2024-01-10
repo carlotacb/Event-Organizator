@@ -4,6 +4,7 @@ from datetime import datetime
 
 from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
+from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.events.domain.EventFactory import EventFactory
 from tests.users.domain.UserFactory import UserFactory
 
@@ -34,14 +35,14 @@ class TestEventViews(ApiTests):
         self.user_repository.create(user_admin)
 
         self.user_participant_token = uuid.UUID("ebd8a0f2-eeba-4ddc-b4b9-ab5592ad8e75")
-        user_participant = UserFactory().create(
+        self.user_participant = UserFactory().create(
             token=self.user_participant_token,
             role=UserRoles.PARTICIPANT,
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
             username="user_participant",
             email="user@participant.com",
         )
-        self.user_repository.create(user_participant)
+        self.user_repository.create(self.user_participant)
 
     def test__given_unexpected_body__when_create_event__then_bad_request_is_returned(
         self,
@@ -541,3 +542,102 @@ class TestEventViews(ApiTests):
         # Then
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Only organizer admins can delete events")
+
+    def test__when_get_upcoming_events_with_application_information__then_return_unauthorized(self) -> None:
+        # When
+        response = self.client.get("/organizator-api/events/upcoming/applications")
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Unauthorized")
+
+    def test__when_get_upcoming_events_with_invalid_token__then_return_invalid_token(self) -> None:
+        # When
+        headers = {"HTTP_AUTHORIZATION": "invalid_token"}
+        response = self.client.get(
+            "/organizator-api/events/upcoming/applications",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"Invalid token")
+
+    def test__given_no_user_in_bd__when_get_upcoming_events__then_return_user_does_not_exist(self) -> None:
+        # When
+        headers = {"HTTP_AUTHORIZATION": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"}
+        response = self.client.get(
+            "/organizator-api/events/upcoming/applications",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content, b"User does not exist")
+
+    def test__given_token_for_participant_user__when_get_upcoming_events__then_return_only_organizers_can_get_this_information(self) -> None:
+        # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_participant_token}"}
+        response = self.client.get(
+            "/organizator-api/events/upcoming/applications",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"Only organizers can get this information")
+
+    def test__given_token_for_admin_user_and_applications_in_events__when_get_upcoming_events__then_return_list_of_events_with_applications(self) -> None:
+        # Given
+        event = EventFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            name="HackUPC 2024",
+            start_date=datetime(2025, 5, 12, 16, 0),
+            end_date=datetime(2025, 5, 14, 18, 0),
+        )
+        event2 = EventFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00688"),
+            name="HackUPC 2025",
+            start_date=datetime(2026, 5, 12, 16, 0),
+            end_date=datetime(2026, 5, 14, 18, 0),
+        )
+
+        self.event_repository.create(event)
+        self.event_repository.create(event2)
+
+        application = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            user=self.user_participant,
+            event=event,
+        )
+        self.application_repository.create(application)
+
+        application2 = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00688"),
+            event=event,
+        )
+        self.application_repository.create(application2)
+
+        application3 = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00681"),
+            user=self.user_participant,
+            event=event2,
+        )
+        self.application_repository.create(application3)
+
+        application4 = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00681"),
+            event=event2,
+        )
+        self.application_repository.create(application4)
+
+        # When
+        headers = {"HTTP_AUTHORIZATION": f"{self.user_admin_token}"}
+        response = self.client.get(
+            "/organizator-api/events/upcoming/applications",
+            **headers,  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'[{"name": "HackUPC 2024", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}, {"name": "HackUPC 2025", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}]')
