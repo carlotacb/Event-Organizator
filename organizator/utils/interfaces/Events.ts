@@ -21,6 +21,11 @@ export interface EventInformation {
   name: string;
   startDate: string;
   url: string;
+  maxParticipants: string;
+  attritionRate: string;
+  minAge: string;
+  onlyForStudents: boolean;
+  openForParticipants: boolean;
 }
 
 export interface EventCardProps {
@@ -54,6 +59,11 @@ export interface UpdateEventProps {
   endDate: string;
   location: string;
   url: string;
+  openForParticipants: boolean;
+  maxParticipants: string;
+  attritionRate: string;
+  minAge: string;
+  onlyForStudents: boolean;
 }
 
 export interface getAllEventResponse {
