@@ -6,16 +6,20 @@ from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from app.events.application.requests import CreateEventRequest, UpdateEventRequest
-from app.events.application.response import EventResponse
+from app.events.application.response import EventResponse, EventApplicationResponse
 from app.events.domain.exceptions import EventAlreadyExists, EventNotFound
 from app.events.domain.usecases.create_event_use_case import CreateEventUseCase
 from app.events.domain.usecases.delete_event_use_case import DeleteEventUseCase
 from app.events.domain.usecases.get_all_events_use_case import GetAllEventsUseCase
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
+from app.events.domain.usecases.get_upcoming_events_and_participants_use_case import (
+    GetUpcomingEventsAndParticipantsUseCase,
+)
 from app.events.domain.usecases.update_event_use_case import UpdateEventUseCase
 from app.users.domain.exceptions import (
     OnlyAuthorizedToOrganizerAdmin,
     OnlyAuthorizedToOrganizer,
+    UserNotFound,
 )
 
 
@@ -188,3 +192,38 @@ def delete_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
         )
 
     return HttpResponse(status=200, content="Event updated correctly to be deleted")
+
+
+@require_http_methods(["GET"])
+def get_upcoming_events_with_application_information(
+    request: HttpRequest,
+) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        upcoming_events = GetUpcomingEventsAndParticipantsUseCase().execute(
+            token=token_to_uuid
+        )
+    except UserNotFound:
+        return HttpResponse(status=404, content="User does not exist")
+    except OnlyAuthorizedToOrganizer:
+        return HttpResponse(
+            status=401, content="Only organizers can get this information"
+        )
+
+    events_response = []
+    for event in upcoming_events:
+        events_response.append(
+            EventApplicationResponse.from_event_application(event).to_dict()
+        )
+
+    return HttpResponse(
+        status=200, content=json.dumps(events_response), content_type="application/json"
+    )

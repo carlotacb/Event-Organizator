@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Any
 
 from app.events.domain.models.event import Event
+from app.events.domain.models.event_applications import EventApplication
 
 
 @dataclass
@@ -57,4 +58,31 @@ class EventResponse:
             "expected_attrition_rate": self.expected_attrition_rate,
             "students_only": self.students_only,
             "age_restrictions": self.age_restrictions,
+        }
+
+
+@dataclass
+class EventApplicationResponse:
+    name: str
+    actual_participants_count: int
+    max_participants: int
+    expected_attrition_rate: float
+
+    @staticmethod
+    def from_event_application(
+        event_application: EventApplication,
+    ) -> "EventApplicationResponse":
+        return EventApplicationResponse(
+            name=event_application.name,
+            actual_participants_count=event_application.actual_participants_count,
+            max_participants=event_application.max_participants,
+            expected_attrition_rate=event_application.expected_attrition_rate,
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "actual_participants_count": self.actual_participants_count,
+            "max_participants": self.max_participants,
+            "expected_attrition_rate": self.expected_attrition_rate,
         }
