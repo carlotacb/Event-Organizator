@@ -2,7 +2,9 @@ import uuid
 from datetime import datetime
 from typing import List
 
-from app.applications.domain.usecases.get_applications_by_event_use_case import GetApplicationsByEventUseCase
+from app.applications.domain.usecases.get_applications_by_event_use_case import (
+    GetApplicationsByEventUseCase,
+)
 from app.events.domain.models.event_applications import EventApplication
 from app.events.infrastructure.repository_factories import EventRepositoryFactory
 from app.users.domain.exceptions import OnlyAuthorizedToOrganizer
@@ -25,9 +27,11 @@ class GetUpcomingEventsAndParticipantsUseCase:
 
         for event in events:
             if event.deleted_at is None and event.start_date > datetime.now(
-                    tz=event.start_date.tzinfo
+                tz=event.start_date.tzinfo
             ):
-                participants = GetApplicationsByEventUseCase().execute(event_id=event.id, token=token)
+                participants = GetApplicationsByEventUseCase().execute(
+                    event_id=event.id, token=token
+                )
 
                 response.append(
                     EventApplication(

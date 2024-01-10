@@ -1,8 +1,9 @@
 import uuid
 from datetime import datetime
 
-from app.events.domain.usecases.get_upcoming_events_and_participants_use_case import \
-    GetUpcomingEventsAndParticipantsUseCase
+from app.events.domain.usecases.get_upcoming_events_and_participants_use_case import (
+    GetUpcomingEventsAndParticipantsUseCase,
+)
 from app.users.domain.exceptions import OnlyAuthorizedToOrganizer
 from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
@@ -81,7 +82,6 @@ class TestGetUpcomingEventAndParticipantsUseCase(ApiTests):
             event=self.event2,
         )
         self.application_repository.create(self.application4)
-
 
     def test__given_a_participant_token__when_get_upcoming_events_and_participants__then_only_authorized_to_organizer_is_raised(
         self,

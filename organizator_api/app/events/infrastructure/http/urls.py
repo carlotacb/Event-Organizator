@@ -6,7 +6,8 @@ from app.events.infrastructure.http.views import (
     get_all_upcoming_events,
     get_event,
     update_event,
-    delete_event, get_upcoming_events_with_application_information,
+    delete_event,
+    get_upcoming_events_with_application_information,
 )
 
 urlpatterns = [

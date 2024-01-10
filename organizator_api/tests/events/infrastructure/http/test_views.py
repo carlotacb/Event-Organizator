@@ -543,7 +543,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Only organizer admins can delete events")
 
-    def test__when_get_upcoming_events_with_application_information__then_return_unauthorized(self) -> None:
+    def test__when_get_upcoming_events_with_application_information__then_return_unauthorized(
+        self,
+    ) -> None:
         # When
         response = self.client.get("/organizator-api/events/upcoming/applications")
 
@@ -551,7 +553,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Unauthorized")
 
-    def test__when_get_upcoming_events_with_invalid_token__then_return_invalid_token(self) -> None:
+    def test__when_get_upcoming_events_with_invalid_token__then_return_invalid_token(
+        self,
+    ) -> None:
         # When
         headers = {"HTTP_AUTHORIZATION": "invalid_token"}
         response = self.client.get(
@@ -563,7 +567,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Invalid token")
 
-    def test__given_no_user_in_bd__when_get_upcoming_events__then_return_user_does_not_exist(self) -> None:
+    def test__given_no_user_in_bd__when_get_upcoming_events__then_return_user_does_not_exist(
+        self,
+    ) -> None:
         # When
         headers = {"HTTP_AUTHORIZATION": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"}
         response = self.client.get(
@@ -575,7 +581,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"User does not exist")
 
-    def test__given_token_for_participant_user__when_get_upcoming_events__then_return_only_organizers_can_get_this_information(self) -> None:
+    def test__given_token_for_participant_user__when_get_upcoming_events__then_return_only_organizers_can_get_this_information(
+        self,
+    ) -> None:
         # When
         headers = {"HTTP_AUTHORIZATION": f"{self.user_participant_token}"}
         response = self.client.get(
@@ -587,7 +595,9 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Only organizers can get this information")
 
-    def test__given_token_for_admin_user_and_applications_in_events__when_get_upcoming_events__then_return_list_of_events_with_applications(self) -> None:
+    def test__given_token_for_admin_user_and_applications_in_events__when_get_upcoming_events__then_return_list_of_events_with_applications(
+        self,
+    ) -> None:
         # Given
         event = EventFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
@@ -640,4 +650,7 @@ class TestEventViews(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'[{"name": "HackUPC 2024", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}, {"name": "HackUPC 2025", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}]')
+        self.assertEqual(
+            response.content,
+            b'[{"name": "HackUPC 2024", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}, {"name": "HackUPC 2025", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}]',
+        )

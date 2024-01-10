@@ -69,7 +69,9 @@ class EventApplicationResponse:
     expected_attrition_rate: float
 
     @staticmethod
-    def from_event_application(event_application: EventApplication) -> "EventApplicationResponse":
+    def from_event_application(
+        event_application: EventApplication,
+    ) -> "EventApplicationResponse":
         return EventApplicationResponse(
             name=event_application.name,
             actual_participants_count=event_application.actual_participants_count,
