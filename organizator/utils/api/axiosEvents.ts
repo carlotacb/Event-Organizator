@@ -101,12 +101,17 @@ export async function createEvent(
       url: `${eventsAPI}/new`,
       data: {
         name: eventInformation.name,
+        url: eventInformation.url,
         description: eventInformation.description,
         start_date: eventInformation.startDate,
         end_date: eventInformation.endDate,
         location: eventInformation.location,
         header_image: eventInformation.headerImage,
-        url: eventInformation.url,
+        open_for_participants: eventInformation.openForParticipants,
+        max_participants: Number(eventInformation.maxParticipants),
+        expected_attrition_rate: Number(eventInformation.attritionRate) / 100,
+        students_only: eventInformation.onlyForStudents,
+        age_restrictions: Number(eventInformation.minAge),
       },
       headers: {
         Authorization: token,

@@ -40,6 +40,11 @@ export interface CreateEventProps {
   location: string;
   headerImage: string;
   url: string;
+  openForParticipants: boolean;
+  maxParticipants: string;
+  attritionRate: string;
+  minAge: string;
+  onlyForStudents: boolean;
 }
 
 export interface UpdateEventProps {
