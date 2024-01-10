@@ -41,11 +41,21 @@ class UpdateEventUseCase:
             else original_event.header_image,
             created_at=original_event.created_at,
             updated_at=datetime.now(tz=timezone.utc),
-            open_for_participants=event.open_for_participants if event.open_for_participants else original_event.open_for_participants,
-            max_participants=event.max_participants if event.max_participants else original_event.max_participants,
-            expected_attrition_rate=event.expected_attrition_rate if event.expected_attrition_rate else original_event.expected_attrition_rate,
-            students_only=event.students_only if event.students_only else original_event.students_only,
-            age_restrictions=event.age_restrictions if event.age_restrictions else original_event.age_restrictions,
+            open_for_participants=event.open_for_participants
+            if event.open_for_participants
+            else original_event.open_for_participants,
+            max_participants=event.max_participants
+            if event.max_participants
+            else original_event.max_participants,
+            expected_attrition_rate=event.expected_attrition_rate
+            if event.expected_attrition_rate
+            else original_event.expected_attrition_rate,
+            students_only=event.students_only
+            if event.students_only
+            else original_event.students_only,
+            age_restrictions=event.age_restrictions
+            if event.age_restrictions
+            else original_event.age_restrictions,
         )
 
         self.event_repository.update(new_event)

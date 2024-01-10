@@ -16,9 +16,9 @@ class Event:
     header_image: str
     created_at: datetime
     updated_at: datetime
+    open_for_participants: bool
+    max_participants: int
+    expected_attrition_rate: float
+    students_only: bool
+    age_restrictions: int
     deleted_at: Optional[datetime] = None
-    open_for_participants: bool = False
-    max_participants: Optional[int] = None
-    expected_attrition_rate: Optional[float] = None
-    students_only: bool = False
-    age_restrictions: Optional[int] = None

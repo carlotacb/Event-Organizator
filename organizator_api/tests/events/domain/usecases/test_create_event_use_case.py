@@ -67,7 +67,7 @@ class TestCreateEventUseCase(ApiTests):
             max_participants=100,
             expected_attrition_rate=0.1,
             students_only=True,
-            age_restrictions=16
+            age_restrictions=16,
         )
 
         # When / Then

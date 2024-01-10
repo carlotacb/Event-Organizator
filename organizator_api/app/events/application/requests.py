@@ -18,6 +18,7 @@ class CreateEventRequest:
     students_only: bool
     age_restrictions: int
 
+
 @dataclass
 class UpdateEventRequest:
     name: Optional[str] = None
