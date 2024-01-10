@@ -88,3 +88,15 @@ export interface deleteEventResponse {
 export interface createEventResponse {
   readonly error: string | null;
 }
+
+export interface EventsSimpleInformationWithParticipants {
+  name: string;
+  actual_participants_count: number;
+  max_participants: number;
+  expected_attrition_rate: number;
+}
+
+export interface getUpcomingEventsWithApplicationsInfoResponse {
+  readonly events: EventsSimpleInformationWithParticipants[] | null;
+  readonly error: string | null;
+}
