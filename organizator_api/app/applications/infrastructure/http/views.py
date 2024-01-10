@@ -8,6 +8,9 @@ from app.applications.application.response import ApplicationResponse
 from app.applications.domain.exceptions import (
     ProfileNotComplete,
     ApplicationAlreadyExists,
+    UserIsNotAParticipant,
+    UserIsNotStudent,
+    UserIsTooYoung,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -53,6 +56,14 @@ def create_new_application(request: HttpRequest) -> HttpResponse:
         return HttpResponse(status=404, content="Event not found")
     except ApplicationAlreadyExists:
         return HttpResponse(status=409, content="Application already exists")
+    except UserIsNotAParticipant:
+        return HttpResponse(
+            status=401, content="You should have role participant to apply"
+        )
+    except UserIsNotStudent:
+        return HttpResponse(status=401, content="You should be student to apply")
+    except UserIsTooYoung:
+        return HttpResponse(status=401, content="You are too young to apply")
 
     return HttpResponse(status=201, content="Application created correctly")
 

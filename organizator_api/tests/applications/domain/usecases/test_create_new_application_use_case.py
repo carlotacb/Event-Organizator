@@ -1,8 +1,12 @@
 import uuid
+from datetime import datetime
 
 from app.applications.domain.exceptions import (
     ProfileNotComplete,
     ApplicationAlreadyExists,
+    UserIsNotAParticipant,
+    UserIsTooYoung,
+    UserIsNotStudent,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -24,7 +28,7 @@ class TestCreateNewApplicationUseCase(ApiTests):
         self.user_complete_token = uuid.UUID("ebd8a0f2-eeba-4ddc-b4b9-ab5592ad8e75")
         user_complete = UserFactory().create(
             token=self.user_complete_token,
-            role=UserRoles.ORGANIZER,
+            role=UserRoles.PARTICIPANT,
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
             tshirt=TShirtSizes.M,
             gender=GenderOptions.FEMALE,
@@ -66,6 +70,67 @@ class TestCreateNewApplicationUseCase(ApiTests):
 
         # When / Then
         with self.assertRaises(ProfileNotComplete):
+            CreateNewApplicationUseCase().execute(
+                token=user_token, event_id=self.event_id
+            )
+
+    def test__given_a_user_organizer__when_create_application__then_user_is_not_participant(
+        self,
+    ) -> None:
+        # Given
+        user_token = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
+        user = UserFactory().create(
+            token=user_token,
+            role=UserRoles.ORGANIZER,
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+        )
+        self.user_repository.create(user)
+
+        # When / Then
+        with self.assertRaises(UserIsNotAParticipant):
+            CreateNewApplicationUseCase().execute(
+                token=user_token, event_id=self.event_id
+            )
+
+    def test__given_a_user_without_study__when_create_application__then_user_is_not_student(
+        self,
+    ) -> None:
+        # Given
+        user_token = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
+        user = UserFactory().create(
+            token=user_token,
+            study=False,
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+        )
+        self.user_repository.create(user)
+
+        # When / Then
+        with self.assertRaises(UserIsNotStudent):
+            CreateNewApplicationUseCase().execute(
+                token=user_token, event_id=self.event_id
+            )
+
+    def test__given_a_user_that_is_14_years_old_and_a_event_with_16_year_old_restriction__when_create_application__then_user_is_too_young_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user_token = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
+        user = UserFactory().create(
+            token=user_token,
+            role=UserRoles.PARTICIPANT,
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+            date_of_birth=datetime(2010, 1, 10),
+        )
+        self.user_repository.create(user)
+
+        # When / Then
+        with self.assertRaises(UserIsTooYoung):
             CreateNewApplicationUseCase().execute(
                 token=user_token, event_id=self.event_id
             )

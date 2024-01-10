@@ -1,5 +1,6 @@
 import json
 import uuid
+from datetime import datetime
 
 from app.users.domain.models.user import UserRoles, GenderOptions, TShirtSizes
 from tests.api_tests import ApiTests
@@ -173,6 +174,93 @@ class TestViewCreateNewApplication(ApiTests):
         # Then
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.content, b"Application already exists")
+
+    def test__given_a_correct_event_id_and_a_complete_organizer_user__when_create_application__then_you_should_have_role_participant_to_apply_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user_token = "03c8bcb7-6c6f-4362-8dbf-6c8b191bb5d3"
+        user = UserFactory().create(
+            token=uuid.UUID(user_token),
+            role=UserRoles.ORGANIZER,
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+        )
+        self.user_repository.create(user)
+
+        body = {"event_id": self.correct_event_id}
+
+        # When
+        headers = {"HTTP_Authorization": user_token}
+        response = self.client.post(
+            "/organizator-api/applications/new",
+            json.dumps(body),
+            content_type="application/json",
+            **headers  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"You should have role participant to apply")
+
+    def test__given_a_correct_event_id_and_a_complete_user_without_study__when_create_application__then_you_should_be_student_to_apply_is_returned(
+        self,
+    ) -> None:
+        # Given
+        user_token = "03c8bcb7-6c6f-4362-8dbf-6c8b191bb5d3"
+        user = UserFactory().create(
+            token=uuid.UUID(user_token),
+            study=False,
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+        )
+        self.user_repository.create(user)
+
+        body = {"event_id": self.correct_event_id}
+
+        # When
+        headers = {"HTTP_Authorization": user_token}
+        response = self.client.post(
+            "/organizator-api/applications/new",
+            json.dumps(body),
+            content_type="application/json",
+            **headers  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"You should be student to apply")
+
+    def test__given_a_correct_event_id_and_a_user_too_young__when_create_application__then_you_are_too_young_to_apply(
+        self,
+    ) -> None:
+        # Given
+        user_token = "03c8bcb7-6c6f-4362-8dbf-6c8b191bb5d3"
+        user = UserFactory().create(
+            token=uuid.UUID(user_token),
+            date_of_birth=datetime(2010, 1, 1),
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+        )
+        self.user_repository.create(user)
+
+        body = {"event_id": self.correct_event_id}
+
+        # When
+        headers = {"HTTP_Authorization": user_token}
+        response = self.client.post(
+            "/organizator-api/applications/new",
+            json.dumps(body),
+            content_type="application/json",
+            **headers  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"You are too young to apply")
 
     def test__given_a_correct_event_id_and_a_complete_user__when_create_application__then_application_created_correctly_is_returned(
         self,
