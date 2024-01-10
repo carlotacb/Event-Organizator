@@ -16,6 +16,11 @@ class EventResponse:
     location: str
     header_image: str
     deleted: bool
+    open_for_participants: bool
+    max_participants: int
+    expected_attrition_rate: float
+    students_only: bool
+    age_restrictions: int
 
     @staticmethod
     def from_event(event: Event) -> "EventResponse":
@@ -29,6 +34,11 @@ class EventResponse:
             location=event.location,
             header_image=event.header_image,
             deleted=event.deleted_at is not None,
+            open_for_participants=event.open_for_participants,
+            max_participants=event.max_participants,
+            expected_attrition_rate=event.expected_attrition_rate,
+            students_only=event.students_only,
+            age_restrictions=event.age_restrictions,
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -42,4 +52,9 @@ class EventResponse:
             "location": self.location,
             "header_image": self.header_image,
             "deleted": self.deleted,
+            "open_for_participants": self.open_for_participants,
+            "max_participants": self.max_participants,
+            "expected_attrition_rate": self.expected_attrition_rate,
+            "students_only": self.students_only,
+            "age_restrictions": self.age_restrictions,
         }

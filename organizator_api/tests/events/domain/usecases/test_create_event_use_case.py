@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from app.events.application.requests import CreateEventRequest
 from app.events.domain.usecases.create_event_use_case import CreateEventUseCase
@@ -30,6 +29,11 @@ class TestCreateEventUseCase(ApiTests):
             end_date="18/11/2023 05:00",
             location="Aula d'estudis Campus Nord",
             header_image="https://www.hacknights.dev/images/hacknight.png",
+            open_for_participants=True,
+            max_participants=100,
+            expected_attrition_rate=0.1,
+            students_only=True,
+            age_restrictions=16,
         )
 
         # When
@@ -59,6 +63,11 @@ class TestCreateEventUseCase(ApiTests):
             end_date="18/11/2023 05:00",
             location="Aula d'estudis Campus Nord",
             header_image="https://www.hacknights.dev/images/hacknight.png",
+            open_for_participants=True,
+            max_participants=100,
+            expected_attrition_rate=0.1,
+            students_only=True,
+            age_restrictions=16,
         )
 
         # When / Then

@@ -28,6 +28,11 @@ class ORMEventRepository(EventRepository):
             orm_event.location = event.location
             orm_event.header_image = event.header_image
             orm_event.updated_at = event.updated_at
+            orm_event.open_for_participants = event.open_for_participants
+            orm_event.max_participants = event.max_participants
+            orm_event.expected_attrition_rate = event.expected_attrition_rate
+            orm_event.students_only = event.students_only
+            orm_event.age_restrictions = event.age_restrictions
             orm_event.save()
         except ORMEvent.DoesNotExist:
             raise EventNotFound()
@@ -69,6 +74,11 @@ class ORMEventRepository(EventRepository):
             created_at=event.created_at,
             updated_at=event.updated_at,
             deleted_at=event.deleted_at,
+            open_for_participants=event.open_for_participants,
+            max_participants=event.max_participants,
+            expected_attrition_rate=event.expected_attrition_rate,
+            students_only=event.students_only,
+            age_restrictions=event.age_restrictions,
         )
 
     def _to_domain_model(self, event: ORMEvent) -> Event:
@@ -84,4 +94,9 @@ class ORMEventRepository(EventRepository):
             created_at=event.created_at,
             updated_at=event.updated_at,
             deleted_at=event.deleted_at,
+            open_for_participants=event.open_for_participants,
+            max_participants=event.max_participants,
+            expected_attrition_rate=event.expected_attrition_rate,
+            students_only=event.students_only,
+            age_restrictions=event.age_restrictions,
         )

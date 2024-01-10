@@ -20,6 +20,11 @@ class TestEventViews(ApiTests):
             "end_date": "18/11/2023 05:00",
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
+            "open_for_participants": True,
+            "max_participants": 100,
+            "expected_attrition_rate": 0.1,
+            "students_only": True,
+            "age_restrictions": 16,
         }
         self.user_repository.clear()
         self.user_admin_token = uuid.UUID("5b90906e-2894-467d-835e-3e4fbe42af9f")
@@ -183,7 +188,7 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2022", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
+            b'[{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}, {"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2022", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}]',
         )
 
     def test__given_event_deleted_in_db__when_get_all_events__then_it_returns_empty_list(
@@ -221,7 +226,7 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'[{"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2025", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2025-05-12T16:00:00Z", "end_date": "2025-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}]',
+            b'[{"id": "be0f4c18-4a7c-4c1e-8a62-fc50916b6c88", "name": "HackUPC 2025", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2025-05-12T16:00:00Z", "end_date": "2025-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}]',
         )
 
     def test__given_events_in_db__when_get_event_by_id__then_returns_the_event(
@@ -240,7 +245,7 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://www.hackupc.com/", "description": "The biggest student hackathon in Europe", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}',
         )
 
     def test__when_get_event_by_nonexistent_id__then_returns_the_event(
@@ -272,6 +277,11 @@ class TestEventViews(ApiTests):
             "end_date": "18/11/2023 05:00",
             "location": "Aula d'estudis Campus Nord",
             "header_image": "https://www.hacknights.dev/images/hacknight.png",
+            "open_for_participants": False,
+            "max_participants": 300,
+            "expected_attrition_rate": 0.2,
+            "students_only": True,
+            "age_restrictions": 18,
         }
 
         # When
@@ -287,7 +297,7 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackNight Ep.VI", "url": "https://www.hacknights.dev", "description": "The best hack-night ever", "start_date": "2023-11-17T21:00:00Z", "end_date": "2023-11-18T05:00:00Z", "location": "Aula d\'estudis Campus Nord", "header_image": "https://www.hacknights.dev/images/hacknight.png", "deleted": false}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackNight Ep.VI", "url": "https://www.hacknights.dev", "description": "The best hack-night ever", "start_date": "2023-11-17T21:00:00Z", "end_date": "2023-11-18T05:00:00Z", "location": "Aula d\'estudis Campus Nord", "header_image": "https://www.hacknights.dev/images/hacknight.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}',
         )
 
         events = self.event_repository.get_all()
@@ -302,6 +312,11 @@ class TestEventViews(ApiTests):
         self.assertEqual(
             event.header_image, "https://www.hacknights.dev/images/hacknight.png"
         )
+        self.assertEqual(event.open_for_participants, True)
+        self.assertEqual(event.max_participants, 100)
+        self.assertEqual(event.expected_attrition_rate, 0.1)
+        self.assertEqual(event.students_only, True)
+        self.assertEqual(event.age_restrictions, 16)
 
     def test__given_only_some_information_to_update_an_event__when_update_event__then_the_event_is_updated(
         self,
@@ -327,7 +342,7 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://2023.hackupc.com/", "description": "The biggest student hackathon in Europe taking place in Barcelona", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false}',
+            b'{"id": "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc", "name": "HackUPC 2023", "url": "https://2023.hackupc.com/", "description": "The biggest student hackathon in Europe taking place in Barcelona", "start_date": "2023-05-12T16:00:00Z", "end_date": "2023-05-14T18:00:00Z", "location": "UPC Campus Nord", "header_image": "https://hackupc.com/ogimage.png", "deleted": false, "open_for_participants": true, "max_participants": 100, "expected_attrition_rate": 0.1, "students_only": true, "age_restrictions": 16}',
         )
 
         events = self.event_repository.get_all()
