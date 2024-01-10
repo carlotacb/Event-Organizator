@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { getToken } from "../../../utils/sessionCalls";
