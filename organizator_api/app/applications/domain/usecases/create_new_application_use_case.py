@@ -20,12 +20,6 @@ class CreateNewApplicationUseCase:
     def __init__(self) -> None:
         self.application_repository = ApplicationRepositoryFactory.create()
 
-    def calculate_age(self, born: datetime) -> int:
-        today = date.today()
-        return (
-            today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-        )
-
     def execute(self, token: uuid.UUID, event_id: uuid.UUID) -> None:
         user = GetUserByTokenUseCase().execute(token=token)
         if (
