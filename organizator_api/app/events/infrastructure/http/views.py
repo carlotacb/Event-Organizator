@@ -143,11 +143,23 @@ def update_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
     end_date = json_body["end_date"] if "end_date" in json_body else None
     location = json_body["location"] if "location" in json_body else None
     header_image = json_body["header_image"] if "header_image" in json_body else None
-    open_for_participants = json_body["open_for_participants"] if "open_for_participants" in json_body else None
-    max_participants = json_body["max_participants"] if "max_participants" in json_body else None
-    expected_attrition_rate = json_body["expected_attrition_rate"] if "expected_attrition_rate" in json_body else None
+    open_for_participants = (
+        json_body["open_for_participants"]
+        if "open_for_participants" in json_body
+        else None
+    )
+    max_participants = (
+        json_body["max_participants"] if "max_participants" in json_body else None
+    )
+    expected_attrition_rate = (
+        json_body["expected_attrition_rate"]
+        if "expected_attrition_rate" in json_body
+        else None
+    )
     students_only = json_body["students_only"] if "students_only" in json_body else None
-    age_restrictions = json_body["age_restrictions"] if "age_restrictions" in json_body else None
+    age_restrictions = (
+        json_body["age_restrictions"] if "age_restrictions" in json_body else None
+    )
 
     event_data = UpdateEventRequest(
         name=name,
