@@ -15,6 +15,7 @@ import {
   dateToPlainString,
 } from "../../../utils/util-functions";
 import { getToken } from "../../../utils/sessionCalls";
+import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -35,7 +36,12 @@ export default function CreatePage() {
     startDate: "",
     endDate: "",
     location: "",
+    maxParticipants: "",
+    attritionRate: "",
+    minAge: "",
+    onlyForStudents: false,
     headerImage: "",
+    openForParticipants: true,
   });
   const [errors, setErrors] = React.useState({
     name: undefined,
@@ -44,6 +50,9 @@ export default function CreatePage() {
     startDate: undefined,
     endDate: undefined,
     location: undefined,
+    maxParticipants: undefined,
+    attritionRate: undefined,
+    minAge: undefined,
     headerImage: undefined,
   });
   const [loading, setLoading] = React.useState(false);
@@ -134,6 +143,54 @@ export default function CreatePage() {
       handleError(undefined, "location");
     }
 
+    if (!inputs.maxParticipants) {
+      handleError(
+        "Please enter a max participants for the event",
+        "maxParticipants",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.maxParticipants);
+      if (!isNum) {
+        handleError("Please enter a valid number", "maxParticipants");
+        isValid = false;
+      } else {
+        handleError(undefined, "maxParticipants");
+      }
+    }
+
+    if (!inputs.attritionRate) {
+      handleError(
+        "Please enter the expected attrition rate for the event",
+        "attritionRate",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.attritionRate);
+      if (!isNum) {
+        handleError("Please enter a valid number", "attritionRate");
+        isValid = false;
+      } else {
+        handleError(undefined, "attritionRate");
+      }
+    }
+
+    if (!inputs.minAge) {
+      handleError(
+        "Please enter the minimum age to participate in the event",
+        "minAge",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.minAge);
+      if (!isNum) {
+        handleError("Please enter a valid number", "minAge");
+        isValid = false;
+      } else {
+        handleError(undefined, "minAge");
+      }
+    }
+
     if (!inputs.headerImage) {
       handleError("Please enter a header image for the event", "headerImage");
       isValid = false;
@@ -162,7 +219,7 @@ export default function CreatePage() {
           text2: response.error,
         });
       } else {
-        router.back();
+        router.push("/");
       }
     });
   };
@@ -220,6 +277,69 @@ export default function CreatePage() {
               onChangeText={(text) => handleOnChange(text, "location")}
               error={errors.location}
             />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Input
+                label="Max participants"
+                iconName="users"
+                required
+                value={inputs.maxParticipants}
+                onChangeText={(text) => handleOnChange(text, "maxParticipants")}
+                error={errors.maxParticipants}
+                width="45%"
+                inputMode="numeric"
+                keyboardType="numeric"
+              />
+              <Input
+                label="Attrition rate (%)"
+                iconName="percent"
+                required
+                value={inputs.attritionRate}
+                onChangeText={(text) => handleOnChange(text, "attritionRate")}
+                error={errors.attritionRate}
+                width="45%"
+                inputMode="decimal"
+                keyboardType="numeric"
+              />
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Input
+                label="Minimum age"
+                iconName="calendar-minus-o"
+                required
+                value={inputs.minAge}
+                onChangeText={(text) => handleOnChange(text, "minAge")}
+                error={errors.minAge}
+                width="45%"
+                inputMode="numeric"
+                keyboardType="numeric"
+              />
+              <FilterButton
+                onPress={() => {
+                  setInputs((prevState) => ({
+                    ...prevState,
+                    onlyForStudents: !prevState.onlyForStudents,
+                  }));
+                }}
+                color="dimgray"
+                iconName="graduation-cap"
+                title="Only for students"
+                width="45%"
+                active={inputs.onlyForStudents}
+              />
+            </View>
             <Input
               label="Header image link"
               iconName="image"
@@ -239,6 +359,19 @@ export default function CreatePage() {
               placeholder="Explain a bit about what's the event about, you can write as much as you want!"
               placeholderTextColor="#969696"
               error={errors.description}
+            />
+
+            <FilterButton
+              onPress={() => {
+                setInputs((prevState) => ({
+                  ...prevState,
+                  openForParticipants: !prevState.openForParticipants,
+                }));
+              }}
+              color="dimgray"
+              iconName="edit"
+              title="Open for participants to aply"
+              active={inputs.openForParticipants}
             />
 
             <ButtonContainer>

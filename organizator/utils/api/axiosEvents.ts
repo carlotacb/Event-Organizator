@@ -59,6 +59,11 @@ export async function getEventById(eventId: string): Promise<getEventResponse> {
         name: response.data.name,
         startDate: response.data.start_date,
         url: response.data.url,
+        maxParticipants: response.data.max_participants.toString(),
+        attritionRate: (response.data.expected_attrition_rate * 100).toString(),
+        minAge: response.data.age_restrictions.toString(),
+        onlyForStudents: response.data.students_only,
+        openForParticipants: response.data.open_for_participants,
       },
     };
   } catch (error: any) {
@@ -101,12 +106,17 @@ export async function createEvent(
       url: `${eventsAPI}/new`,
       data: {
         name: eventInformation.name,
+        url: eventInformation.url,
         description: eventInformation.description,
         start_date: eventInformation.startDate,
         end_date: eventInformation.endDate,
         location: eventInformation.location,
         header_image: eventInformation.headerImage,
-        url: eventInformation.url,
+        open_for_participants: eventInformation.openForParticipants,
+        max_participants: Number(eventInformation.maxParticipants),
+        expected_attrition_rate: Number(eventInformation.attritionRate) / 100,
+        students_only: eventInformation.onlyForStudents,
+        age_restrictions: Number(eventInformation.minAge),
       },
       headers: {
         Authorization: token,
@@ -138,6 +148,11 @@ export async function updateEvent(
         end_date: eventInformation.endDate,
         location: eventInformation.location,
         url: eventInformation.url,
+        open_for_participants: eventInformation.openForParticipants,
+        max_participants: Number(eventInformation.maxParticipants),
+        expected_attrition_rate: Number(eventInformation.attritionRate) / 100,
+        students_only: eventInformation.onlyForStudents,
+        age_restrictions: Number(eventInformation.minAge),
       },
       headers: {
         Authorization: token,
@@ -155,6 +170,11 @@ export async function updateEvent(
         name: response.data.name,
         startDate: response.data.start_date,
         url: response.data.url,
+        maxParticipants: response.data.max_participants.toString(),
+        attritionRate: (response.data.expected_attrition_rate * 100).toString(),
+        minAge: response.data.age_restrictions.toString(),
+        onlyForStudents: response.data.students_only,
+        openForParticipants: response.data.open_for_participants,
       },
     };
   } catch (error: any) {

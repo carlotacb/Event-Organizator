@@ -5,8 +5,9 @@ import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import InputLabel from "./InputLabel";
 
-const Container = styled(View)`
+const Container = styled(View)<{ width: string }>`
   margin-bottom: 20px;
+  width: ${(props: { width: string }) => props.width};
 `;
 
 const TextError = styled(Text)`
@@ -19,13 +20,14 @@ const ErrorIcon = styled(FontAwesome)`
   margin-top: 8px;
   font-size: 12px;
   color: red;
-  margin-left: 15px;
 `;
 
 const TextContainerRow = styled(View)`
   display: flex;
   flex-direction: row;
   gap: 5px;
+  margin-left: 15px;
+  margin-right: 15px;
 `;
 
 const TextInputContainer = styled(View)<{
@@ -74,16 +76,25 @@ interface InputProps extends TextInputProps {
   password?: boolean;
   required?: boolean;
   disabled?: boolean;
+  width?: string;
 }
 
 export default function Input(props: InputProps) {
-  const { label, error, required, password, iconName, disabled } = props;
+  const {
+    label,
+    error,
+    required,
+    password,
+    iconName,
+    disabled,
+    width = "auto",
+  } = props;
 
   const [hidePassword, setHidePassword] = React.useState(password);
   const [isFocused, setIsFocused] = React.useState(false);
 
   return (
-    <Container>
+    <Container width={width}>
       {disabled && !label ? null : (
         <InputLabel label={label || ""} required={required} />
       )}

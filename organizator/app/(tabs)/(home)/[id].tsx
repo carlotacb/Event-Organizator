@@ -12,7 +12,13 @@ import {
   getEventById,
   updateEvent,
 } from "../../../utils/api/axiosEvents";
-import { parseDate } from "../../../utils/util-functions";
+import {
+  checkDateRange,
+  checkDateWithTime,
+  dateToPlainString,
+  formatDate,
+  parseDate,
+} from "../../../utils/util-functions";
 import LoadingPage from "../../../components/LodingPage";
 import EmptyPage from "../../../components/EmptyPage";
 import Input from "../../../components/Input";
@@ -21,6 +27,7 @@ import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import { createNewApplication } from "../../../utils/api/axiosApplications";
+import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -113,6 +120,11 @@ export default function EventPage() {
     startDate: "",
     endDate: "",
     location: "",
+    maxParticipants: "",
+    attritionRate: "",
+    minAge: "",
+    onlyForStudents: false,
+    openForParticipants: true,
   });
   const [errors, setErrors] = React.useState({
     name: undefined,
@@ -121,6 +133,9 @@ export default function EventPage() {
     startDate: undefined,
     endDate: undefined,
     location: undefined,
+    maxParticipants: undefined,
+    attritionRate: undefined,
+    minAge: undefined,
   });
   const [isOrganizer, setIsOrganizer] = React.useState(false);
   const [isOrganizerAdmin, setIsOrganizerAdmin] = React.useState(false);
@@ -141,9 +156,15 @@ export default function EventPage() {
         name: response.eventInformation?.name || "",
         url: response.eventInformation?.url || "",
         description: response.eventInformation?.description || "",
-        startDate: response.eventInformation?.startDate || "",
-        endDate: response.eventInformation?.endDate || "",
+        startDate: formatDate(response.eventInformation?.startDate || ""),
+        endDate: formatDate(response.eventInformation?.endDate || ""),
         location: response.eventInformation?.location || "",
+        maxParticipants: response.eventInformation?.maxParticipants || "",
+        attritionRate: response.eventInformation?.attritionRate || "",
+        minAge: response.eventInformation?.minAge || "",
+        onlyForStudents: response.eventInformation?.onlyForStudents || false,
+        openForParticipants:
+          response.eventInformation?.openForParticipants || true,
       });
     });
 
@@ -175,53 +196,124 @@ export default function EventPage() {
   };
 
   const validate = () => {
-    let isValid = false;
+    let isValid = true;
 
     if (!inputs.name) {
       handleError("Please enter a name for the event", "name");
+      isValid = false;
     } else {
       handleError(undefined, "name");
     }
 
     if (!inputs.url) {
       handleError("Please enter a url for the event", "url");
+      isValid = false;
     } else {
       handleError(undefined, "url");
     }
 
     if (!inputs.description) {
       handleError("Please enter a description for the event", "description");
+      isValid = false;
     } else {
       handleError(undefined, "description");
     }
 
     if (!inputs.startDate) {
       handleError("Please enter a starting date for the event", "startDate");
+      isValid = false;
     } else {
-      handleError(undefined, "startDate");
+      const dateChecker = checkDateWithTime(inputs.startDate);
+      if (!dateChecker.valid) {
+        handleError(dateChecker.error, "startDate");
+        isValid = false;
+      } else {
+        const today = new Date();
+        const validRange = checkDateRange(
+          dateToPlainString(today),
+          inputs.startDate,
+        );
+        if (!validRange.valid) {
+          handleError(validRange.error, "startDate");
+          isValid = false;
+        } else {
+          handleError(undefined, "startDate");
+        }
+      }
     }
 
     if (!inputs.endDate) {
       handleError("Please enter a ending date for the event", "endDate");
+      isValid = false;
     } else {
-      handleError(undefined, "endDate");
+      const dateChecker = checkDateWithTime(inputs.endDate);
+      if (!dateChecker.valid) {
+        handleError(dateChecker.error, "endDate");
+        isValid = false;
+      } else {
+        const validRange = checkDateRange(inputs.startDate, inputs.endDate);
+        if (!validRange.valid) {
+          handleError(validRange.error, "endDate");
+          isValid = false;
+        } else {
+          handleError(undefined, "endDate");
+        }
+      }
     }
 
     if (!inputs.location) {
       handleError("Please enter a location for the event", "location");
+      isValid = false;
     } else {
       handleError(undefined, "location");
     }
 
-    if (
-      errors.name === undefined &&
-      errors.url === undefined &&
-      errors.description === undefined &&
-      errors.startDate === undefined &&
-      errors.endDate === undefined &&
-      errors.location === undefined
-    ) {
-      isValid = true;
+    if (!inputs.maxParticipants) {
+      handleError(
+        "Please enter a max participants for the event",
+        "maxParticipants",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.maxParticipants);
+      if (!isNum) {
+        handleError("Please enter a valid number", "maxParticipants");
+        isValid = false;
+      } else {
+        handleError(undefined, "maxParticipants");
+      }
+    }
+
+    if (!inputs.attritionRate) {
+      handleError(
+        "Please enter the expected attrition rate for the event",
+        "attritionRate",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.attritionRate);
+      if (!isNum) {
+        handleError("Please enter a valid number", "attritionRate");
+        isValid = false;
+      } else {
+        handleError(undefined, "attritionRate");
+      }
+    }
+
+    if (!inputs.minAge) {
+      handleError(
+        "Please enter the minimum age to participate in the event",
+        "minAge",
+      );
+      isValid = false;
+    } else {
+      const isNum = /^\d+$/.test(inputs.minAge);
+      if (!isNum) {
+        handleError("Please enter a valid number", "minAge");
+        isValid = false;
+      } else {
+        handleError(undefined, "minAge");
+      }
     }
 
     if (isValid) {
@@ -256,6 +348,9 @@ export default function EventPage() {
       });
     }
   };
+
+  console.log(inputs);
+  console.log(events);
 
   const applyToEvent = () => {
     const fetchData = async () => {
@@ -346,6 +441,75 @@ export default function EventPage() {
                         }
                         error={errors.location}
                       />
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Input
+                          label="Max participants"
+                          iconName="users"
+                          required
+                          value={inputs.maxParticipants}
+                          onChangeText={(text) =>
+                            handleOnChange(text, "maxParticipants")
+                          }
+                          error={errors.maxParticipants}
+                          width="45%"
+                          inputMode="numeric"
+                          keyboardType="numeric"
+                        />
+                        <Input
+                          label="Attrition rate (%)"
+                          iconName="percent"
+                          required
+                          value={inputs.attritionRate}
+                          onChangeText={(text) =>
+                            handleOnChange(text, "attritionRate")
+                          }
+                          error={errors.attritionRate}
+                          width="45%"
+                          inputMode="decimal"
+                          keyboardType="numeric"
+                        />
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Input
+                          label="Minimum age"
+                          iconName="calendar-minus-o"
+                          required
+                          value={inputs.minAge}
+                          onChangeText={(text) =>
+                            handleOnChange(text, "minAge")
+                          }
+                          error={errors.minAge}
+                          width="45%"
+                          inputMode="numeric"
+                          keyboardType="numeric"
+                        />
+                        <FilterButton
+                          onPress={() => {
+                            setInputs((prevState) => ({
+                              ...prevState,
+                              onlyForStudents: !prevState.onlyForStudents,
+                            }));
+                          }}
+                          color="dimgray"
+                          iconName="graduation-cap"
+                          title="Only for students"
+                          width="45%"
+                          active={inputs.onlyForStudents}
+                        />
+                      </View>
                       <Input
                         label="Description"
                         iconName="pencil"
@@ -357,6 +521,18 @@ export default function EventPage() {
                           handleOnChange(text, "description")
                         }
                         error={errors.description}
+                      />
+                      <FilterButton
+                        onPress={() => {
+                          setInputs((prevState) => ({
+                            ...prevState,
+                            openForParticipants: !prevState.openForParticipants,
+                          }));
+                        }}
+                        color="dimgray"
+                        iconName="edit"
+                        title="Open for participants to aply"
+                        active={inputs.openForParticipants}
                       />
 
                       <ButtonsContainer>
