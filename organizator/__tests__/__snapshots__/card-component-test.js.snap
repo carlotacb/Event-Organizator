@@ -160,7 +160,7 @@ exports[`renders correctly a button 1`] = `
           "paddingRight": 15,
           "paddingTop": 5,
           "position": "absolute",
-          "right": 30,
+          "right": 25,
           "top": 25,
         },
       ]

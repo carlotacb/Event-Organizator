@@ -12,6 +12,7 @@ interface CardProps {
   endDate: string;
   location: string;
   headerImage: string;
+  students: boolean;
 }
 
 const CardContainer = styled.View<{ isPast: boolean }>`
@@ -55,7 +56,7 @@ const TextLine = styled.View`
 const PastTag = styled.View`
   position: absolute;
   top: 25px;
-  right: 30px;
+  right: 25px;
   border: 4px solid #772323;
   background-color: rgba(119, 35, 35, 0.8);
   border-radius: 20px;
@@ -68,8 +69,24 @@ const PastText = styled.Text`
   font-size: 20px;
 `;
 
+const StudentTag = styled.View`
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  border: 4px solid #23772a;
+  background-color: rgba(35, 119, 42, 0.8);
+  border-radius: 20px;
+  padding: 5px 15px;
+`;
+
+const StudentText = styled.Text`
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
 export default function CardHomePage(props: CardProps) {
-  const { title, startDate, endDate, location, headerImage } = props;
+  const { title, startDate, endDate, location, headerImage, students } = props;
 
   const isPast = () => startDate < new Date().toISOString();
 
@@ -97,6 +114,11 @@ export default function CardHomePage(props: CardProps) {
         <PastTag>
           <PastText>Past</PastText>
         </PastTag>
+      )}
+      {students && (
+        <StudentTag>
+          <StudentText>Students</StudentText>
+        </StudentTag>
       )}
     </>
   );

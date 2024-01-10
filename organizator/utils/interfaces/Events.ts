@@ -9,6 +9,11 @@ export interface EventAllInformation {
   name: string;
   start_date: string;
   url: string;
+  open_for_participants: boolean;
+  max_participants: number;
+  students_only: boolean;
+  expected_attrition_rate: number;
+  age_restrictions: number;
 }
 
 export interface EventInformation {
