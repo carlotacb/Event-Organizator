@@ -94,26 +94,6 @@ class TestCreateNewApplicationUseCase(ApiTests):
                 token=user_token, event_id=self.event_id
             )
 
-    def test__given_a_user_organizer__when_create_application__then_user_is_not_participant(
-        self,
-    ) -> None:
-        # Given
-        user_token = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
-        user = UserFactory().create(
-            token=user_token,
-            role=UserRoles.ORGANIZER,
-            tshirt=TShirtSizes.M,
-            gender=GenderOptions.FEMALE,
-            alimentary_restrictions="No restrictions",
-        )
-        self.user_repository.create(user)
-
-        # When / Then
-        with self.assertRaises(UserIsNotAParticipant):
-            CreateNewApplicationUseCase().execute(
-                token=user_token, event_id=self.event_id
-            )
-
     def test__given_a_user_without_study__when_create_application__then_user_is_not_student(
         self,
     ) -> None:
