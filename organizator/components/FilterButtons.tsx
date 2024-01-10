@@ -3,10 +3,14 @@ import { Text, Pressable } from "react-native";
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-const ButtonContainer = styled(Pressable)<{ color: string; active: boolean }>`
-  height: 30px;
+const ButtonContainer = styled(Pressable)<{
+  color: string;
+  active: boolean;
+  width: string;
+}>`
+  height: 33px;
   padding: 0 15px;
-  width: auto;
+  width: ${(props: { width: string }) => props.width};
   border: 2px solid ${(props: { color: string }) => props.color};
   background-color: ${(props: { color: string; active: boolean }) =>
     props.active ? props.color : "transparent"};
@@ -36,13 +40,19 @@ interface ButtonProps {
   onPress: () => void;
   color: string;
   active?: boolean;
+  width?: string;
 }
 
 export default function FilterButton(props: ButtonProps) {
-  const { title, onPress, iconName, color, active } = props;
+  const { title, onPress, iconName, color, active, width = "auto" } = props;
 
   return (
-    <ButtonContainer onPress={onPress} color={color} active={active}>
+    <ButtonContainer
+      onPress={onPress}
+      color={color}
+      active={active}
+      width={width}
+    >
       {iconName && (
         <InputIcon
           name={iconName}
