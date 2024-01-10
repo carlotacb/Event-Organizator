@@ -10,6 +10,7 @@ import Button from "../components/ButtonWithIcon";
 import { loginUser } from "../utils/api/axiosUsers";
 import { LoginResponse } from "../utils/interfaces/Users";
 import { getToken, storeToken } from "../utils/sessionCalls";
+import FilterButton from "../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   padding: 50px 40px;
@@ -173,11 +174,14 @@ export default function LoginPage() {
               </Link>
             </RegisterTextContainer>
             <RegisterTextContainer>
-              <RegisterText>You don't to register now? </RegisterText>
               <Link href="/" asChild>
-                <Pressable>
-                  <RegisterButton>HomePage</RegisterButton>
-                </Pressable>
+                <FilterButton
+                  title="Go to homepage"
+                  onPress={() => {}}
+                  iconName="home"
+                  color="#040240"
+                  active
+                />
               </Link>
             </RegisterTextContainer>
           </>
