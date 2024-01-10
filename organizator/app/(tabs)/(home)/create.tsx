@@ -370,7 +370,7 @@ export default function CreatePage() {
               }}
               color="dimgray"
               iconName="edit"
-              title="Open for participants to aply"
+              title="Open for participants to apply"
               active={inputs.openForParticipants}
             />
 
