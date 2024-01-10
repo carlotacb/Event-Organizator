@@ -9,8 +9,7 @@ import {
   UpdateEventProps,
   updateEventResponse,
 } from "../interfaces/Events";
-
-const eventsAPI = "http://0.0.0.0:8000/organizator-api/events";
+import { eventsAPI } from "./constants";
 
 export async function getAllUpcomingEvents(): Promise<getAllEventResponse> {
   try {

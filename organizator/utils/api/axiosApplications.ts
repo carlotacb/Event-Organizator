@@ -3,8 +3,7 @@ import {
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
 } from "../interfaces/Applications";
-
-const applicationsAPI = "http://0.0.0.0:8000/organizator-api/applications";
+import { applicationsAPI } from "./constants";
 
 export async function createNewApplication(
   eventId: string,

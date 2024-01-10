@@ -11,8 +11,8 @@ import {
   UpdateRoleResponse,
   UserInformationResponse,
 } from "../interfaces/Users";
+import { usersAPI } from "./constants";
 
-const usersAPI = "http://0.0.0.0:8000/organizator-api/users";
 const baseImage =
   "https://media.istockphoto.com/id/1087531642/vector/male-face-silhouette-or-icon-man-avatar-profile-unknown-or-anonymous-person-vector.jpg?s=612x612&w=0&k=20&c=FEppaMMfyIYV2HJ6Ty8tLmPL1GX6Tz9u9Y8SCRrkD-o%3D";
 
