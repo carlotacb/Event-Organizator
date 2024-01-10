@@ -5,6 +5,7 @@ import {
   deleteEventResponse,
   getAllEventResponse,
   getEventResponse,
+  getUpcomingEventsWithApplicationsInfoResponse,
   UpdateEventProps,
   updateEventResponse,
 } from "../interfaces/Events";
@@ -181,6 +182,29 @@ export async function updateEvent(
     return {
       error: error.response.data,
       eventInformation: null,
+    };
+  }
+}
+
+export async function getUpcomingEventsWithApplicationsInfo(
+  token: string,
+): Promise<getUpcomingEventsWithApplicationsInfoResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${eventsAPI}/upcoming/applications`,
+      headers: {
+        Authorization: token,
+      },
+    });
+    return {
+      error: null,
+      events: [...response.data],
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      events: null,
     };
   }
 }

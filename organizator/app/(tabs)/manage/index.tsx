@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { getToken } from "../../../utils/sessionCalls";
@@ -7,6 +7,7 @@ import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import EmptyPage from "../../../components/EmptyPage";
 import MyEventsPage from "../../../components/MyEventsPage";
+import OrganizersEventsPage from "../../../components/OrganizersEventsPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -14,6 +15,7 @@ const Container = styled(SafeAreaView)`
 `;
 export default function ListPage() {
   const [isOrganizer, setIsOrganizer] = useState(false);
+  const [isParticipant, setIsParticipant] = useState(false);
   const [isNotLogged, setIsNotLogged] = useState(false);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function ListPage() {
         response.role === UserRoles.ORGANIZER_ADMIN ||
           response.role === UserRoles.ORGANIZER,
       );
+      setIsParticipant(response.role === UserRoles.PARTICIPANT);
     });
   }, []);
 
@@ -45,11 +48,8 @@ export default function ListPage() {
         />
       ) : (
         <ScrollView>
-          {isOrganizer ? (
-            <Text>This is the screen for the organizers</Text>
-          ) : (
-            <MyEventsPage />
-          )}
+          {isOrganizer && <OrganizersEventsPage />}
+          {isParticipant && <MyEventsPage />}
         </ScrollView>
       )}
     </Container>

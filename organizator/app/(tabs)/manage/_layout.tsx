@@ -1,12 +1,11 @@
 import { Stack } from "expo-router";
 
-export default function NewsLayout() {
+export default function ManageLayout() {
   return (
     <Stack>
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: "News",
           headerShown: false,
         }}
       />
