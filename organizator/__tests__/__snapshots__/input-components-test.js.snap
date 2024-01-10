@@ -6,9 +6,11 @@ exports[`renders correctly a input with label and value 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -95,9 +97,11 @@ exports[`renders correctly a input with label and value and error 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -184,6 +188,8 @@ exports[`renders correctly a input with label and value and error 1`] = `
           "display": "flex",
           "flexDirection": "row",
           "gap": 5,
+          "marginLeft": 15,
+          "marginRight": 15,
         },
       ]
     }
@@ -212,9 +218,11 @@ exports[`renders correctly a input with label and value that is disabled 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -303,9 +311,11 @@ exports[`renders correctly a input with label and value that is password 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -421,9 +431,11 @@ exports[`renders correctly a input with label and value that is required 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -513,9 +525,11 @@ exports[`renders correctly a input with only label 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
@@ -601,9 +615,11 @@ exports[`renders correctly a input with value and icon 1`] = `
     [
       {
         "marginBottom": 20,
+        "width": "auto",
       },
     ]
   }
+  width="auto"
 >
   <View
     style={
