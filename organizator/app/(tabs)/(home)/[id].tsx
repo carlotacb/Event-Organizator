@@ -64,6 +64,17 @@ const BasicInfoContainer = styled.View`
   gap: 20px;
 `;
 
+const RestrictionContainer = styled.View`
+  margin-top: 30px;
+  background-color: rgba(138, 159, 243, 0.2);
+  border: 2px solid rgb(138, 159, 243);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const TextLine = styled.View`
   display: flex;
   flex-direction: row;
@@ -587,6 +598,21 @@ export default function EventPage() {
                           </Text>
                         </TextLine>
                       </BasicInfoContainer>
+                      <RestrictionContainer>
+                        <TextLine>
+                          <Text>
+                            The minimum age to participate is: {events?.minAge}
+                          </Text>
+                        </TextLine>
+                        <TextLine>
+                          <Text>
+                            The event is open for{" "}
+                            {events?.onlyForStudents
+                              ? "only students"
+                              : "everyone"}
+                          </Text>
+                        </TextLine>
+                      </RestrictionContainer>
                       <ButtonsContainer>
                         {(isOrganizer || isOrganizerAdmin) && (
                           <Button
