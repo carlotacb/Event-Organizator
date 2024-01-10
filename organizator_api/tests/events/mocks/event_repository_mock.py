@@ -32,6 +32,11 @@ class EventRepositoryMock(EventRepository):
                 e.location = event.location
                 e.header_image = event.header_image
                 e.updated_at = event.updated_at
+                e.max_participants = event.max_participants
+                e.expected_attrition_rate = event.expected_attrition_rate
+                e.students_only = event.students_only
+                e.age_restrictions = event.age_restrictions
+                e.open_for_participants = event.open_for_participants
                 return
 
         raise EventNotFound
