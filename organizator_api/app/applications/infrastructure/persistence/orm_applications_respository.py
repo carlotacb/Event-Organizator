@@ -4,7 +4,7 @@ from typing import List
 from django.db import IntegrityError
 
 from app.applications.domain.exceptions import ApplicationAlreadyExists
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.domain.repositories import ApplicationRepository
 from app.applications.infrastructure.persistence.models.orm_application import (
     ORMEventApplication,
@@ -84,6 +84,7 @@ class ORMApplicationRepository(ApplicationRepository):
                 students_only=orm_application.event.students_only,
                 age_restrictions=orm_application.event.age_restrictions,
             ),
+            status=ApplicationStatus[orm_application.status],
             created_at=orm_application.created_at,
             updated_at=orm_application.updated_at,
         )

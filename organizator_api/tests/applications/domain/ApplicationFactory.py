@@ -1,8 +1,7 @@
 import uuid
 from datetime import datetime
-from typing import Optional
 
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.events.domain.models.event import Event
 from app.users.domain.models.user import User
 from tests.events.domain.EventFactory import EventFactory
@@ -15,6 +14,7 @@ class ApplicationFactory:
         new_id: uuid.UUID = uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"),
         user: User = UserFactory().create(),
         event: Event = EventFactory().create(),
+        status: ApplicationStatus = ApplicationStatus.PENDING,
         created_at: datetime = datetime.now(),
         updated_at: datetime = datetime.now(),
     ) -> Application:
@@ -22,6 +22,7 @@ class ApplicationFactory:
             id=new_id,
             user=user,
             event=event,
+            status=status,
             created_at=created_at,
             updated_at=updated_at,
         )

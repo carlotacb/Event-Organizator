@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.events.application.response import EventResponse
 from app.events.domain.models.event import Event
 from app.users.application.response import UserResponse
@@ -14,6 +14,7 @@ class ApplicationResponse:
     id: str
     user: User
     event: Event
+    status: ApplicationStatus
     created_at: datetime
     updated_at: datetime
 
@@ -23,6 +24,7 @@ class ApplicationResponse:
             id=str(application.id),
             user=application.user,
             event=application.event,
+            status=application.status,
             created_at=application.created_at,
             updated_at=application.updated_at,
         )
@@ -31,6 +33,7 @@ class ApplicationResponse:
         return {
             "id": self.id,
             "event": EventResponse.from_event(self.event).to_dict(),
+            "status": self.status.value,
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
@@ -39,6 +42,7 @@ class ApplicationResponse:
         return {
             "id": self.id,
             "user": UserResponse.from_user(self.user).to_dict(),
+            "status": self.status.value,
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }

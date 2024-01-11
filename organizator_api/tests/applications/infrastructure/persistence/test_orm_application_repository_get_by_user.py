@@ -1,7 +1,7 @@
 import uuid
 from datetime import timezone, datetime
 
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.infrastructure.persistence.orm_applications_respository import (
     ORMApplicationRepository,
 )
@@ -41,6 +41,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cc"),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
@@ -55,6 +56,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
         self.assertEqual(application.id, response[0].id)
         self.assertEqual(application.user.id, response[0].user.id)
         self.assertEqual(application.event.id, response[0].event.id)
+        self.assertEqual(application.status, response[0].status)
         self.assertEqual(application.created_at, response[0].created_at)
         self.assertEqual(application.updated_at, response[0].updated_at)
 
@@ -80,6 +82,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cc"),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
@@ -88,6 +91,7 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cd"),
             user=user2,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
@@ -103,5 +107,6 @@ class TestORMApplicationRepositoryGetByUser(ApiTests):
         self.assertEqual(application.id, response[0].id)
         self.assertEqual(application.user.id, response[0].user.id)
         self.assertEqual(application.event.id, response[0].event.id)
+        self.assertEqual(application.status, response[0].status)
         self.assertEqual(application.created_at, response[0].created_at)
         self.assertEqual(application.updated_at, response[0].updated_at)
