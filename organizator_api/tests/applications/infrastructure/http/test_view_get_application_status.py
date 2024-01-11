@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
+from app.users.domain.models.user import UserRoles
 from tests.api_tests import ApiTests
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.events.domain.EventFactory import EventFactory
@@ -22,6 +23,14 @@ class TestViewGetApplicationStatus(ApiTests):
             email="john@test.com",
         )
         self.user_repository.create(self.user_participant)
+
+        self.user_token_organizer = "eb41b762-5988-4fa3-8942-7a91ccb00675"
+        self.user_organizer = UserFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00675"),
+            token=uuid.UUID(self.user_token_organizer),
+            role=UserRoles.ORGANIZER,
+        )
+        self.user_repository.create(self.user_organizer)
 
         self.event_id = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
         self.event = EventFactory().create(new_id=self.event_id, name="HackUPC 2024")
@@ -99,6 +108,21 @@ class TestViewGetApplicationStatus(ApiTests):
         # Then
         self.assertEqual(response.status_code, 206)
         self.assertEqual(response.content, b"Not applied")
+
+    def test__given_a_existing_event_and_a_existing_organizer_user_with_no_application__when_get_application_status__then_you_are_not_participant_is_returned(
+        self,
+    ) -> None:
+        # When
+        headers = {"HTTP_Authorization": self.user_token_organizer}
+        response = self.client.get(
+            "/organizator-api/applications/status/eb41b762-5988-4fa3-8942-7a91ccb00686",
+            content_type="application/json",
+            **headers  # type: ignore
+        )
+
+        # Then
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"You are not a participant")
 
     def test__given_a_existing_event_and_a_existing_user_and_a_application_for_that_relation__when_get_application_status__then_applied_is_returned(
         self,

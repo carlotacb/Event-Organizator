@@ -11,7 +11,7 @@ from app.applications.domain.exceptions import (
     UserIsNotAParticipant,
     UserIsNotStudent,
     UserIsTooYoung,
-    ApplicationNotFound,
+    ApplicationNotFound, NotApplied,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -143,8 +143,10 @@ def get_application_status(request: HttpRequest, event_id: uuid.UUID) -> HttpRes
         status = GetApplicationStatusByEventUseCase().execute(
             token=token_to_uuid, event_id=event_id
         )
-    except ApplicationNotFound:
+    except NotApplied:
         return HttpResponse(status=206, content="Not applied")
+    except UserIsNotAParticipant:
+        return HttpResponse(status=401, content="You are not a participant")
     except EventNotFound:
         return HttpResponse(status=404, content="Event not found")
     except UserNotFound:
