@@ -1,6 +1,10 @@
 import uuid
 
-from app.applications.domain.exceptions import ApplicationNotFound, NotApplied, UserIsNotAParticipant
+from app.applications.domain.exceptions import (
+    ApplicationNotFound,
+    NotApplied,
+    UserIsNotAParticipant,
+)
 from app.applications.domain.usecases.get_application_status_by_event_use_case import (
     GetApplicationStatusByEventUseCase,
 )

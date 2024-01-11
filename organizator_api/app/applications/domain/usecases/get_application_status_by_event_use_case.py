@@ -1,6 +1,10 @@
 import uuid
 
-from app.applications.domain.exceptions import ApplicationNotFound, NotApplied, UserIsNotAParticipant
+from app.applications.domain.exceptions import (
+    ApplicationNotFound,
+    NotApplied,
+    UserIsNotAParticipant,
+)
 from app.applications.domain.models.application import ApplicationStatus
 from app.applications.infrastructure.repository_factories import (
     ApplicationRepositoryFactory,
