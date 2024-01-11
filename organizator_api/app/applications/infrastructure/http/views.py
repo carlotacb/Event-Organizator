@@ -11,7 +11,6 @@ from app.applications.domain.exceptions import (
     UserIsNotAParticipant,
     UserIsNotStudent,
     UserIsTooYoung,
-    ApplicationNotFound,
     NotApplied,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
