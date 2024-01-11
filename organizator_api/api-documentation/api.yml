@@ -1,15 +1,22 @@
 openapi: 3.0.0
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/carlotacb/Organizator-API/1.0.0
   - description: LocalHost
     url: http://0.0.0.0:8000/organizator-api
+  - description: Production API
+    url: https://event-organizator-api-c6wz5mj4uq-ew.a.run.app/organizator-api
 info:
   description: API for organizator app
   version: "1.0.0"
   title: Organizator API
   contact:
+    name: Carlota Catot
     email: carkbra@gmail.com
+    url: 'https://carlotacb.dev'
   license:
-    name: MIT
+    name: MIT license
     url: 'https://opensource.org/license/mit'
 
 tags:
@@ -17,29 +24,12 @@ tags:
     description: Everything about the events
   - name: users
     description: Everything about users
+  - name: applications
+    description: Everything about applications
 
 paths:
-  /events/new:
-    post:
-      tags:
-        - events
-      summary: Creates a new event with the base information
-      operationId: newEvent
-      description: |
-        With the base information of the event, you can create an event be aware that the event name is unique and also the dates should be something logical.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventItem'
-        description: Event to add
-      responses:
-        '201':
-          description: Event created correctly
-        '409':
-          description: Event already exists
-        '400':
-          description: Unexpected body
+
+  # EVENTS
 
   /events/:
     get:
@@ -48,7 +38,23 @@ paths:
       summary: Gets all the events of the system
       operationId: allEvents
       description: |
-        Get absolutely all the events of the system, in future versions it will have filters and search options
+        Get absolutely all the events of the system with all the information
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
+
+  /events/upcoming:
+    get:
+      tags:
+        - events
+      summary: Gets all the upcoming events of the system
+      operationId: allUpcomingEvents
+      description: |
+        Get all the upcoming events that are not deleted of the system with all the information
       responses:
         '200':
           description: Success
@@ -64,7 +70,7 @@ paths:
       summary: Get event by id
       operationId: eventById
       description: |
-        Get the information for a event given a ID, the basic information, also marking if the event has been deleted or not.
+        Get all the information for an event given a ID, also marking if the event has been deleted or not.
       parameters:
       - name: event_id
         in: path
@@ -83,14 +89,66 @@ paths:
         '404':
           description: Event not found
 
+  /events/upcoming/applications:
+    get:
+      tags:
+        - events
+      security:
+        - LoggedInToken: []
+      summary: Gets the participants data from upcoming events
+      operationId: allUpcomingEventsParticipants
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventParticipantsInfo'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not admin)
+        '404':
+          description: User does not exists
+
+  /events/new:
+    post:
+      tags:
+        - events
+      summary: Creates a new event
+      security:
+        - LoggedInToken: []
+      operationId: newEvent
+      description: |
+        With the all the information for an event, if you have role ORGANIZER_ADMIN, you can create the event be aware that the event name is unique and also the dates should be something logical.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCreateItem'
+        description: Event to add
+      responses:
+        '201':
+          description: Event created correctly
+        '400':
+          description: Invalid token or Unexpected body
+        '401':
+          description: Unauthorized (no token or user is not admin)
+        '409':
+          description: Event already exists
+
   /events/update/{event_id}:
     post:
       tags:
         - events
       summary: Update event by id
+      security:
+        - LoggedInToken: []
       operationId: updateById
       description: |
-        With some event information, not all the information is necessary to update, the event is updated. The name should be diferent as any event from the database.
+        With some event information, not all the information is necessary to update, the event is updated. If you are not setting some of the parameters, they will stay as it was in the original event. The name should be diferent as any event from the database.
+        
+        This call is only authorized for organizers and organizers admin users.
       parameters:
       - name: event_id
         in: path
@@ -112,6 +170,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not organizer)
         '404':
           description: Event not found
         '409':
@@ -121,10 +183,14 @@ paths:
     post:
       tags:
         - events
+      security:
+        - LoggedInToken: []
       summary: Delete event by id
       operationId: deleteById
       description: |
         Given a event ID, the event is marked as deleted, the event is not deleted in the DB but the delete_at date is introduced with the current date, so the event is marked as deleted.
+        
+        This call is only authorized for organizers admin users.
       parameters:
       - name: event_id
         in: path
@@ -136,30 +202,14 @@ paths:
       responses:
         '202':
           description: Event modified correctly
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not admin)
         '404':
           description: Event not found
 
-  /users/new:
-    post:
-      tags:
-        - users
-      summary: Creates a new user with the base information
-      operationId: newUser
-      description: |
-        With the base information of a user, you can create a user be aware that the username and the email should be unique.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserItem'
-        description: User to add
-      responses:
-        '201':
-          description: User created correctly
-        '409':
-          description: User already exists, either with the same email or the same username
-        '400':
-          description: Unexpected body
+  # USERS
 
   /users/:
     get:
@@ -168,7 +218,7 @@ paths:
       summary: Gets all the users registered in the system
       operationId: allUsers
       description: |
-        Get absolutely all the users of the system, in future versions it will have filters, a search or something similar
+        Get absolutely all the users of the system, with all the information about them
       responses:
         '200':
           description: Success
@@ -181,18 +231,18 @@ paths:
     get:
       tags:
         - users
-      summary: Get user information by id
-      operationId: userById
+      summary: Get user information by user id
+      operationId: getUserByUserId
       description: |
-        Get the basic information for a user given a ID.
+        Get all the information of a user by giving the user id.
       parameters:
       - name: user_id
         in: path
-        description: User ID for the user that we want to get
+        description: user_id of the user you want to get the information
         required: true
         schema:
           type: string
-          format: uuid
+          format: "uuid"
       responses:
         '200':
           description: Success
@@ -201,20 +251,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '404':
-          description: Event not found
+          description: User not found
 
   /users/{username}:
     get:
       tags:
         - users
       summary: Get user information by username
-      operationId: userByUsername
+      operationId: getUserByUsername
       description: |
-        Get the basic information for a user given a username.
+        Get all the information of a user by giving the username.
       parameters:
       - name: username
         in: path
-        description: username for the user that we want to get
+        description: username of the user you want to get the information
         required: true
         schema:
           type: string
@@ -226,30 +276,155 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '404':
-          description: Event not found
+          description: User not found
 
-  /users/update/{user_id}:
+  /users/login:
     post:
       tags:
         - users
-      summary: Updates a user with the available information
-      operationId: updateUser
+      summary: User login
+      operationId: login
       description: |
-        With the base information of a user, you can update. Take in account that the email and the password can not be changed and the username should be unique.
+        When user is logged in this have a token that will authenticate. This is the response of the call.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    format: "uuid"
+                    example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+
+  /users/new:
+    post:
+      tags:
+        - users
+      summary: Creates a new user with the basic information
+      operationId: newUser
+      description: |
+        With the base information of a user, you can create a user be aware that the username and the email should be unique. 
+        
+        Also if you check that you are student, university, degree and expected_graduation are mandatory and if you check that you work, then current_job_role is mandatory.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateItem'
+      responses:
+        '201':
+          description: User created correctly
+        '422':
+          description: Unexpected body (the body in uncomplete, the work information is missing or the study information is missing)
+        '409':
+          description: User already exists, either with the same email or the same username
+
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get my information
+      operationId: getMyInformation
+      security:
+        - LoggedInToken: []
+      description: |
+        Get all the information of my profile.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+
+  /users/me/role:
+    get:
+      tags:
+        - users
+      security:
+        - LoggedInToken: []
+      summary: Gets user role
+      operationId: getMyInformationRole
+      description: |
+        Get the user role
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRole'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+
+  /users/update/role/{user_id}:
+    post:
+      tags:
+        - users
+      summary: Updates the user role
+      security:
+        - LoggedInToken: []
+      operationId: updateUserRole
+      description: |
+        Given a user_id, the role is changed for the one in the body. This call can only be done by the organizer admins.
       parameters:
       - name: user_id
         in: path
-        description: User ID for the user that we want to get
+        description: username for the user that we want to get
         required: true
         schema:
           type: string
-          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRole'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        '400':
+          description: Invalid token or Invalid role
+        '401':
+          description: Unauthorized (no token or user is not admin)
+        '404':
+          description: User not found
+        '422':
+          description: Unexpected body
+
+  /users/update/me:
+    post:
+      tags:
+        - users
+      summary: Updates user information
+      security:
+        - LoggedInToken: []
+      operationId: updateMyInformation
+      description: |
+        With the some information, the user is updated. It will only udpdate the information given in the body, the rest will stay as it was. In this call you are updating your information, it's not allowed to update information from other users.
+        
+        If you check that you are student, university, degree and expected_graduation are mandatory and if you check that you work, then current_job_role is mandatory.
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UserUpdateItem'
-        description: User to update
       responses:
         '200':
           description: User updated correctly
@@ -257,17 +432,133 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '409':
-          description: User already exists
         '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized
+        '403':
           description: The email can not be changed or the password can not be changed
         '404':
           description: User does not exists
+        '409':
+          description: User already exists (email or username are taken)
+        '422':
+          description: Missing either work or study information depending on what is checked
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: User logout
+      security:
+        - LoggedInToken: []
+      operationId: logout
+      description: |
+        When loging out, the user token will be deleted in the database.
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized
+
+  # APPLICATIONS
+
+  /applications/myevents:
+    get:
+      tags:
+        - applications
+      summary: Get all my events
+      security:
+        - LoggedInToken: []
+      operationId: getMyEvents
+      description: |
+        Get the list of the applications with the events information
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationsWithEvents'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+
+  /applications/{event_id}:
+    get:
+      tags:
+        - applications
+      summary: Get all the participants for an event
+      security:
+        - LoggedInToken: []
+      operationId: getEventParticipants
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      description: |
+        Get the list of the participant of the event with all the user information for each participant
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationsWithUsers'
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not admin)
+        '404':
+          description: Event not found
+
+  /applications/new:
+    post:
+      tags:
+        - applications
+      summary: Create a new application
+      security:
+        - LoggedInToken: []
+      operationId: newApplication
+      description: |
+        User with participant role can apply to an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: string
+                  format: uuid
+                  example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized or invalid user role or too young or not student
+        '404':
+          description: Event not found or User not found
+        '409':
+          description: Application already exists
+        '422':
+          description: Event id is required or Profile not completed
 
 
 components:
   schemas:
-    EventItem:
+    EventCreateItem:
       type: object
       required:
         - name
@@ -277,6 +568,11 @@ components:
         - end_date
         - location
         - header_image
+        - open_for_participants
+        - max_participants
+        - expected_attrition_rate
+        - students_only
+        - age_restrictions
       properties:
         name:
           type: string
@@ -291,17 +587,33 @@ components:
         start_date:
           type: string
           format: date-time
-          example: "2023-05-12T09:12:33.001Z"
+          example: "12/05/2023 09:00"
         end_date:
           type: string
           format: date-time
-          example: "2025-05-14T09:12:33.001Z"
+          example: "14/05/2023 20:00"
         location:
           type: string
           example: "Campus Nord"
         header_image:
           type: string
           example: "https://hackupc.com/ogimage.png"
+        open_for_participants:
+          type: boolean
+          example: true
+        max_participants:
+          type: integer
+          example: 100
+        expected_attrition_rate:
+          type: number
+          example: 0.2
+        students_only:
+          type: boolean
+          example: true
+        age_restrictions:
+          type: integer
+          example: 18
+
     EventUpdateItem:
       type: object
       properties:
@@ -318,17 +630,33 @@ components:
         start_date:
           type: string
           format: date-time
-          example: "2023-05-12T09:12:33.001Z"
+          example: "12/05/2023 09:00"
         end_date:
           type: string
           format: date-time
-          example: "2025-05-14T09:12:33.001Z"
+          example: "14/05/2023 20:00"
         location:
           type: string
           example: "Campus Nord"
         header_image:
           type: string
           example: "https://hackupc.com/ogimage.png"
+        open_for_participants:
+          type: boolean
+          example: true
+        max_participants:
+          type: integer
+          example: 100
+        expected_attrition_rate:
+          type: number
+          example: 0.2
+        students_only:
+          type: boolean
+          example: true
+        age_restrictions:
+          type: integer
+          example: 18
+
     Event:
       type: object
       properties:
@@ -349,35 +677,60 @@ components:
         start_date:
           type: string
           format: date-time
-          example: "2023-05-12T09:12:33.001Z"
+          example: "12/05/2023 09:00"
         end_date:
           type: string
           format: date-time
-          example: "2025-05-14T09:12:33.001Z"
+          example: "14/05/2023 20:00"
         location:
           type: string
           example: "Campus Nord"
         header_image:
           type: string
           example: "https://hackupc.com/ogimage.png"
-        created_at:
-          type: string
-          format: date-time
-          example: "2020-11-17T21:00:00Z"
-        updated_at:
-          type: string
-          format: date-time
-          example: "2020-11-17T21:00:00Z"
-        deleted_at:
-          type: string
-          format: date-time
-          nullable: true
-          example: "2023-11-17T21:00:00Z"
+        open_for_participants:
+          type: boolean
+          example: true
+        max_participants:
+          type: integer
+          example: 100
+        expected_attrition_rate:
+          type: number
+          example: 0.2
+        students_only:
+          type: boolean
+          example: true
+        age_restrictions:
+          type: integer
+          example: 18
+        deleted:
+          type: boolean
+          example: false
+
     EventList:
       type: array
       items:
         $ref: '#/components/schemas/Event'
-    UserItem:
+
+    EventParticipantsInfo:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            example: "HackUPC 2023"
+          actual_participants_count:
+            type: integer
+            example: 25
+          max_participants:
+            type: integer
+            example: 100
+          expected_attrition_rate:
+            type: number
+            example: 0.2
+
+    UserCreateItem:
       type: object
       required:
         - email
@@ -387,6 +740,9 @@ components:
         - username
         - bio
         - profile_image
+        - date_of_birth
+        - study
+        - work
       properties:
         email:
           type: string
@@ -411,18 +767,41 @@ components:
           type: string
           format: url
           example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+        date_of_birth:
+          type: string
+          format: "DD/MM/YYYY"
+          example: "07/05/1996"
+        study:
+          type: boolean
+          example: true
+        work:
+          type: boolean
+          example: false
+        university:
+          type: string
+          example: "Universitat Politécnica de Catalunya"
+        degree:
+          type: string
+          example: "Computer Science"
+        expected_graduation:
+          type: string
+          format: "DD/MM/YYYY"
+          example: "25/01/2024"
+        current_job_role:
+          type: string
+
     UserUpdateItem:
       type: object
       properties:
+        username:
+          type: string
+          example: "carlotacb"
         first_name:
           type: string
           example: "Carlota"
         last_name:
           type: string
           example: "Catot Bragós"
-        username:
-          type: string
-          example: "carlotacb"
         bio:
           type: string
           example: "This is Carlota here! A HackUPC organizer"
@@ -430,6 +809,49 @@ components:
           type: string
           format: url
           example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+        date_of_birth:
+          type: string
+          format: "DD/MM/YYYY"
+          example: "07/05/1996"
+        study:
+          type: boolean
+          example: true
+        work:
+          type: boolean
+          example: false
+        university:
+          type: string
+          example: "Universitat Politécnica de Catalunya"
+        degree:
+          type: string
+          example: "Computer Science"
+        current_job_role:
+          type: string
+        tshirt:
+          type: string
+          enum: [XS, S, M, L, XL, XXL]
+          example: "XS"
+        gender:
+          type: string
+          enum: [Female, Male, Non binary, Prefer not to say]
+          example: "Female"
+        alimentary_restrictions:
+          type: string
+          example: "No restrictions"
+        github:
+          type: string
+          example: ""
+        linkedin:
+          type: string
+        devpost:
+          type: string
+        webpage:
+          type: string
+        expected_graduation:
+          type: string
+          format: "DD/MM/YYYY"
+          example: "25/01/2024"
+
     User:
       type: object
       properties:
@@ -437,22 +859,19 @@ components:
           type: string
           format: uuid
           example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+        username:
+          type: string
+          example: "carlotacb"
         email:
           type: string
           format: email
           example: "carlota@hackupc.com"
-        password:
-          type: string
-          example: "123456asdf"
         first_name:
           type: string
           example: "Carlota"
         last_name:
           type: string
           example: "Catot Bragós"
-        username:
-          type: string
-          example: "carlotacb"
         bio:
           type: string
           example: "This is Carlota here! A HackUPC organizer"
@@ -460,23 +879,104 @@ components:
           type: string
           format: url
           example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
-        created_at:
+        role:
           type: string
-          format: date-time
-          example: "2020-11-17T21:00:00Z"
-        updated_at:
+          enum: [Participant, Organizer, Organizer admin]
+          example: "Organizer admin"
+        date_of_birth:
           type: string
-          format: date-time
-          example: "2020-11-17T21:00:00Z"
+          format: "DD/MM/YYYY"
+          example: "07/05/1996"
+        study:
+          type: boolean
+          example: true
+        work:
+          type: boolean
+          example: false
+        university:
+          type: string
+          example: "Universitat Politécnica de Catalunya"
+        degree:
+          type: string
+          example: "Computer Science"
+        current_job_role:
+          type: string
+        tshirt:
+          type: string
+          enum: [XS, S, M, L, XL, XXL]
+          example: "XS"
+        gender:
+          type: string
+          enum: [Female, Male, Non binary, Prefer not to say]
+          example: "Female"
+        alimentary_restrictions:
+          type: string
+          example: "No restrictions"
+        github:
+          type: string
+          example: ""
+        linkedin:
+          type: string
+        devpost:
+          type: string
+        webpage:
+          type: string
+        expected_graduation:
+          type: string
+          format: "DD/MM/YYYY"
+          example: "25/01/2024"
+
     UserList:
       type: array
       items:
         $ref: '#/components/schemas/User'
-  securitySchemes:
-    cookieAuth:         # arbitrary name for the security scheme; will be used in the "security" key later
-      type: apiKey
-      in: cookie
-      name: csrftoken  # cookie name
 
-security:
-  - cookieAuth: []
+    UserRole:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [Participant, Organizer, Organizer admin]
+          example: "Participant"
+
+    ApplicationsWithEvents:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+          event:
+            $ref: '#/components/schemas/Event'
+          created_at:
+            type: string
+            example: "2024-01-08T16:29:36Z"
+          update_at:
+            type: string
+            example: "2024-01-08T16:29:36Z"
+
+    ApplicationsWithUsers:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+          user:
+            $ref: '#/components/schemas/User'
+          created_at:
+            type: string
+            example: "2024-01-08T16:29:36Z"
+          update_at:
+            type: string
+            example: "2024-01-08T16:29:36Z"
+
+  securitySchemes:
+    LoggedInToken:
+      type: apiKey
+      in: header
+      name: Authorization
