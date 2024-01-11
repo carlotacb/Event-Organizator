@@ -3,7 +3,10 @@ from typing import List
 
 from django.db import IntegrityError
 
-from app.applications.domain.exceptions import ApplicationAlreadyExists
+from app.applications.domain.exceptions import (
+    ApplicationAlreadyExists,
+    ApplicationNotFound,
+)
 from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.domain.repositories import ApplicationRepository
 from app.applications.infrastructure.persistence.models.orm_application import (
@@ -46,6 +49,17 @@ class ORMApplicationRepository(ApplicationRepository):
             self._to_domain_model(application)
             for application in ORMEventApplication.objects.filter(event=event_orm)
         ]
+
+    def get_application(self, event_id: uuid.UUID, user_id: uuid.UUID) -> Application:
+        event_orm = ORMEvent.objects.get(id=event_id)
+        user_orm = ORMUser.objects.get(id=user_id)
+
+        try:
+            return self._to_domain_model(
+                ORMEventApplication.objects.get(event=event_orm, user=user_orm)
+            )
+        except ORMEventApplication.DoesNotExist:
+            raise ApplicationNotFound
 
     def _to_domain_model(self, orm_application: ORMEventApplication) -> Application:
         return Application(
