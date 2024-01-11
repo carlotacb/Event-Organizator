@@ -12,6 +12,7 @@ from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
+from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.applications.mocks.application_repository_mock import (
     ApplicationRepositoryMock,
 )

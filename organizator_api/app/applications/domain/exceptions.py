@@ -16,3 +16,7 @@ class UserIsNotStudent(Exception):
 
 class UserIsTooYoung(Exception):
     pass
+
+
+class ApplicationNotFound(Exception):
+    pass

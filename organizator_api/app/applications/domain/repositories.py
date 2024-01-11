@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from app.applications.domain.models.application import Application
-from app.events.domain.models.event import Event
 from app.users.domain.models.user import User
 
 
@@ -18,4 +17,8 @@ class ApplicationRepository(ABC):
 
     @abstractmethod
     def get_by_event(self, event_id: uuid.UUID) -> List[Application]:
+        pass
+
+    @abstractmethod
+    def get_application(self, event_id: uuid.UUID, user_id: uuid.UUID) -> Application:
         pass

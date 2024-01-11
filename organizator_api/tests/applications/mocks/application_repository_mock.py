@@ -1,7 +1,10 @@
 import uuid
 from typing import List
 
-from app.applications.domain.exceptions import ApplicationAlreadyExists
+from app.applications.domain.exceptions import (
+    ApplicationAlreadyExists,
+    ApplicationNotFound,
+)
 from app.applications.domain.models.application import Application
 from app.applications.domain.repositories import ApplicationRepository
 from app.users.domain.models.user import User
@@ -33,6 +36,13 @@ class ApplicationRepositoryMock(ApplicationRepository):
                 applications.append(a)
 
         return applications
+
+    def get_application(self, event_id: uuid.UUID, user_id: uuid.UUID) -> Application:
+        for a in self.applications:
+            if event_id == a.event.id and user_id == a.user.id:
+                return a
+
+        raise ApplicationNotFound
 
     def get_all(self) -> List[Application]:
         return self.applications
