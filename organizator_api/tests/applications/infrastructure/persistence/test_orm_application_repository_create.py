@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 
 from app.applications.domain.exceptions import ApplicationAlreadyExists
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.infrastructure.persistence.models.orm_application import (
     ORMEventApplication,
 )
@@ -30,6 +30,7 @@ class TestORMApplicationRepositoryCreate(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
@@ -56,6 +57,7 @@ class TestORMApplicationRepositoryCreate(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
@@ -65,6 +67,7 @@ class TestORMApplicationRepositoryCreate(ApiTests):
             id=uuid.UUID("ef6f6fb3-ba14-43dd-a0da-95de8125b1cc"),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )

@@ -6,6 +6,7 @@ from enum import Enum
 from app.events.domain.models.event import Event
 from app.users.domain.models.user import User
 
+
 class ApplicationStatus(Enum):
     PENDING = "Under review"
     INVITED = "Invited"
@@ -19,6 +20,7 @@ class ApplicationStatus(Enum):
     def choices(cls) -> tuple[tuple[str, str], ...]:
         return tuple((i.name, i.value) for i in cls)
 
+
 @dataclass
 class Application:
     id: uuid.UUID
@@ -27,4 +29,3 @@ class Application:
     status: ApplicationStatus
     created_at: datetime
     updated_at: datetime
-

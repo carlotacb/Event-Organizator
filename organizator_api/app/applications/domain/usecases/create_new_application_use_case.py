@@ -7,7 +7,7 @@ from app.applications.domain.exceptions import (
     UserIsNotStudent,
     UserIsTooYoung,
 )
-from app.applications.domain.models.application import Application
+from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.infrastructure.repository_factories import (
     ApplicationRepositoryFactory,
 )
@@ -54,6 +54,7 @@ class CreateNewApplicationUseCase:
             id=uuid.uuid4(),
             user=user,
             event=event,
+            status=ApplicationStatus.PENDING,
             created_at=datetime.now(tz=timezone.utc),
             updated_at=datetime.now(tz=timezone.utc),
         )
