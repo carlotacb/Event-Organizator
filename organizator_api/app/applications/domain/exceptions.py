@@ -20,3 +20,7 @@ class UserIsTooYoung(Exception):
 
 class ApplicationNotFound(Exception):
     pass
+
+
+class NotApplied(Exception):
+    pass
