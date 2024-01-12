@@ -2,17 +2,25 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Toast from "react-native-toast-message";
 import {
   getColorForApplicationStatus,
   parseDate,
 } from "../utils/util-functions";
+import { getToken } from "../utils/sessionCalls";
+import { getUserRole } from "../utils/api/axiosUsers";
+import { cancelApplication } from "../utils/api/axiosApplications";
 
 interface CardProps {
   title: string;
   startDate: string;
   headerImage: string;
   status: string;
+  id: string;
+  trigger: boolean;
+  setTrigger: (trigger: boolean) => void;
 }
 
 const CardContainer = styled.View<{ isPast: boolean }>`
@@ -88,10 +96,64 @@ const TagStatus = styled.View<{ backgroundColor: string }>`
   text-align: center;
 `;
 
+const ButtonsContainer = styled.View`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CancelButton = styled(Pressable)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 30px;
+  margin-top: 20px;
+  border-radius: 20px;
+  gap: 10px;
+  background-color: #a65858;
+  width: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+`;
+
+const CancelButtonText = styled.Text`
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+`;
+
 export default function CardMyEvents(props: CardProps) {
-  const { title, startDate, headerImage, status } = props;
+  const { title, startDate, headerImage, status, id, trigger, setTrigger } =
+    props;
 
   const isPast = () => startDate < new Date().toISOString();
+
+  function cancel() {
+    const fetchData = async () => {
+      const t = await getToken();
+      return cancelApplication(t || "", id);
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: response.error,
+          visibilityTime: 8000,
+        });
+      } else {
+        setTrigger(!trigger);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your application has been cancelled!",
+          visibilityTime: 8000,
+        });
+      }
+    });
+  }
 
   return (
     <>
@@ -108,6 +170,16 @@ export default function CardMyEvents(props: CardProps) {
               <Text>{status}</Text>
             </TagStatus>
           </TagContainer>
+          <ButtonsContainer>
+            {status !== "Cancelled" &&
+              status !== "Rejected" &&
+              status !== "Invalid" && (
+                <CancelButton onPress={() => cancel()}>
+                  <FontAwesome name="close" size={16} color="white" />
+                  <CancelButtonText>Cancel</CancelButtonText>
+                </CancelButton>
+              )}
+          </ButtonsContainer>
         </CardTextContainer>
       </CardContainer>
       {isPast() && (
