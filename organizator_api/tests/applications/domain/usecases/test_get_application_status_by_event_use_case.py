@@ -1,7 +1,6 @@
 import uuid
 
 from app.applications.domain.exceptions import (
-    ApplicationNotFound,
     NotApplied,
     UserIsNotAParticipant,
 )

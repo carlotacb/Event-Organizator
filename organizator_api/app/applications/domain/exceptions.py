@@ -24,3 +24,7 @@ class ApplicationNotFound(Exception):
 
 class NotApplied(Exception):
     pass
+
+
+class StatusNotFound(Exception):
+    pass
