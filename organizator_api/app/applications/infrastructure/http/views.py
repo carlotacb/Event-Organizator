@@ -13,8 +13,13 @@ from app.applications.domain.exceptions import (
     UserIsTooYoung,
     NotApplied,
     ApplicationNotFound,
+    ApplicationIsNotFromUser,
+    ApplicationCanNotBeCancelled,
 )
 from app.applications.domain.models.application import ApplicationStatus
+from app.applications.domain.usecases.cancel_application_use_case import (
+    CancelApplicationUseCase,
+)
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
@@ -200,3 +205,29 @@ def update_application_status(
         return HttpResponse(status=404, content="User not found")
 
     return HttpResponse(status=200, content="Application updated correctly")
+
+
+@require_http_methods(["POST"])
+def cancel_application(request: HttpRequest, application_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        CancelApplicationUseCase().execute(
+            application_id=application_id,
+            token=token_to_uuid,
+        )
+    except ApplicationNotFound:
+        return HttpResponse(status=404, content="Application not found")
+    except ApplicationIsNotFromUser:
+        return HttpResponse(status=401, content="Application is not from user")
+    except ApplicationCanNotBeCancelled:
+        return HttpResponse(status=422, content="Application can not be cancelled")
+
+    return HttpResponse(status=200, content="Application is correctly cancelled")
