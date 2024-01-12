@@ -3,6 +3,7 @@ import {
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
   GetParticipantsResponse,
+  updateApplicationStatusResponse,
 } from "../interfaces/Applications";
 import { applicationsAPI } from "./constants";
 
@@ -72,6 +73,30 @@ export async function getParticipants(
     return {
       error: error.response.data,
       participants: null,
+    };
+  }
+}
+
+export async function updateApplicationStatus(
+  token: string,
+  applicationId: string,
+  status: string,
+): Promise<updateApplicationStatusResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${applicationsAPI}/update/${applicationId}`,
+      data: { status },
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
     };
   }
 }

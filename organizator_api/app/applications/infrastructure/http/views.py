@@ -14,6 +14,7 @@ from app.applications.domain.exceptions import (
     NotApplied,
     ApplicationNotFound,
 )
+from app.applications.domain.models.application import ApplicationStatus
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
@@ -185,7 +186,9 @@ def update_application_status(
 
     try:
         UpdateApplicationStatusUseCase().execute(
-            application_id=application_id, status=status, token=token_to_uuid
+            application_id=application_id,
+            status=ApplicationStatus[status],
+            token=token_to_uuid,
         )
     except OnlyAuthorizedToOrganizerAdmin:
         return HttpResponse(

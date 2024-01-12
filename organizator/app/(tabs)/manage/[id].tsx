@@ -4,13 +4,20 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { Dialog } from "react-native-simple-dialogs";
 import LoadingPage from "../../../components/LodingPage";
-import { getToken } from "../../../utils/sessionCalls";
-import { getParticipants } from "../../../utils/api/axiosApplications";
+import { getToken, removeToken } from "../../../utils/sessionCalls";
+import {
+  getParticipants,
+  updateApplicationStatus,
+} from "../../../utils/api/axiosApplications";
 import { ParticipantsInformation } from "../../../utils/interfaces/Applications";
 import EmptyPage from "../../../components/EmptyPage";
 import FilterButton from "../../../components/FilterButtons";
+import Button from "../../../components/ButtonWithIcon";
+import { getUserRole } from "../../../utils/api/axiosUsers";
+import { UserRoles } from "../../../utils/interfaces/Users";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -69,12 +76,17 @@ const ParticipantsNumber = styled(Text)`
 export default function Id() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
+  const [userToUpdate, setUserToUpdate] = useState<string | null>(null);
+  const [idToUpdate, setIdToUpdate] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [applications, setApplications] = useState<
     ParticipantsInformation[] | null
   >(null);
+  const [alertVisible, setAlertVisible] = useState(false);
   const [allApplications, setAllApplications] = useState<
     ParticipantsInformation[] | null
   >(null);
+  const [trigger, setTrigger] = useState(false);
   const [stats, setStats] = useState({
     all: 0,
     confirmed: 0,
@@ -101,6 +113,10 @@ export default function Id() {
       const token = await getToken();
       // @ts-ignore
       return getParticipants(token || "", id);
+    };
+    const fetchAdminFunction = async () => {
+      const t = await getToken();
+      return getUserRole(t);
     };
 
     fetchData().then((response) => {
@@ -140,7 +156,62 @@ export default function Id() {
           ).length || 0,
       });
     });
-  }, []);
+    fetchAdminFunction().then((response) => {
+      setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
+    });
+  }, [trigger]);
+
+  const updateStatus = (status: string) => {
+    const fetchData = async () => {
+      const token = await getToken();
+      return updateApplicationStatus(token || "", idToUpdate || "", status);
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        if (
+          response.error === "Unauthorized" ||
+          response.error === "Invalid token" ||
+          response.error === "User does not exist"
+        ) {
+          removeToken();
+          router.replace("/login");
+        } else {
+          setAlertVisible(false);
+          setIdToUpdate(null);
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: `The user has not been updated because ${response.error}`,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        }
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Role updated",
+          text2: `The user ${userToUpdate} is now ${status}`,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        setAlertVisible(false);
+        setIdToUpdate(null);
+        setUserToUpdate(null);
+        setActive(() => ({
+          all: true,
+          confirmed: false,
+          rejected: false,
+          underReview: false,
+          invited: false,
+          cancelled: false,
+          invalid: false,
+          waitList: false,
+        }));
+        setTrigger(!trigger);
+      }
+    });
+  };
 
   const getTagColor = (status: string): string => {
     if (status === "Under review") return "#f8d280";
@@ -181,14 +252,13 @@ export default function Id() {
                 active={active.all}
               />
               <FilterButton
-                title={`Under Review (${stats.rejected})`}
+                title={`Under Review (${stats.underReview})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
-                      (participant) => participant.status === "Under Review",
+                    allApplications?.filter(
+                      (participant) => participant.status === "Under review",
                     ) || [],
                   );
-
                   setActive(() => ({
                     all: false,
                     confirmed: false,
@@ -207,7 +277,7 @@ export default function Id() {
                 title={`Invited (${stats.invited})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Invited",
                     ) || [],
                   );
@@ -229,7 +299,7 @@ export default function Id() {
                 title={`Confirmed (${stats.confirmed})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Confirmed",
                     ) || [],
                   );
@@ -252,7 +322,7 @@ export default function Id() {
                 title={`Cancelled (${stats.cancelled})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Cancelled",
                     ) || [],
                   );
@@ -275,7 +345,7 @@ export default function Id() {
                 title={`Rejected (${stats.rejected})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Rejected",
                     ) || [],
                   );
@@ -298,7 +368,7 @@ export default function Id() {
                 title={`Invalid (${stats.rejected})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Invalid",
                     ) || [],
                   );
@@ -321,7 +391,7 @@ export default function Id() {
                 title={`Wait (${stats.waitList})`}
                 onPress={() => {
                   setApplications(
-                    applications?.filter(
+                    allApplications?.filter(
                       (participant) => participant.status === "Wait list",
                     ) || [],
                   );
@@ -364,9 +434,21 @@ export default function Id() {
                       >
                         <Text>{application.status}</Text>
                       </TagStatus>
-                      <Pressable onPress={() => {}}>
-                        <FontAwesome name="pencil" size={18} />
-                      </Pressable>
+                      {isAdmin &&
+                        (application.status === "Wait list" ||
+                          application.status === "Under review") && (
+                          <Pressable
+                            onPress={() => {
+                              setAlertVisible(true);
+                              setIdToUpdate(application.id);
+                              setUserToUpdate(
+                                `${application.user.first_name} ${application.user.last_name}`,
+                              );
+                            }}
+                          >
+                            <FontAwesome name="send" size={18} />
+                          </Pressable>
+                        )}
                     </ButtonAndRole>
                   </UserLine>
                 ))}
@@ -375,6 +457,57 @@ export default function Id() {
           </View>
         )}
       </ScrollView>
+
+      <Dialog
+        visible={alertVisible}
+        title={`What do you want to do with ${userToUpdate} application?`}
+        onTouchOutside={() => {
+          setAlertVisible(false);
+          setIdToUpdate(null);
+          setUserToUpdate(null);
+        }}
+        onRequestClose={() => {
+          setAlertVisible(false);
+          setIdToUpdate(null);
+          setUserToUpdate(null);
+        }}
+        contentInsetAdjustmentBehavior="automatic"
+      >
+        <View>
+          <Button
+            title="Invite"
+            iconName="send"
+            onPress={() => {
+              updateStatus("INVITED");
+            }}
+            color={getTagColor("Invited")}
+          />
+          <Button
+            title="Reject"
+            iconName="close"
+            onPress={() => {
+              updateStatus("REJECTED");
+            }}
+            color={getTagColor("Rejected")}
+          />
+          <Button
+            title="Wait List"
+            iconName="list"
+            onPress={() => {
+              updateStatus("WAIT_LIST");
+            }}
+            color={getTagColor("Wait list")}
+          />
+          <Button
+            title="Not valid application"
+            iconName="ban"
+            onPress={() => {
+              updateStatus("INVALID");
+            }}
+            color={getTagColor("Invalid")}
+          />
+        </View>
+      </Dialog>
       <Toast />
     </Container>
   );
