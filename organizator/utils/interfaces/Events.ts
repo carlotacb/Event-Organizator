@@ -95,6 +95,7 @@ export interface createEventResponse {
 }
 
 export interface EventsSimpleInformationWithParticipants {
+  event_id: string;
   name: string;
   actual_participants_count: number;
   max_participants: number;

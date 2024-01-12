@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
+  GetParticipantsResponse,
 } from "../interfaces/Applications";
 import { applicationsAPI } from "./constants";
 
@@ -47,6 +48,30 @@ export async function getMyApplications(
     return {
       error: error.response.data,
       applications: null,
+    };
+  }
+}
+
+export async function getParticipants(
+  token: string,
+  eventId: string,
+): Promise<GetParticipantsResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${applicationsAPI}/participants/${eventId}`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+      participants: [...response.data],
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      participants: null,
     };
   }
 }

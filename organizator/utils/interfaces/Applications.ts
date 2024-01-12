@@ -1,4 +1,4 @@
-import { EventAllInformation, EventInformation } from "./Events";
+import { EventAllInformation } from "./Events";
 
 export interface CreateNewApplicationResponse {
   readonly error: string | null;
@@ -14,4 +14,40 @@ export interface ApplicationInformationWithoutUser {
   readonly event: EventAllInformation;
   readonly created_at: string;
   readonly updated_at: string;
+}
+
+export interface ParticipantsInformation {
+  id: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    bio: string;
+    profile_image: string;
+    role: string;
+    date_of_birth: string;
+    study: boolean;
+    work: boolean;
+    university: string;
+    degree: string;
+    current_job_role: string;
+    tshirt: string;
+    gender: string;
+    alimentary_restrictions: string;
+    github: string;
+    linkedin: string;
+    devpost: string;
+    webpage: string;
+    expected_graduation: string;
+  };
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GetParticipantsResponse {
+  readonly error: string | null;
+  readonly participants: ParticipantsInformation[] | null;
 }
