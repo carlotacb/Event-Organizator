@@ -12,6 +12,7 @@ export interface GetMyApplicationsResponse {
 export interface ApplicationInformationWithoutUser {
   readonly id: string;
   readonly event: EventAllInformation;
+  readonly status: string;
   readonly created_at: string;
   readonly updated_at: string;
 }
