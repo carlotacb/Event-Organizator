@@ -6,6 +6,7 @@ import Toast from "react-native-toast-message";
 import { ConfirmDialog } from "react-native-simple-dialogs";
 import {
   cancelApplication,
+  confirmApplication,
   getMyApplications,
 } from "../utils/api/axiosApplications";
 import EmptyPage from "./EmptyPage";
@@ -31,6 +32,8 @@ export default function MyEventsPage() {
   const [trigger, setTrigger] = useState(false);
   const [showCancelAlert, setShowCancelAlert] = useState(false);
   const [idToCancel, setIdToCancel] = useState("");
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [idToConfirm, setIdToConfirm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +47,10 @@ export default function MyEventsPage() {
     });
   }, [trigger]);
 
-  function cancel() {
+  function cancelParticipation() {
     const fetchData = async () => {
-      const t = await getToken();
-      return cancelApplication(t || "", idToCancel);
+      const tkn = await getToken();
+      return cancelApplication(tkn || "", idToCancel);
     };
 
     fetchData().then((response) => {
@@ -68,6 +71,34 @@ export default function MyEventsPage() {
           visibilityTime: 8000,
         });
         setShowCancelAlert(false);
+      }
+    });
+  }
+
+  function confirmParticipation() {
+    const fetchData = async () => {
+      const tkn = await getToken();
+      return confirmApplication(tkn || "", idToConfirm);
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: response.error,
+          visibilityTime: 8000,
+        });
+        setShowConfirmAlert(false);
+      } else {
+        setTrigger(!trigger);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your spot in the event is now confirmed!",
+          visibilityTime: 8000,
+        });
+        setShowConfirmAlert(false);
       }
     });
   }
@@ -97,6 +128,8 @@ export default function MyEventsPage() {
                     id={application.id}
                     setIdToCancel={setIdToCancel}
                     setShowCancelAlert={setShowCancelAlert}
+                    setIdToConfirm={setIdToConfirm}
+                    setShowConfirmAlert={setShowConfirmAlert}
                   />
                 ),
               )}
@@ -113,6 +146,7 @@ export default function MyEventsPage() {
           title: "Cancel",
           onPress: () => {
             setShowCancelAlert(false);
+            setIdToCancel("");
           },
           titleStyle: {
             color: "red",
@@ -126,7 +160,9 @@ export default function MyEventsPage() {
         positiveButton={{
           title: "Cancel!",
           onPress: () => {
-            cancel();
+            cancelParticipation();
+            setShowCancelAlert(false);
+            setIdToCancel("");
           },
           titleStyle: {
             color: "blue",
@@ -138,7 +174,41 @@ export default function MyEventsPage() {
           },
         }}
         contentInsetAdjustmentBehavior="automatic"
-        onRequestClose={() => setShowCancelAlert(false)}
+        onRequestClose={() => {
+          setShowCancelAlert(false);
+          setIdToCancel("");
+        }}
+      />
+
+      <ConfirmDialog
+        title="Yeyy!! We are happy you can come"
+        message="You can cancel your participation at any time. We hope to see you at the event."
+        onTouchOutside={() => {
+          setShowConfirmAlert(false);
+          setIdToConfirm("");
+        }}
+        visible={showConfirmAlert}
+        positiveButton={{
+          title: "Confirm!",
+          onPress: () => {
+            confirmParticipation();
+            setShowConfirmAlert(false);
+            setIdToConfirm("");
+          },
+          titleStyle: {
+            color: "blue",
+            fontSize: 20,
+          },
+          style: {
+            backgroundColor: "transparent",
+            paddingHorizontal: 10,
+          },
+        }}
+        contentInsetAdjustmentBehavior="automatic"
+        onRequestClose={() => {
+          setShowConfirmAlert(false);
+          setIdToConfirm("");
+        }}
       />
       <Toast />
     </View>
