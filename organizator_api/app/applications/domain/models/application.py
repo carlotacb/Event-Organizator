@@ -15,6 +15,7 @@ class ApplicationStatus(Enum):
     INVALID = "Invalid"
     REJECTED = "Rejected"
     WAIT_LIST = "Wait list"
+    ATTENDED = "Attended"
 
     @classmethod
     def choices(cls) -> tuple[tuple[str, str], ...]:
