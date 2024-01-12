@@ -36,3 +36,7 @@ class ApplicationCanNotBeCancelled(Exception):
 
 class ApplicationIsNotFromUser(Exception):
     pass
+
+
+class ApplicationCanNotBeConfirmed(Exception):
+    pass
