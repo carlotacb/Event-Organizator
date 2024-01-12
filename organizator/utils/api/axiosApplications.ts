@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   applicationStatusResponse,
+  cancelApplicationResponse,
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
   GetParticipantsResponse,
@@ -133,6 +134,28 @@ export async function getApplicationStatus(
       error: error.response.data,
       status: null,
       notApplied: false,
+    };
+  }
+}
+
+export async function cancelApplication(
+  token: string,
+  applicationId: string,
+): Promise<cancelApplicationResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${applicationsAPI}/cancel/${applicationId}`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
     };
   }
 }
