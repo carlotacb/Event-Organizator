@@ -12,6 +12,7 @@ from app.applications.domain.exceptions import (
     UserIsNotStudent,
     UserIsTooYoung,
     NotApplied,
+    ApplicationNotFound,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -25,8 +26,15 @@ from app.applications.domain.usecases.get_applications_by_event_use_case import 
 from app.applications.domain.usecases.get_applications_by_token_use_case import (
     GetApplicationsByTokenUseCase,
 )
+from app.applications.domain.usecases.update_application_status_use_case import (
+    UpdateApplicationStatusUseCase,
+)
 from app.events.domain.exceptions import EventNotFound
-from app.users.domain.exceptions import UserNotFound, OnlyAuthorizedToOrganizer
+from app.users.domain.exceptions import (
+    UserNotFound,
+    OnlyAuthorizedToOrganizer,
+    OnlyAuthorizedToOrganizerAdmin,
+)
 
 
 @require_http_methods(["POST"])
@@ -153,3 +161,39 @@ def get_application_status(request: HttpRequest, event_id: uuid.UUID) -> HttpRes
         return HttpResponse(status=404, content="User not found")
 
     return HttpResponse(status=200, content=json.dumps({"status": status.value}))
+
+
+@require_http_methods(["POST"])
+def update_application_status(
+    request: HttpRequest, application_id: uuid.UUID
+) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    json_body = json.loads(request.body)
+
+    if "status" not in json_body:
+        return HttpResponse(status=422, content="Status is required")
+
+    status = json_body["status"]
+
+    try:
+        UpdateApplicationStatusUseCase().execute(
+            application_id=application_id, status=status, token=token_to_uuid
+        )
+    except OnlyAuthorizedToOrganizerAdmin:
+        return HttpResponse(
+            status=401, content="Only admin users can change an application status"
+        )
+    except ApplicationNotFound:
+        return HttpResponse(status=404, content="Application not found")
+    except UserNotFound:
+        return HttpResponse(status=404, content="User not found")
+
+    return HttpResponse(status=200, content="Application updated correctly")
