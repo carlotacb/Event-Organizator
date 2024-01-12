@@ -15,10 +15,14 @@ from app.applications.domain.exceptions import (
     ApplicationNotFound,
     ApplicationIsNotFromUser,
     ApplicationCanNotBeCancelled,
+    ApplicationCanNotBeConfirmed,
 )
 from app.applications.domain.models.application import ApplicationStatus
 from app.applications.domain.usecases.cancel_application_use_case import (
     CancelApplicationUseCase,
+)
+from app.applications.domain.usecases.confirm_application_use_case import (
+    ConfirmApplicationUseCase,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -231,3 +235,32 @@ def cancel_application(request: HttpRequest, application_id: uuid.UUID) -> HttpR
         return HttpResponse(status=422, content="Application can not be cancelled")
 
     return HttpResponse(status=200, content="Application is correctly cancelled")
+
+
+@require_http_methods(["POST"])
+def confirm_application(
+    request: HttpRequest, application_id: uuid.UUID
+) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        ConfirmApplicationUseCase().execute(
+            application_id=application_id,
+            token=token_to_uuid,
+        )
+
+    except ApplicationNotFound:
+        return HttpResponse(status=404, content="Application not found")
+    except ApplicationIsNotFromUser:
+        return HttpResponse(status=401, content="Application is not from user")
+    except ApplicationCanNotBeConfirmed:
+        return HttpResponse(status=422, content="Application can not be confirmed")
+
+    return HttpResponse(status=200, content="Application is correctly confirmed")
