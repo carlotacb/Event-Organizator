@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { ConfirmDialog } from "react-native-simple-dialogs";
+import { useIsFocused } from "@react-navigation/core";
 import {
   cancelApplication,
   confirmApplication,
@@ -34,6 +35,7 @@ export default function MyEventsPage() {
   const [idToCancel, setIdToCancel] = useState("");
   const [showConfirmAlert, setShowConfirmAlert] = useState(false);
   const [idToConfirm, setIdToConfirm] = useState("");
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +47,7 @@ export default function MyEventsPage() {
       setLoading(false);
       setApplications(response.applications || []);
     });
-  }, [trigger]);
+  }, [trigger, isFocused]);
 
   function cancelParticipation() {
     const fetchData = async () => {
