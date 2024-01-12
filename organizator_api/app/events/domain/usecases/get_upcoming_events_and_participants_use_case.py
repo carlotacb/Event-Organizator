@@ -35,6 +35,7 @@ class GetUpcomingEventsAndParticipantsUseCase:
 
                 response.append(
                     EventApplication(
+                        event_id=event.id,
                         name=event.name,
                         actual_participants_count=len(participants),
                         max_participants=event.max_participants,

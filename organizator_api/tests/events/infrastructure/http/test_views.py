@@ -652,5 +652,5 @@ class TestEventViews(ApiTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.content,
-            b'[{"name": "HackUPC 2024", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}, {"name": "HackUPC 2025", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}]',
+            b'[{"event_id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "name": "HackUPC 2024", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}, {"event_id": "eb41b762-5988-4fa3-8942-7a91ccb00688", "name": "HackUPC 2025", "actual_participants_count": 2, "max_participants": 100, "expected_attrition_rate": 0.1}]',
         )

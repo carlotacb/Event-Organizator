@@ -63,6 +63,7 @@ class EventResponse:
 
 @dataclass
 class EventApplicationResponse:
+    event_id: str
     name: str
     actual_participants_count: int
     max_participants: int
@@ -73,6 +74,7 @@ class EventApplicationResponse:
         event_application: EventApplication,
     ) -> "EventApplicationResponse":
         return EventApplicationResponse(
+            event_id=str(event_application.event_id),
             name=event_application.name,
             actual_participants_count=event_application.actual_participants_count,
             max_participants=event_application.max_participants,
@@ -81,6 +83,7 @@ class EventApplicationResponse:
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "event_id": self.event_id,
             "name": self.name,
             "actual_participants_count": self.actual_participants_count,
             "max_participants": self.max_participants,
