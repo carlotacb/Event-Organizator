@@ -47,4 +47,4 @@ class TestORMApplicationRepositoryGet(ApiTests):
         self.assertEqual(response.id, application.id)
         self.assertEqual(response.user.id, application.user.id)
         self.assertEqual(response.event.id, application.event.id)
-        self.assertEqual(response.status, application.status.name)
+        self.assertEqual(response.status, application.status)

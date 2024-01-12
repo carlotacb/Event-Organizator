@@ -118,7 +118,7 @@ class TestViewUpdateApplicationStatus(ApiTests):
         self,
     ) -> None:
         # When
-        headers = {"HTTP_Authorization": uuid.uuid4()}
+        headers = {"HTTP_Authorization": str(uuid.uuid4())}
         response = self.client.post(
             "/organizator-api/applications/update/eb41b762-5988-4fa3-8942-7a91ccb00687",
             data=json.dumps({"status": "INVITED"}),
