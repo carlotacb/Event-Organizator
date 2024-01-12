@@ -18,6 +18,7 @@ import FilterButton from "../../../components/FilterButtons";
 import Button from "../../../components/ButtonWithIcon";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
+import { getColorForApplicationStatus } from "../../../utils/util-functions";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -213,18 +214,6 @@ export default function Id() {
     });
   };
 
-  const getTagColor = (status: string): string => {
-    if (status === "Under review") return "#f8d280";
-    if (status === "Invited") return "#74b3fc";
-    if (status === "Rejected") return "#ff7f7f";
-    if (status === "Cancelled") return "#d33737";
-    if (status === "Confirmed") return "#6cd27b";
-    if (status === "Invalid") return "#867f7f";
-    if (status === "Wait list") return "#b694f5";
-
-    return "#000000";
-  };
-
   return (
     <Container>
       <ScrollView contentContainerStyle={{ padding: 25 }}>
@@ -270,7 +259,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Under review")}
+                color={getColorForApplicationStatus("Under review")}
                 active={active.underReview}
               />
               <FilterButton
@@ -292,7 +281,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Invited")}
+                color={getColorForApplicationStatus("Invited")}
                 active={active.invited}
               />
               <FilterButton
@@ -315,7 +304,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Confirmed")}
+                color={getColorForApplicationStatus("Confirmed")}
                 active={active.confirmed}
               />
               <FilterButton
@@ -338,7 +327,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Cancelled")}
+                color={getColorForApplicationStatus("Cancelled")}
                 active={active.cancelled}
               />
               <FilterButton
@@ -361,7 +350,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Rejected")}
+                color={getColorForApplicationStatus("Rejected")}
                 active={active.rejected}
               />
               <FilterButton
@@ -384,7 +373,7 @@ export default function Id() {
                     waitList: false,
                   }));
                 }}
-                color={getTagColor("Invalid")}
+                color={getColorForApplicationStatus("Invalid")}
                 active={active.invalid}
               />
               <FilterButton
@@ -407,7 +396,7 @@ export default function Id() {
                     waitList: true,
                   }));
                 }}
-                color={getTagColor("Wait list")}
+                color={getColorForApplicationStatus("Wait list")}
                 active={active.waitList}
               />
             </ButtonsContainer>
@@ -430,7 +419,9 @@ export default function Id() {
                     </Username>
                     <ButtonAndRole>
                       <TagStatus
-                        backgroundColor={getTagColor(application.status)}
+                        backgroundColor={getColorForApplicationStatus(
+                          application.status,
+                        )}
                       >
                         <Text>{application.status}</Text>
                       </TagStatus>
@@ -480,7 +471,7 @@ export default function Id() {
             onPress={() => {
               updateStatus("INVITED");
             }}
-            color={getTagColor("Invited")}
+            color={getColorForApplicationStatus("Invited")}
           />
           <Button
             title="Reject"
@@ -488,7 +479,7 @@ export default function Id() {
             onPress={() => {
               updateStatus("REJECTED");
             }}
-            color={getTagColor("Rejected")}
+            color={getColorForApplicationStatus("Rejected")}
           />
           <Button
             title="Wait List"
@@ -496,7 +487,7 @@ export default function Id() {
             onPress={() => {
               updateStatus("WAIT_LIST");
             }}
-            color={getTagColor("Wait list")}
+            color={getColorForApplicationStatus("Wait list")}
           />
           <Button
             title="Not valid application"
@@ -504,7 +495,7 @@ export default function Id() {
             onPress={() => {
               updateStatus("INVALID");
             }}
-            color={getTagColor("Invalid")}
+            color={getColorForApplicationStatus("Invalid")}
           />
         </View>
       </Dialog>

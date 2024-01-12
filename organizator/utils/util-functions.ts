@@ -225,3 +225,15 @@ export function checkURL(url: string): { valid: boolean; error: string } {
     return { valid: false, error: "Invalid URL. Please enter a valid URL." };
   }
 }
+
+export function getColorForApplicationStatus(st: string): string {
+  if (st === "Under review") return "#f8d280";
+  if (st === "Invited") return "#74b3fc";
+  if (st === "Rejected") return "#ff7f7f";
+  if (st === "Cancelled") return "#d33737";
+  if (st === "Confirmed") return "#6cd27b";
+  if (st === "Invalid") return "#867f7f";
+  if (st === "Wait list") return "#b694f5";
+
+  return "#000000";
+}
