@@ -62,3 +62,7 @@ export interface applicationStatusResponse {
   readonly status: string | null;
   readonly notApplied: boolean;
 }
+
+export interface cancelApplicationResponse {
+  readonly error: string | null;
+}

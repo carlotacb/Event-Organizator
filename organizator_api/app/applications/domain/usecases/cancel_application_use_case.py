@@ -17,7 +17,7 @@ class CancelApplicationUseCase:
     def execute(self, application_id: uuid.UUID, token: uuid.UUID) -> None:
         application = self.application_repository.get(application_id)
 
-        if application.user.id != token:
+        if application.user.token != token:
             raise ApplicationIsNotFromUser
 
         if (

@@ -2,7 +2,8 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   getColorForApplicationStatus,
   parseDate,
@@ -13,6 +14,9 @@ interface CardProps {
   startDate: string;
   headerImage: string;
   status: string;
+  id: string;
+  setShowCancelAlert: (showCancelAlert: boolean) => void;
+  setIdToCancel: (idToCancel: string) => void;
 }
 
 const CardContainer = styled.View<{ isPast: boolean }>`
@@ -88,8 +92,43 @@ const TagStatus = styled.View<{ backgroundColor: string }>`
   text-align: center;
 `;
 
+const ButtonsContainer = styled.View`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CancelButton = styled(Pressable)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 30px;
+  margin-top: 20px;
+  border-radius: 20px;
+  gap: 10px;
+  background-color: #a65858;
+  width: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+`;
+
+const CancelButtonText = styled.Text`
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+`;
+
 export default function CardMyEvents(props: CardProps) {
-  const { title, startDate, headerImage, status } = props;
+  const {
+    title,
+    startDate,
+    headerImage,
+    status,
+    id,
+    setIdToCancel,
+    setShowCancelAlert,
+  } = props;
 
   const isPast = () => startDate < new Date().toISOString();
 
@@ -108,6 +147,21 @@ export default function CardMyEvents(props: CardProps) {
               <Text>{status}</Text>
             </TagStatus>
           </TagContainer>
+          <ButtonsContainer>
+            {status !== "Cancelled" &&
+              status !== "Rejected" &&
+              status !== "Invalid" && (
+                <CancelButton
+                  onPress={() => {
+                    setIdToCancel(id);
+                    setShowCancelAlert(true);
+                  }}
+                >
+                  <FontAwesome name="close" size={16} color="white" />
+                  <CancelButtonText>Cancel</CancelButtonText>
+                </CancelButton>
+              )}
+          </ButtonsContainer>
         </CardTextContainer>
       </CardContainer>
       {isPast() && (

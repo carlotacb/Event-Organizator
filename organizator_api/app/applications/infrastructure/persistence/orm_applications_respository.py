@@ -96,6 +96,7 @@ class ORMApplicationRepository(ApplicationRepository):
                 date_of_birth=orm_application.user.date_of_birth,
                 study=orm_application.user.study,
                 work=orm_application.user.work,
+                token=orm_application.user.token,
             ),
             event=Event(
                 id=orm_application.event.id,
