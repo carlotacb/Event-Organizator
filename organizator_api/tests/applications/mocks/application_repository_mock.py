@@ -44,6 +44,22 @@ class ApplicationRepositoryMock(ApplicationRepository):
 
         raise ApplicationNotFound
 
+    def update(self, application: Application) -> None:
+        for e in self.applications:
+            if application.id == e.id:
+                e.status = application.status
+                e.updated_at = application.updated_at
+                return
+
+        raise ApplicationNotFound
+
+    def get(self, application_id: uuid.UUID) -> Application:
+        for a in self.applications:
+            if application_id == a.id:
+                return a
+
+        raise ApplicationNotFound
+
     def get_all(self) -> List[Application]:
         return self.applications
 

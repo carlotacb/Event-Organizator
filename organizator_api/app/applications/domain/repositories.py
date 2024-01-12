@@ -22,3 +22,11 @@ class ApplicationRepository(ABC):
     @abstractmethod
     def get_application(self, event_id: uuid.UUID, user_id: uuid.UUID) -> Application:
         pass
+
+    @abstractmethod
+    def update(self, application: Application) -> None:
+        pass
+
+    @abstractmethod
+    def get(self, application_id: uuid.UUID) -> Application:
+        pass
