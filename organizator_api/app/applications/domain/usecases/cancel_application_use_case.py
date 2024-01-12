@@ -23,6 +23,7 @@ class CancelApplicationUseCase:
         if (
             application.status == ApplicationStatus.INVALID
             or application.status == ApplicationStatus.REJECTED
+            or application.status == ApplicationStatus.ATTENDED
         ):
             raise ApplicationCanNotBeCancelled
 
