@@ -28,3 +28,7 @@ class NotApplied(Exception):
 
 class StatusNotFound(Exception):
     pass
+
+
+class ApplicationCanNotBeCancelled(Exception):
+    pass
