@@ -2,12 +2,17 @@ import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { parseDate } from "../utils/util-functions";
+import { Text } from "react-native";
+import {
+  getColorForApplicationStatus,
+  parseDate,
+} from "../utils/util-functions";
 
 interface CardProps {
   title: string;
   startDate: string;
   headerImage: string;
+  status: string;
 }
 
 const CardContainer = styled.View<{ isPast: boolean }>`
@@ -27,7 +32,7 @@ const CardImage = styled.Image`
 `;
 
 const CardTextContainer = styled.View`
-  padding: 25px;
+  padding: 25px 25px 20px;
 `;
 
 const CardTitle = styled.Text`
@@ -44,6 +49,7 @@ const CardText = styled.Text`
 const TextLine = styled.View`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
   margin-top: 10px;
 `;
@@ -64,8 +70,26 @@ const PastText = styled.Text`
   font-size: 20px;
 `;
 
+const TagContainer = styled.View`
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  align-items: flex-end;
+`;
+
+const TagStatus = styled.View<{ backgroundColor: string }>`
+  border: 2px solid
+    ${(props: { backgroundColor: string }) => props.backgroundColor};
+  background-color: ${(props: { backgroundColor: string }) =>
+    props.backgroundColor};
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+`;
+
 export default function CardMyEvents(props: CardProps) {
-  const { title, startDate, headerImage } = props;
+  const { title, startDate, headerImage, status } = props;
 
   const isPast = () => startDate < new Date().toISOString();
 
@@ -76,9 +100,14 @@ export default function CardMyEvents(props: CardProps) {
         <CardTextContainer>
           <CardTitle>{title}</CardTitle>
           <TextLine>
-            <FontAwesome5 name="hourglass-start" size={16} />
+            <FontAwesome5 name="calendar" size={16} />
             <CardText>{parseDate(startDate)}</CardText>
           </TextLine>
+          <TagContainer>
+            <TagStatus backgroundColor={getColorForApplicationStatus(status)}>
+              <Text>{status}</Text>
+            </TagStatus>
+          </TagContainer>
         </CardTextContainer>
       </CardContainer>
       {isPast() && (
