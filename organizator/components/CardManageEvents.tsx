@@ -70,14 +70,18 @@ export default function CardManageEvents(props: CardProps) {
       <CardTextContainer>
         <CardTitle>{title}</CardTitle>
         <TextLine>
-          <CardText>Registered: {participants} participants</CardText>
+          <CardText color="black">
+            Registered: {participants} participants
+          </CardText>
         </TextLine>
         <TextLine>
-          <CardText>Remaining: {spots - participants} spots</CardText>
+          <CardText color="black">
+            Remaining: {spots - participants} spots
+          </CardText>
         </TextLine>
         <TextLineRow>
           <Progress.Bar progress={progress} height={15} color="green" />
-          <CardText>{progressPercentage} %</CardText>
+          <CardText color="black">{progressPercentage} %</CardText>
         </TextLineRow>
 
         <CardSubtitle color="#233B77">Expected</CardSubtitle>

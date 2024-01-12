@@ -1,7 +1,8 @@
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
+import { router } from "expo-router";
 import { getToken } from "../utils/sessionCalls";
 import { getUpcomingEventsWithApplicationsInfo } from "../utils/api/axiosEvents";
 import { EventsSimpleInformationWithParticipants } from "../utils/interfaces/Events";
@@ -36,8 +37,6 @@ export default function OrganizersEventsPage() {
     });
   }, []);
 
-  console.log(events);
-
   return (
     <View>
       {loading ? (
@@ -53,13 +52,18 @@ export default function OrganizersEventsPage() {
           ) : (
             <CardsContainer>
               {events.map((event: EventsSimpleInformationWithParticipants) => (
-                <CardManageEvents
-                  key={event.name}
-                  title={event.name}
-                  expectedAttrition={event.expected_attrition_rate}
-                  maxParticipants={event.max_participants}
-                  participants={event.actual_participants_count}
-                />
+                <Pressable
+                  onPress={() => router.push(`manage/${event.event_id}`)}
+                  key={event.event_id}
+                >
+                  <CardManageEvents
+                    key={event.name}
+                    title={event.name}
+                    expectedAttrition={event.expected_attrition_rate}
+                    maxParticipants={event.max_participants}
+                    participants={event.actual_participants_count}
+                  />
+                </Pressable>
               ))}
             </CardsContainer>
           )}
