@@ -186,7 +186,9 @@ def update_application_status(
 
     try:
         UpdateApplicationStatusUseCase().execute(
-            application_id=application_id, status=ApplicationStatus[status], token=token_to_uuid
+            application_id=application_id,
+            status=ApplicationStatus[status],
+            token=token_to_uuid,
         )
     except OnlyAuthorizedToOrganizerAdmin:
         return HttpResponse(
