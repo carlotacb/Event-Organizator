@@ -360,9 +360,6 @@ export default function EventPage() {
     }
   };
 
-  console.log(inputs);
-  console.log(events);
-
   const applyToEvent = () => {
     const fetchData = async () => {
       const token = await getToken();
