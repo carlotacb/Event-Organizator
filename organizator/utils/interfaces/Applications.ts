@@ -66,3 +66,7 @@ export interface applicationStatusResponse {
 export interface cancelApplicationResponse {
   readonly error: string | null;
 }
+
+export interface confirmApplicationResponse {
+  readonly error: string | null;
+}
