@@ -51,3 +51,7 @@ export interface GetParticipantsResponse {
   readonly error: string | null;
   readonly participants: ParticipantsInformation[] | null;
 }
+
+export interface updateApplicationStatusResponse {
+  readonly error: string | null;
+}
