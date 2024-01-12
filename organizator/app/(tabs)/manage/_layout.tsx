@@ -9,6 +9,13 @@ export default function ManageLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="[id]"
+        options={{
+          headerTitle: "All participants",
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }
