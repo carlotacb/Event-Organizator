@@ -61,6 +61,23 @@ class ORMApplicationRepository(ApplicationRepository):
         except ORMEventApplication.DoesNotExist:
             raise ApplicationNotFound
 
+    def get(self, application_id: uuid.UUID) -> Application:
+        try:
+            return self._to_domain_model(
+                ORMEventApplication.objects.get(id=application_id)
+            )
+        except ORMEventApplication.DoesNotExist:
+            raise ApplicationNotFound
+
+    def update(self, application: Application) -> None:
+        try:
+            orm_application = ORMEventApplication.objects.get(id=application.id)
+            orm_application.status = ApplicationStatus(application.status).name
+            orm_application.updated_at = application.updated_at
+            orm_application.save()
+        except ORMEventApplication.DoesNotExist:
+            raise ApplicationNotFound
+
     def _to_domain_model(self, orm_application: ORMEventApplication) -> Application:
         return Application(
             id=orm_application.id,
