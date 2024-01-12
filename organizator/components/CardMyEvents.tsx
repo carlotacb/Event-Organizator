@@ -10,7 +10,6 @@ import {
   parseDate,
 } from "../utils/util-functions";
 import { getToken } from "../utils/sessionCalls";
-import { getUserRole } from "../utils/api/axiosUsers";
 import { cancelApplication } from "../utils/api/axiosApplications";
 
 interface CardProps {
