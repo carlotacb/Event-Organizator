@@ -32,3 +32,7 @@ class StatusNotFound(Exception):
 
 class ApplicationCanNotBeCancelled(Exception):
     pass
+
+
+class ApplicationIsNotFromUser(Exception):
+    pass

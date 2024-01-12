@@ -3,6 +3,7 @@ import uuid
 from app.applications.domain.exceptions import (
     ApplicationNotFound,
     ApplicationCanNotBeCancelled,
+    ApplicationIsNotFromUser,
 )
 from app.applications.domain.models.application import ApplicationStatus
 from app.applications.domain.usecases.cancel_application_use_case import (
@@ -21,10 +22,10 @@ class TestCancelApplicationUseCase(ApiTests):
         self.user_repository.clear()
         self.event_repository.clear()
 
-        self.user_token_participant = "eb41b762-5988-4fa3-8942-7a91ccb00686"
+        self.user_token_participant = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
         self.user_participant = UserFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
-            token=uuid.UUID(self.user_token_participant),
+            token=self.user_token_participant,
             username="john",
             email="john@test.com",
         )
@@ -41,6 +42,7 @@ class TestCancelApplicationUseCase(ApiTests):
         with self.assertRaises(ApplicationNotFound):
             CancelApplicationUseCase().execute(
                 application_id=uuid.uuid4(),
+                token=self.user_token_participant,
             )
 
     def test__given_a_application_id_of_a_invalid_application__when_cancel_application__then_application_can_not_be_cancelled_is_raised(
@@ -59,6 +61,26 @@ class TestCancelApplicationUseCase(ApiTests):
         with self.assertRaises(ApplicationCanNotBeCancelled):
             CancelApplicationUseCase().execute(
                 application_id=application.id,
+                token=self.user_token_participant,
+            )
+
+    def test__given_a_application_id_and_a_token_from_another_user__when_cancel_application__then_application_is_not_from_user(
+        self,
+    ) -> None:
+        # Given
+        application = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            user=self.user_participant,
+            event=self.event,
+            status=ApplicationStatus.CONFIRMED,
+        )
+        self.application_repository.create(application)
+
+        # When
+        with self.assertRaises(ApplicationIsNotFromUser):
+            CancelApplicationUseCase().execute(
+                application_id=application.id,
+                token=uuid.uuid4(),
             )
 
     def test__given_a_application_with_accepted_status__when_cancel_application__then_application_is_cancelled(
@@ -76,6 +98,7 @@ class TestCancelApplicationUseCase(ApiTests):
         # When
         CancelApplicationUseCase().execute(
             application_id=application.id,
+            token=self.user_token_participant,
         )
 
         # Then
