@@ -3,7 +3,11 @@ import { ScrollView, View } from "react-native";
 import styled from "styled-components/native";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
-import { getMyApplications } from "../utils/api/axiosApplications";
+import { ConfirmDialog } from "react-native-simple-dialogs";
+import {
+  cancelApplication,
+  getMyApplications,
+} from "../utils/api/axiosApplications";
 import EmptyPage from "./EmptyPage";
 import { getToken } from "../utils/sessionCalls";
 import LoadingPage from "./LodingPage";
@@ -25,6 +29,8 @@ export default function MyEventsPage() {
     ApplicationInformationWithoutUser[]
   >([]);
   const [trigger, setTrigger] = useState(false);
+  const [showCancelAlert, setShowCancelAlert] = useState(false);
+  const [idToCancel, setIdToCancel] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +43,34 @@ export default function MyEventsPage() {
       setApplications(response.applications || []);
     });
   }, [trigger]);
+
+  function cancel() {
+    const fetchData = async () => {
+      const t = await getToken();
+      return cancelApplication(t || "", idToCancel);
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: response.error,
+          visibilityTime: 8000,
+        });
+        setShowCancelAlert(false);
+      } else {
+        setTrigger(!trigger);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Your application has been cancelled!",
+          visibilityTime: 8000,
+        });
+        setShowCancelAlert(false);
+      }
+    });
+  }
 
   return (
     <View>
@@ -61,8 +95,8 @@ export default function MyEventsPage() {
                     startDate={application.event.start_date}
                     status={application.status}
                     id={application.id}
-                    trigger={trigger}
-                    setTrigger={setTrigger}
+                    setIdToCancel={setIdToCancel}
+                    setShowCancelAlert={setShowCancelAlert}
                   />
                 ),
               )}
@@ -70,6 +104,42 @@ export default function MyEventsPage() {
           )}
         </ScrollView>
       )}
+      <ConfirmDialog
+        title="Are you sure you want to cancel your application?"
+        message="Are you sure about that? This only way you can request your participation is by contacting the organizers"
+        onTouchOutside={() => setShowCancelAlert(false)}
+        visible={showCancelAlert}
+        negativeButton={{
+          title: "Cancel",
+          onPress: () => {
+            setShowCancelAlert(false);
+          },
+          titleStyle: {
+            color: "red",
+            fontSize: 20,
+          },
+          style: {
+            backgroundColor: "transparent",
+            paddingHorizontal: 10,
+          },
+        }}
+        positiveButton={{
+          title: "Cancel!",
+          onPress: () => {
+            cancel();
+          },
+          titleStyle: {
+            color: "blue",
+            fontSize: 20,
+          },
+          style: {
+            backgroundColor: "transparent",
+            paddingHorizontal: 10,
+          },
+        }}
+        contentInsetAdjustmentBehavior="automatic"
+        onRequestClose={() => setShowCancelAlert(false)}
+      />
       <Toast />
     </View>
   );

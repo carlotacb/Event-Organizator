@@ -4,13 +4,10 @@ import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Pressable, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Toast from "react-native-toast-message";
 import {
   getColorForApplicationStatus,
   parseDate,
 } from "../utils/util-functions";
-import { getToken } from "../utils/sessionCalls";
-import { cancelApplication } from "../utils/api/axiosApplications";
 
 interface CardProps {
   title: string;
@@ -18,8 +15,8 @@ interface CardProps {
   headerImage: string;
   status: string;
   id: string;
-  trigger: boolean;
-  setTrigger: (trigger: boolean) => void;
+  setShowCancelAlert: (showCancelAlert: boolean) => void;
+  setIdToCancel: (idToCancel: string) => void;
 }
 
 const CardContainer = styled.View<{ isPast: boolean }>`
@@ -123,36 +120,17 @@ const CancelButtonText = styled.Text`
 `;
 
 export default function CardMyEvents(props: CardProps) {
-  const { title, startDate, headerImage, status, id, trigger, setTrigger } =
-    props;
+  const {
+    title,
+    startDate,
+    headerImage,
+    status,
+    id,
+    setIdToCancel,
+    setShowCancelAlert,
+  } = props;
 
   const isPast = () => startDate < new Date().toISOString();
-
-  function cancel() {
-    const fetchData = async () => {
-      const t = await getToken();
-      return cancelApplication(t || "", id);
-    };
-
-    fetchData().then((response) => {
-      if (response.error) {
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: response.error,
-          visibilityTime: 8000,
-        });
-      } else {
-        setTrigger(!trigger);
-        Toast.show({
-          type: "success",
-          text1: "Success",
-          text2: "Your application has been cancelled!",
-          visibilityTime: 8000,
-        });
-      }
-    });
-  }
 
   return (
     <>
@@ -173,7 +151,12 @@ export default function CardMyEvents(props: CardProps) {
             {status !== "Cancelled" &&
               status !== "Rejected" &&
               status !== "Invalid" && (
-                <CancelButton onPress={() => cancel()}>
+                <CancelButton
+                  onPress={() => {
+                    setIdToCancel(id);
+                    setShowCancelAlert(true);
+                  }}
+                >
                   <FontAwesome name="close" size={16} color="white" />
                   <CancelButtonText>Cancel</CancelButtonText>
                 </CancelButton>
