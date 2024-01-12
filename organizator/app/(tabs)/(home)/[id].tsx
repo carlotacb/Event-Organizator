@@ -17,6 +17,7 @@ import {
   checkDateWithTime,
   dateToPlainString,
   formatDate,
+  getColorForApplicationStatus,
   parseDate,
 } from "../../../utils/util-functions";
 import LoadingPage from "../../../components/LodingPage";
@@ -26,7 +27,10 @@ import Button from "../../../components/ButtonWithIcon";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
-import { createNewApplication } from "../../../utils/api/axiosApplications";
+import {
+  getApplicationStatus,
+  createNewApplication,
+} from "../../../utils/api/axiosApplications";
 import FilterButton from "../../../components/FilterButtons";
 
 const Container = styled(SafeAreaView)`
@@ -118,6 +122,27 @@ const ApplyButtonText = styled.Text`
   font-weight: bold;
 `;
 
+const ApplicationStatus = styled.Text`
+  font-size: 18px;
+  color: dimgray;
+  font-weight: bold;
+`;
+
+const TagStatus = styled.View<{ backgroundColor: string }>`
+  border: 2px solid
+    ${(props: { backgroundColor: string }) => props.backgroundColor};
+  background-color: ${(props: { backgroundColor: string }) =>
+    props.backgroundColor};
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+`;
+
+const AppliedContainer = styled.View`
+  display: flex;
+`;
+
 export default function EventPage() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = React.useState(true);
@@ -151,6 +176,8 @@ export default function EventPage() {
   const [isOrganizer, setIsOrganizer] = React.useState(false);
   const [isOrganizerAdmin, setIsOrganizerAdmin] = React.useState(false);
   const [isParticipant, setIsParticipant] = React.useState(false);
+  const [applied, setApplied] = React.useState(false);
+  const [applicationStatus, setApplicationStatus] = React.useState("");
 
   useEffect(() => {
     // @ts-ignore
@@ -158,6 +185,12 @@ export default function EventPage() {
     const fetchRoleFunction = async () => {
       const t = await getToken();
       return getUserRole(t);
+    };
+
+    const fetchApplicationStatus = async () => {
+      const tkn = await getToken();
+      // @ts-ignore
+      return getApplicationStatus(tkn || "", id);
     };
 
     fetchData().then((response) => {
@@ -183,6 +216,15 @@ export default function EventPage() {
       setIsOrganizer(response.role === UserRoles.ORGANIZER);
       setIsOrganizerAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
       setIsParticipant(response.role === UserRoles.PARTICIPANT);
+    });
+
+    fetchApplicationStatus().then((response) => {
+      if (response.notApplied) {
+        setApplied(false);
+      } else {
+        setApplied(true);
+        setApplicationStatus(response.status || "");
+      }
     });
   }, []);
 
@@ -678,13 +720,28 @@ export default function EventPage() {
       </ScrollView>
       {!loading && !events?.deleted && isParticipant && (
         <ApplyButtonContainer>
-          <ApplyButton
-            onPress={() => {
-              applyToEvent();
-            }}
-          >
-            <ApplyButtonText>Apply now</ApplyButtonText>
-          </ApplyButton>
+          {applied ? (
+            <AppliedContainer>
+              <TextLine>
+                <ApplicationStatus>Your application is:</ApplicationStatus>
+                <TagStatus
+                  backgroundColor={getColorForApplicationStatus(
+                    applicationStatus,
+                  )}
+                >
+                  <Text>{applicationStatus}</Text>
+                </TagStatus>
+              </TextLine>
+            </AppliedContainer>
+          ) : (
+            <ApplyButton
+              onPress={() => {
+                applyToEvent();
+              }}
+            >
+              <ApplyButtonText>Apply now</ApplyButtonText>
+            </ApplyButton>
+          )}
         </ApplyButtonContainer>
       )}
       <Toast />
