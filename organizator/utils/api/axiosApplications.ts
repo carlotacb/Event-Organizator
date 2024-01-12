@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   applicationStatusResponse,
   cancelApplicationResponse,
+  confirmApplicationResponse,
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
   GetParticipantsResponse,
@@ -146,6 +147,28 @@ export async function cancelApplication(
     await axios({
       method: "post",
       url: `${applicationsAPI}/cancel/${applicationId}`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+    };
+  }
+}
+
+export async function confirmApplication(
+  token: string,
+  applicationId: string,
+): Promise<confirmApplicationResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${applicationsAPI}/confirm/${applicationId}`,
       headers: {
         Authorization: `${token}`,
       },
