@@ -64,6 +64,44 @@ class TestCancelApplicationUseCase(ApiTests):
                 token=self.user_token_participant,
             )
 
+    def test__given_a_application_id_of_a_rejected_application__when_cancel_application__then_application_can_not_be_cancelled_is_raised(
+        self,
+    ) -> None:
+        # Given
+        application = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            user=self.user_participant,
+            event=self.event,
+            status=ApplicationStatus.REJECTED,
+        )
+        self.application_repository.create(application)
+
+        # When
+        with self.assertRaises(ApplicationCanNotBeCancelled):
+            CancelApplicationUseCase().execute(
+                application_id=application.id,
+                token=self.user_token_participant,
+            )
+
+    def test__given_a_application_id_of_a_attended_application__when_cancel_application__then_application_can_not_be_cancelled_is_raised(
+        self,
+    ) -> None:
+        # Given
+        application = ApplicationFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+            user=self.user_participant,
+            event=self.event,
+            status=ApplicationStatus.ATTENDED,
+        )
+        self.application_repository.create(application)
+
+        # When
+        with self.assertRaises(ApplicationCanNotBeCancelled):
+            CancelApplicationUseCase().execute(
+                application_id=application.id,
+                token=self.user_token_participant,
+            )
+
     def test__given_a_application_id_and_a_token_from_another_user__when_cancel_application__then_application_is_not_from_user(
         self,
     ) -> None:
