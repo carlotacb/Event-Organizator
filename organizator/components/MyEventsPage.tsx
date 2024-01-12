@@ -54,6 +54,7 @@ export default function MyEventsPage() {
                   title={event.event.name}
                   headerImage={event.event.header_image}
                   startDate={event.event.start_date}
+                  status={event.status}
                 />
               ))}
             </CardsContainer>
