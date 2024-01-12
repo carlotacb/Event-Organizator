@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  applicationStatusResponse,
   CreateNewApplicationResponse,
   GetMyApplicationsResponse,
   GetParticipantsResponse,
@@ -97,6 +98,41 @@ export async function updateApplicationStatus(
   } catch (error: any) {
     return {
       error: error.response.data,
+    };
+  }
+}
+
+export async function getApplicationStatus(
+  token: string,
+  eventId: string,
+): Promise<applicationStatusResponse> {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${applicationsAPI}/status/${eventId}`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+
+    if (response.status === 206) {
+      return {
+        error: null,
+        status: null,
+        notApplied: true,
+      };
+    }
+
+    return {
+      error: null,
+      status: response.data.status,
+      notApplied: false,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+      status: null,
+      notApplied: false,
     };
   }
 }
