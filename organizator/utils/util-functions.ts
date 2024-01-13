@@ -234,6 +234,7 @@ export function getColorForApplicationStatus(st: string): string {
   if (st === "Confirmed") return "#6cd27b";
   if (st === "Invalid") return "#867f7f";
   if (st === "Wait list") return "#b694f5";
+  if (st === "Attended") return "#9df5ae";
 
   return "#000000";
 }
