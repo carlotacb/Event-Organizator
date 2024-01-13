@@ -8,14 +8,13 @@ interface InformativeChipProps {
   width?: string;
 }
 
-const Chip = styled.View<{ backgroundColor: string; width: string }>`
+const Chip = styled.View<{ backgroundColor: string }>`
   border: 2px solid
     ${(props: { backgroundColor: string }) => props.backgroundColor};
   background-color: ${(props: { backgroundColor: string }) =>
     props.backgroundColor};
-  width: ${(props: { width: string }) => props.width};
   padding: 5px 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   text-align: center;
 `;
 

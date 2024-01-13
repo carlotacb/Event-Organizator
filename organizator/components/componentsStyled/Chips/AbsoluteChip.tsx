@@ -1,6 +1,7 @@
 // @ts-ignore
 import styled from "styled-components/native";
 import React from "react";
+import InformativeChip from "./InformativeChip";
 
 interface StatusChipProps {
   name: string;
@@ -17,29 +18,12 @@ const TagContainer = styled.View`
   right: 15px;
 `;
 
-const TagStatus = styled.View<{ backgroundColor: string }>`
-  border: 2px solid
-    ${(props: { backgroundColor: string }) => props.backgroundColor};
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-  padding: 5px 10px;
-  border-radius: 10px;
-  text-align: center;
-`;
-
-const TagText = styled.Text`
-  font-weight: bold;
-  font-size: 18px;
-`;
-
 export default function AbsoluteChip(props: StatusChipProps) {
   const { name, backgroundColor } = props;
 
   return (
     <TagContainer>
-      <TagStatus backgroundColor={backgroundColor}>
-        <TagText>{name}</TagText>
-      </TagStatus>
+      <InformativeChip name={name} backgroundColor={backgroundColor} />
     </TagContainer>
   );
 }
