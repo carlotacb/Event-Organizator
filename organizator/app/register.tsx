@@ -18,16 +18,18 @@ import {
   SubTitle,
   Title,
 } from "../components/componentsStyled/Shared/TextStyles";
-import { MaxWidthUseScreen } from "../components/componentsStyled/Shared/ContainerStyles";
+import {
+  BottomScreenContainer,
+  MaxWidthUseScreen,
+} from "../components/componentsStyled/Shared/ContainerStyles";
+import {
+  handleError,
+  handleOnChange,
+} from "../components/componentsStyled/Forms/utilFunctions";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
-`;
-
-const ButtonContainer = styled(View)`
-  display: flex;
-  margin-top: 15px;
-  align-items: center;
+  flex: 1;
 `;
 
 const ButtonsWSContainer = styled(View)`
@@ -87,112 +89,134 @@ export default function RegisterPage() {
     let isValid = true;
 
     if (!inputs.username) {
-      handleError("Please enter your username", "username");
+      handleError("Please enter your username", "username", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "username");
+      handleError(undefined, "username", setErrors);
     }
 
     if (!inputs.email) {
-      handleError("Please enter an email address", "email");
+      handleError("Please enter an email address", "email", setErrors);
       isValid = false;
     } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
-      handleError("Please enter a valid email address", "email");
+      handleError("Please enter a valid email address", "email", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "email");
+      handleError(undefined, "email", setErrors);
     }
 
     if (!inputs.password) {
-      handleError("Please enter a password", "password");
+      handleError("Please enter a password", "password", setErrors);
       isValid = false;
     } else if (inputs.password.length < 8) {
-      handleError("Minimum password length is 8", "password");
+      handleError("Minimum password length is 8", "password", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "password");
+      handleError(undefined, "password", setErrors);
     }
 
     if (!inputs.passwordConfirm) {
-      handleError("Please enter confirm password", "passwordConfirm");
+      handleError(
+        "Please enter confirm password",
+        "passwordConfirm",
+        setErrors,
+      );
       isValid = false;
     } else if (inputs.passwordConfirm !== inputs.password) {
-      handleError("Password confirmation does not match", "passwordConfirm");
+      handleError(
+        "Password confirmation does not match",
+        "passwordConfirm",
+        setErrors,
+      );
       isValid = false;
     } else {
-      handleError(undefined, "passwordConfirm");
+      handleError(undefined, "passwordConfirm", setErrors);
     }
 
     if (!inputs.firstName) {
-      handleError("Please enter your first name", "firstName");
+      handleError("Please enter your first name", "firstName", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "firstName");
+      handleError(undefined, "firstName", setErrors);
     }
 
     if (!inputs.lastName) {
-      handleError("Please enter your last name", "lastName");
+      handleError("Please enter your last name", "lastName", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "lastName");
+      handleError(undefined, "lastName", setErrors);
     }
 
     if (!inputs.dateOfBirth) {
-      handleError("Please enter your date birth", "dateOfBirth");
+      handleError("Please enter your date birth", "dateOfBirth", setErrors);
       isValid = false;
     } else {
       const dateChecker = checkDateBirth(inputs.dateOfBirth);
       if (!dateChecker.valid) {
-        handleError(dateChecker.error, "dateOfBirth");
+        handleError(dateChecker.error, "dateOfBirth", setErrors);
         isValid = false;
       } else {
-        handleError(undefined, "dateOfBirth");
+        handleError(undefined, "dateOfBirth", setErrors);
       }
     }
 
     if (!inputs.bio) {
-      handleError("Please enter your bio", "bio");
+      handleError("Please enter your bio", "bio", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "bio");
+      handleError(undefined, "bio", setErrors);
     }
 
     if (!inputs.graduationYear && isStudying) {
-      handleError("Please enter your graduation year", "graduationYear");
+      handleError(
+        "Please enter your graduation year",
+        "graduationYear",
+        setErrors,
+      );
       isValid = false;
     } else {
       const dateChecker = checkDateGraduation(inputs.graduationYear);
       if (!dateChecker.valid && isStudying) {
-        handleError(dateChecker.error, "graduationYear");
+        handleError(dateChecker.error, "graduationYear", setErrors);
         isValid = false;
       } else {
-        handleError(undefined, "graduationYear");
+        handleError(undefined, "graduationYear", setErrors);
       }
     }
 
     if (!inputs.currentJobRole && isWorking) {
-      handleError("Please enter your current job role", "currentJobRole");
+      handleError(
+        "Please enter your current job role",
+        "currentJobRole",
+        setErrors,
+      );
       isValid = false;
     } else {
-      handleError(undefined, "currentJobRole");
+      handleError(undefined, "currentJobRole", setErrors);
     }
 
     if (!inputs.university && isStudying) {
-      handleError("Please enter your university", "university");
+      handleError("Please enter your university", "university", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "university");
+      handleError(undefined, "university", setErrors);
     }
 
     if (!inputs.degree && isStudying) {
-      handleError("Please enter your degree", "degree");
+      handleError("Please enter your degree", "degree", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "degree");
+      handleError(undefined, "degree", setErrors);
     }
 
     if (isValid) {
       register();
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Form not filled correctly",
+        text2: "Please check all the fields are correctly field",
+      });
     }
   };
 
@@ -215,13 +239,6 @@ export default function RegisterPage() {
     );
   };
 
-  const handleOnChange = (text: string, input: string) => {
-    setInputs((prevState) => ({ ...prevState, [input]: text }));
-  };
-  const handleError = (text: string | undefined, input: string) => {
-    setErrors((prevState) => ({ ...prevState, [input]: text }));
-  };
-
   return (
     <Container>
       <ScrollView
@@ -241,7 +258,9 @@ export default function RegisterPage() {
               iconName="user"
               required
               value={inputs.username}
-              onChangeText={(text) => handleOnChange(text, "username")}
+              onChangeText={(text) =>
+                handleOnChange(text, "username", setInputs)
+              }
               error={errors.username}
             />
             <Input
@@ -249,7 +268,7 @@ export default function RegisterPage() {
               iconName="at"
               required
               value={inputs.email}
-              onChangeText={(text) => handleOnChange(text, "email")}
+              onChangeText={(text) => handleOnChange(text, "email", setInputs)}
               error={errors.email}
               keyboardType="email-address"
             />
@@ -258,7 +277,9 @@ export default function RegisterPage() {
               iconName="lock"
               required
               value={inputs.password}
-              onChangeText={(text) => handleOnChange(text, "password")}
+              onChangeText={(text) =>
+                handleOnChange(text, "password", setInputs)
+              }
               error={errors.password}
               password
             />
@@ -267,7 +288,9 @@ export default function RegisterPage() {
               iconName="lock"
               required
               value={inputs.passwordConfirm}
-              onChangeText={(text) => handleOnChange(text, "passwordConfirm")}
+              onChangeText={(text) =>
+                handleOnChange(text, "passwordConfirm", setInputs)
+              }
               error={errors.passwordConfirm}
               password
             />
@@ -276,7 +299,9 @@ export default function RegisterPage() {
               iconName="id-badge"
               required
               value={inputs.firstName}
-              onChangeText={(text) => handleOnChange(text, "firstName")}
+              onChangeText={(text) =>
+                handleOnChange(text, "firstName", setInputs)
+              }
               error={errors.firstName}
             />
             <Input
@@ -284,7 +309,9 @@ export default function RegisterPage() {
               iconName="id-badge"
               required
               value={inputs.lastName}
-              onChangeText={(text) => handleOnChange(text, "lastName")}
+              onChangeText={(text) =>
+                handleOnChange(text, "lastName", setInputs)
+              }
               error={errors.lastName}
             />
             <Input
@@ -292,7 +319,9 @@ export default function RegisterPage() {
               iconName="calendar"
               required
               value={inputs.dateOfBirth}
-              onChangeText={(text) => handleOnChange(text, "dateOfBirth")}
+              onChangeText={(text) =>
+                handleOnChange(text, "dateOfBirth", setInputs)
+              }
               placeholder="DD/MM/YYYY"
               placeholderTextColor="#969696"
               error={errors.dateOfBirth}
@@ -304,14 +333,17 @@ export default function RegisterPage() {
               multiline
               numberOfLines={3}
               value={inputs.bio}
-              onChangeText={(text) => handleOnChange(text, "bio")}
+              onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
               error={errors.bio}
             />
 
-            <InputLabel label="Currently I'm..." required />
+            <InputLabel
+              label="Currently I'm... (select one of the options)"
+              required
+            />
             <ButtonsWSContainer>
               <FilterButton
-                title="Study"
+                title="Studying"
                 onPress={() => {
                   setActive({ study: true, work: false, nothing: false });
                   setIsStudying(true);
@@ -321,7 +353,7 @@ export default function RegisterPage() {
                 active={active.study}
               />
               <FilterButton
-                title="Work"
+                title="Working"
                 onPress={() => {
                   setActive({ study: false, work: true, nothing: false });
                   setIsStudying(false);
@@ -331,7 +363,7 @@ export default function RegisterPage() {
                 active={active.work}
               />
               <FilterButton
-                title="Nothing"
+                title="Another thing"
                 onPress={() => {
                   setActive({ study: false, work: false, nothing: true });
                   setIsStudying(false);
@@ -348,7 +380,9 @@ export default function RegisterPage() {
                 iconName="briefcase"
                 required
                 value={inputs.currentJobRole}
-                onChangeText={(text) => handleOnChange(text, "currentJobRole")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "currentJobRole", setInputs)
+                }
                 error={errors.currentJobRole}
               />
             )}
@@ -360,7 +394,9 @@ export default function RegisterPage() {
                   iconName="university"
                   required
                   value={inputs.university}
-                  onChangeText={(text) => handleOnChange(text, "university")}
+                  onChangeText={(text) =>
+                    handleOnChange(text, "university", setInputs)
+                  }
                   error={errors.university}
                 />
                 <Input
@@ -368,7 +404,9 @@ export default function RegisterPage() {
                   iconName="book"
                   required
                   value={inputs.degree}
-                  onChangeText={(text) => handleOnChange(text, "degree")}
+                  onChangeText={(text) =>
+                    handleOnChange(text, "degree", setInputs)
+                  }
                   error={errors.degree}
                 />
                 <Input
@@ -377,7 +415,7 @@ export default function RegisterPage() {
                   required
                   value={inputs.graduationYear}
                   onChangeText={(text) =>
-                    handleOnChange(text, "graduationYear")
+                    handleOnChange(text, "graduationYear", setInputs)
                   }
                   placeholder="DD/MM/YYYY"
                   placeholderTextColor="#969696"
@@ -385,19 +423,18 @@ export default function RegisterPage() {
                 />
               </>
             )}
-
-            <ButtonContainer>
-              <Button
-                title="Register"
-                onPress={validate}
-                color="#58a659"
-                iconName="check-square-o"
-              />
-            </ButtonContainer>
           </MaxWidthUseScreen>
         )}
-        <Toast />
       </ScrollView>
+      <Toast />
+      <BottomScreenContainer>
+        <Button
+          title="Register"
+          onPress={validate}
+          color="#58a659"
+          iconName="check-square-o"
+        />
+      </BottomScreenContainer>
     </Container>
   );
 }
