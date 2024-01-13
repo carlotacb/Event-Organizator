@@ -16,13 +16,11 @@ import { getToken, removeToken } from "../../../utils/sessionCalls";
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 import {
   ButtonsColumnContainer,
-  ButtonsRowContainer,
   FiltersContainer,
 } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import { getBackGroundColorForRole } from "../../../utils/util-functions";
 import { ListContainer } from "../../../components/componentsStyled/Lists/Styles";
 import ListLine from "../../../components/componentsStyled/Lists/ListLine";
-import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
