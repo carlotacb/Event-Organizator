@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import React from "react";
+import { Platform } from "react-native";
 
 export default function ProfileLayout() {
   return (
@@ -13,9 +14,9 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="users"
         options={{
-          headerTitle: "All users",
+          headerShown: Platform.OS === "web",
+          headerTitle: "All user roles",
           presentation: "modal",
-          headerShown: false,
         }}
       />
     </Stack>

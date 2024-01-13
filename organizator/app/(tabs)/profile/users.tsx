@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, SafeAreaView } from "react-native";
+import { ScrollView, SafeAreaView } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
@@ -17,6 +17,7 @@ import FilterButton from "../../../components/componentsStyled/Buttons/FilterBut
 import {
   ButtonsColumnContainer,
   FiltersContainer,
+  MaxWidthUseScreenForList,
 } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import { getBackGroundColorForRole } from "../../../utils/util-functions";
 import { ListContainer } from "../../../components/componentsStyled/Lists/Styles";
@@ -107,7 +108,7 @@ export default function AllUsers() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <View>
+          <MaxWidthUseScreenForList>
             <FiltersContainer>
               <FilterButton
                 title="All users"
@@ -195,7 +196,7 @@ export default function AllUsers() {
                 />
               ))}
             </ListContainer>
-          </View>
+          </MaxWidthUseScreenForList>
         )}
 
         <Dialog

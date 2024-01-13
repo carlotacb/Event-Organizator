@@ -35,6 +35,15 @@ export const MaxWidthUseScreen = styled.View`
   }
 `;
 
+export const MaxWidthUseScreenForList = styled.View`
+  width: 100%;
+
+  @media ${devices.tablet} {
+    width: 60%;
+    margin: 0 auto;
+  }
+`;
+
 export const FiltersContainer = styled.View`
   display: flex;
   flex-direction: row;
