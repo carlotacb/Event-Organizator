@@ -8,6 +8,7 @@ from app.applications.infrastructure.http.views import (
     update_application_status,
     cancel_application,
     confirm_application,
+    attend_application,
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path("update/<uuid:application_id>", update_application_status),
     path("cancel/<uuid:application_id>", cancel_application),
     path("confirm/<uuid:application_id>", confirm_application),
+    path("attend/<uuid:application_id>", attend_application),
     path("status/<uuid:event_id>", get_application_status),
     path("participants/<uuid:event_id>", get_applications_by_event),
 ]
