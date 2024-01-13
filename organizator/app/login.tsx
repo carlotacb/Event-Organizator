@@ -15,6 +15,7 @@ import {
 } from "../components/componentsStyled/Shared/TextStyles";
 import { systemColors } from "../components/componentsStyled/tokens";
 import LoginForm from "../components/componentsStyled/Forms/LoginForm";
+import LoadingPage from "../components/Pages/LodingPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -85,7 +86,7 @@ export default function LoginPage() {
       >
         <Toast />
         {loading ? (
-          <LoginPage />
+          <LoadingPage />
         ) : (
           <View>
             <Title>Welcome back!</Title>
@@ -113,6 +114,7 @@ export default function LoginPage() {
           </View>
         )}
       </ScrollView>
+      <Toast />
     </Container>
   );
 }
