@@ -1,8 +1,5 @@
 import React from "react";
-// @ts-ignore
-import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Pressable } from "react-native";
 import {
   getColorForApplicationStatus,
   parseDate,
