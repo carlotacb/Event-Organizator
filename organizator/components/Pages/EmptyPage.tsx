@@ -2,7 +2,7 @@ import { Image, View } from "react-native";
 import React from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import { SubTitle, Title } from "../componentsStyled/TextStyles";
+import { SubTitle, Title } from "../componentsStyled/Shared/TextStyles";
 
 interface EmptyPageProps {
   title: string;

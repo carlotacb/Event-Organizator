@@ -16,7 +16,7 @@ import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
-import { BottomScreenContainer } from "../../../components/componentsStyled/ContainerStyles";
+import { BottomScreenContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
 
 const Container = styled(SafeAreaView)`
   background-color: white;

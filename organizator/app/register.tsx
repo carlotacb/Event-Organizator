@@ -14,10 +14,13 @@ import LoadingPage from "../components/Pages/LodingPage";
 import { checkDateBirth, checkDateGraduation } from "../utils/util-functions";
 import FilterButton from "../components/componentsStyled/Buttons/FilterButtons";
 import InputLabel from "../components/componentsStyled/Forms/InputLabel";
-import { SubTitle, Title } from "../components/componentsStyled/TextStyles";
+import {
+  SubTitle,
+  Title,
+} from "../components/componentsStyled/Shared/TextStyles";
+import { MaxWidthUseScreen } from "../components/componentsStyled/Shared/ContainerStyles";
 
 const Container = styled(SafeAreaView)`
-  padding: 50px 40px;
   background-color: white;
 `;
 
@@ -227,7 +230,7 @@ export default function RegisterPage() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <>
+          <MaxWidthUseScreen>
             <Title>Welcome on board</Title>
             <SubTitle>
               To be able to register in our events we need some information
@@ -391,7 +394,7 @@ export default function RegisterPage() {
                 iconName="check-square-o"
               />
             </ButtonContainer>
-          </>
+          </MaxWidthUseScreen>
         )}
         <Toast />
       </ScrollView>
