@@ -16,6 +16,7 @@ import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
+import { BottomScreenContainer } from "../../../components/componentsStyled/ContainerStyles";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -29,13 +30,6 @@ const CardsContainer = styled(View)`
   gap: 20px;
   flex-direction: row;
   margin: 20px 0;
-`;
-
-const CreateButtonContainer = styled(View)`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  align-items: center;
-  display: flex;
 `;
 
 const CreateButton = styled(Pressable)`
@@ -176,7 +170,7 @@ export default function Home() {
         )}
       </ScrollView>
       {isAdmin && (
-        <CreateButtonContainer>
+        <BottomScreenContainer>
           <CreateButton
             onPress={() => {
               router.push("/create");
@@ -185,7 +179,7 @@ export default function Home() {
             <FontAwesome name="plus" size={20} color="white" />
             <CreateButtonText>Create new</CreateButtonText>
           </CreateButton>
-        </CreateButtonContainer>
+        </BottomScreenContainer>
       )}
     </Container>
   );
