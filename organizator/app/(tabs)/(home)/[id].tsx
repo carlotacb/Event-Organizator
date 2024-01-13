@@ -34,6 +34,11 @@ import {
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
 import { Title } from "../../../components/componentsStyled/TextStyles";
+import {
+  BottomScreenContainer,
+  ButtonsRowContainer,
+} from "../../../components/componentsStyled/ContainerStyles";
+import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -84,37 +89,6 @@ const TextLine = styled.View`
 
 const StyledLink = styled(Link)`
   color: blue;
-  font-weight: bold;
-`;
-
-const ButtonsContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-top: 30px;
-  justify-content: center;
-`;
-
-const ApplyButtonContainer = styled(View)`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  align-items: center;
-  display: flex;
-`;
-
-const ApplyButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 30px;
-  border-radius: 20px;
-  gap: 10px;
-  background-color: #58a659;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const ApplyButtonText = styled.Text`
-  font-size: 18px;
-  color: white;
   font-weight: bold;
 `;
 
@@ -569,23 +543,6 @@ export default function EventPage() {
                         title="Open for participants to apply"
                         active={inputs.openForParticipants}
                       />
-
-                      <ButtonsContainer>
-                        <Button
-                          title="Save"
-                          onPress={validate}
-                          color="#58a659"
-                          iconName="save"
-                        />
-                        <Button
-                          title="Cancel"
-                          onPress={() => {
-                            setIsEditable(false);
-                          }}
-                          color="#f07267"
-                          iconName="close"
-                        />
-                      </ButtonsContainer>
                     </View>
                   ) : (
                     <InformationContainer>
@@ -637,28 +594,6 @@ export default function EventPage() {
                           </Text>
                         </TextLine>
                       </RestrictionContainer>
-                      <ButtonsContainer>
-                        {(isOrganizer || isOrganizerAdmin) && (
-                          <Button
-                            title="Edit"
-                            onPress={() => {
-                              setIsEditable(true);
-                            }}
-                            color="#58a659"
-                            iconName="pencil"
-                          />
-                        )}
-                        {isOrganizerAdmin && (
-                          <Button
-                            title="Delete"
-                            onPress={() => {
-                              setShowAlert(true);
-                            }}
-                            color="#f07267"
-                            iconName="trash"
-                          />
-                        )}
-                      </ButtonsContainer>
                     </InformationContainer>
                   )}
                 </View>
@@ -703,30 +638,73 @@ export default function EventPage() {
           onRequestClose={() => setShowAlert(false)}
         />
       </ScrollView>
-      {!loading && !events?.deleted && isParticipant && (
-        <ApplyButtonContainer>
-          {applied ? (
-            <AppliedContainer>
-              <TextLine>
-                <ApplicationStatus>Your application is:</ApplicationStatus>
-                <InformativeChip
-                  name={applicationStatus}
-                  backgroundColor={getColorForApplicationStatus(
-                    applicationStatus,
-                  )}
-                />
-              </TextLine>
-            </AppliedContainer>
+
+      {!loading && !events?.deleted && (
+        <BottomScreenContainer>
+          {isParticipant ? (
+            applied ? (
+              <AppliedContainer>
+                <TextLine>
+                  <ApplicationStatus>Your application is:</ApplicationStatus>
+                  <InformativeChip
+                    name={applicationStatus}
+                    backgroundColor={getColorForApplicationStatus(
+                      applicationStatus,
+                    )}
+                  />
+                </TextLine>
+              </AppliedContainer>
+            ) : (
+              <Button
+                title="Apply now"
+                onPress={() => {
+                  applyToEvent();
+                }}
+                color={systemColors.action}
+              />
+            )
+          ) : isEditable ? (
+            <ButtonsRowContainer>
+              <Button
+                title="Save"
+                onPress={validate}
+                color={systemColors.accept}
+                iconName="save"
+              />
+              <Button
+                title="Cancel"
+                onPress={() => {
+                  setIsEditable(false);
+                }}
+                color={systemColors.destroy}
+                iconName="close"
+              />
+            </ButtonsRowContainer>
           ) : (
-            <ApplyButton
-              onPress={() => {
-                applyToEvent();
-              }}
-            >
-              <ApplyButtonText>Apply now</ApplyButtonText>
-            </ApplyButton>
+            <ButtonsRowContainer>
+              {(isOrganizer || isOrganizerAdmin) && (
+                <Button
+                  title="Edit"
+                  onPress={() => {
+                    setIsEditable(true);
+                  }}
+                  color={systemColors.edit}
+                  iconName="pencil"
+                />
+              )}
+              {isOrganizerAdmin && (
+                <Button
+                  title="Delete"
+                  onPress={() => {
+                    setShowAlert(true);
+                  }}
+                  color={systemColors.destroy}
+                  iconName="trash"
+                />
+              )}
+            </ButtonsRowContainer>
           )}
-        </ApplyButtonContainer>
+        </BottomScreenContainer>
       )}
       <Toast />
     </Container>
