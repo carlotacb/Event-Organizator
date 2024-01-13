@@ -54,11 +54,7 @@ export default function FilterButton(props: ButtonProps) {
       width={width || "auto"}
     >
       {iconName && (
-        <InputIcon
-          name={iconName}
-          size={18}
-          color={active ? "white" : "black"}
-        />
+        <InputIcon name={iconName} color={active ? "white" : color} />
       )}
       {title && (
         <ButtonText active={active} color={color}>

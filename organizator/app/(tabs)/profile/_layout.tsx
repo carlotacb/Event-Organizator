@@ -12,7 +12,11 @@ export default function ProfileLayout() {
       />
       <Stack.Screen
         name="users"
-        options={{ headerTitle: "All users", presentation: "modal" }}
+        options={{
+          headerTitle: "All users",
+          presentation: "modal",
+          headerShown: false,
+        }}
       />
     </Stack>
   );

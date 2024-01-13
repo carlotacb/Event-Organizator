@@ -408,6 +408,7 @@ export default function Index() {
                   name={userInformation?.email || ""}
                   backgroundColor={systemColors.backgroundGrey}
                   fontSize="15px"
+                  notBold
                 />
               </View>
 

@@ -18,6 +18,14 @@ export const ButtonsRowContainer = styled.View<{ marginTop?: string }>`
   margin-top: ${(props: { marginTop?: string }) => props.marginTop || "0px"};
 `;
 
+export const ButtonsColumnContainer = styled.View<{ marginTop?: string }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  margin-top: ${(props: { marginTop?: string }) => props.marginTop || "0px"};
+`;
+
 export const MaxWidthUseScreen = styled.View`
   width: 90%;
   margin: 0 auto;
@@ -32,7 +40,6 @@ export const FiltersContainer = styled.View`
   flex-direction: row;
   justify-content: flex-end;
   gap: 5px;
-  margin-top: 10px;
   margin-right: 10px;
 `;
 
