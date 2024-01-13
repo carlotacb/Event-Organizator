@@ -7,7 +7,6 @@ export const BottomScreenContainer = styled.View`
   padding-bottom: 20px;
   align-items: center;
   display: flex;
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.25);
 `;
 
 export const ButtonsRowContainer = styled.View<{ marginTop?: string }>`
