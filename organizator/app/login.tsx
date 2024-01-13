@@ -56,7 +56,7 @@ export default function LoginPage() {
         router.replace("/");
       }
     });
-  });
+  }, []);
 
   const login = () => {
     setLoading(true);
@@ -101,15 +101,15 @@ export default function LoginPage() {
               </Link>
             </RegisterTextContainer>
             <RegisterTextContainer>
-              <Link href="/" asChild>
-                <Button
-                  title="Go to homepage"
-                  onPress={() => {}}
-                  iconName="home"
-                  color={systemColors.action}
-                  fontSize="14px"
-                />
-              </Link>
+              <Button
+                title="Go to homepage"
+                onPress={() => {
+                  router.replace("/");
+                }}
+                iconName="home"
+                color={systemColors.action}
+                fontSize="14px"
+              />
             </RegisterTextContainer>
           </MaxWidthUseScreen>
         )}
