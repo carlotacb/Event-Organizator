@@ -18,10 +18,7 @@ import {
 } from "./Styles";
 import Button from "../Buttons/ButtonWithIcon";
 import { systemColors } from "../tokens";
-import {
-  ButtonsColumnContainer,
-  ButtonsRowContainer,
-} from "../Shared/ContainerStyles";
+import { ButtonsRowContainer } from "../Shared/ContainerStyles";
 
 interface CardProps {
   title: string;
@@ -34,48 +31,6 @@ interface CardProps {
   setShowConfirmAlert: (showConfirmAlert: boolean) => void;
   setIdToConfirm: (idToConfirm: string) => void;
 }
-
-const ButtonsContainer = styled.View`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CancelButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 20px;
-  gap: 10px;
-  width: 100%;
-  background-color: #a65858;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const ConfirmButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  margin-top: 15px;
-  border-radius: 20px;
-  gap: 10px;
-  width: 100%;
-  background-color: #60a658;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const CancelButtonText = styled.Text`
-  font-size: 16px;
-  color: white;
-  font-weight: bold;
-`;
 
 export default function CardMyEvents(props: CardProps) {
   const {
