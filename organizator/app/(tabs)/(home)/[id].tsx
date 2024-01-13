@@ -347,6 +347,13 @@ export default function EventPage() {
             }}
             contentInsetAdjustmentBehavior="automatic"
             onRequestClose={() => setShowAlert(false)}
+            dialogStyle={{
+              width: 300,
+              marginRight: "auto",
+              marginLeft: "auto",
+              marginTop: 0,
+              marginBottom: 0,
+            }}
           />
         </ScrollView>
       </KeyboardAvoidingView>

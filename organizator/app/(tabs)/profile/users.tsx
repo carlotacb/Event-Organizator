@@ -213,6 +213,13 @@ export default function AllUsers() {
             setUserToUpdate(null);
           }}
           contentInsetAdjustmentBehavior="automatic"
+          dialogStyle={{
+            width: 300,
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginTop: 0,
+            marginBottom: 0,
+          }}
         >
           <ButtonsColumnContainer>
             <Button

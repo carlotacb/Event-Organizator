@@ -21,6 +21,7 @@ import { UserRoles } from "../../../utils/interfaces/Users";
 import { getColorForApplicationStatus } from "../../../utils/util-functions";
 import { ButtonsColumnContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import ListLine from "../../../components/componentsStyled/Lists/ListLine";
+import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -544,6 +545,13 @@ export default function Id() {
           setUserToUpdate(null);
         }}
         contentInsetAdjustmentBehavior="automatic"
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
       >
         <ButtonsColumnContainer>
           <Button
@@ -625,6 +633,13 @@ export default function Id() {
           setShowAttendAlert(false);
           setIdApplicationToAttend(null);
           setUserToAttend("");
+        }}
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
         }}
       />
 
