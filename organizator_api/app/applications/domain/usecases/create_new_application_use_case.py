@@ -5,7 +5,7 @@ from app.applications.domain.exceptions import (
     ProfileNotComplete,
     UserIsNotAParticipant,
     UserIsNotStudent,
-    UserIsTooYoung,
+    UserIsTooYoung, EventAlreadyStarted,
 )
 from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.infrastructure.repository_factories import (
@@ -49,6 +49,9 @@ class CreateNewApplicationUseCase:
 
         if age < event.age_restrictions:
             raise UserIsTooYoung
+
+        if event.start_date < datetime.now():
+            raise EventAlreadyStarted
 
         application = Application(
             id=uuid.uuid4(),
