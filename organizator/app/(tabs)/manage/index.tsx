@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
+import Toast from "react-native-toast-message";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
@@ -52,6 +53,7 @@ export default function ListPage() {
           {isParticipant && <MyEventsPage />}
         </ScrollView>
       )}
+      <Toast />
     </Container>
   );
 }

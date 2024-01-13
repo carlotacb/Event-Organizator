@@ -216,7 +216,6 @@ export default function MyEventsPage() {
           marginBottom: 0,
         }}
       />
-      <Toast />
     </View>
   );
 }

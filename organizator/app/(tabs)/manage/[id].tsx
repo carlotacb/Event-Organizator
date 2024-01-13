@@ -21,7 +21,6 @@ import { UserRoles } from "../../../utils/interfaces/Users";
 import { getColorForApplicationStatus } from "../../../utils/util-functions";
 import { ButtonsColumnContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import ListLine from "../../../components/componentsStyled/Lists/ListLine";
-import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
