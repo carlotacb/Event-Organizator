@@ -26,3 +26,21 @@ export const MaxWidthUseScreen = styled.View`
     width: 70%;
   }
 `;
+
+export const FiltersContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 10px;
+  margin-right: 10px;
+`;
+
+export const CardsContainer = styled.View`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  flex-direction: row;
+  margin: 20px;
+`;

@@ -16,20 +16,17 @@ import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
-import { BottomScreenContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
+import {
+  BottomScreenContainer,
+  CardsContainer,
+  FiltersContainer,
+} from "../../../components/componentsStyled/Shared/ContainerStyles";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
+import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
-`;
-
-const CardsContainer = styled(View)`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: row;
-  margin: 20px 0;
 `;
 
 const CreateButton = styled(Pressable)`
@@ -47,14 +44,6 @@ const CreateButtonText = styled.Text`
   font-size: 18px;
   color: white;
   font-weight: bold;
-`;
-
-const ButtonsContainer = styled(View)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 5px;
-  margin-top: 10px;
 `;
 
 export default function Home() {
@@ -100,7 +89,7 @@ export default function Home() {
           <LoadingPage />
         ) : (
           <View>
-            <ButtonsContainer>
+            <FiltersContainer>
               <FilterButton
                 title="All"
                 onPress={() => {
@@ -135,7 +124,7 @@ export default function Home() {
                 iconName="calendar"
                 active={active.future}
               />
-            </ButtonsContainer>
+            </FiltersContainer>
             <View style={{ justifyContent: "center" }}>
               {events.length === 0 ? (
                 <EmptyPage
@@ -171,14 +160,13 @@ export default function Home() {
       </ScrollView>
       {isAdmin && (
         <BottomScreenContainer>
-          <CreateButton
+          <Button
+            title="Create new"
             onPress={() => {
               router.push("/create");
             }}
-          >
-            <FontAwesome name="plus" size={20} color="white" />
-            <CreateButtonText>Create new</CreateButtonText>
-          </CreateButton>
+            color={systemColors.action}
+          />
         </BottomScreenContainer>
       )}
     </Container>
