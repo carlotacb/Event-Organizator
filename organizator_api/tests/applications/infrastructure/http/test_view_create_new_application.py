@@ -266,7 +266,7 @@ class TestViewCreateNewApplication(ApiTests):
         self,
     ) -> None:
         # Given
-        event_id = "fbce7302-68b2-48d3-9030-f6c56fcacf10"
+        event_id = "fbce7302-68b2-48d3-9030-f6c56fcacf30"
         event = EventFactory().create(
             new_id=uuid.UUID(event_id),
             start_date=datetime(2020, 1, 1),

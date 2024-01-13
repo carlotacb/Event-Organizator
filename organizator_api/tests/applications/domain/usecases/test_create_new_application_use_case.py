@@ -155,14 +155,14 @@ class TestCreateNewApplicationUseCase(ApiTests):
         # Given
         event = EventFactory().create(
             name="HackUPC 2024",
-            start_date=datetime(2023, 5, 12, 16, 0, tzinfo=timezone.utc),
+            start_date=datetime(2023, 5, 12, 16, 0),
         )
         self.event_repository.create(event)
 
         # When / Then
         with self.assertRaises(EventAlreadyStarted):
             CreateNewApplicationUseCase().execute(
-                token=self.user_complete_token, event_id=self.event_id
+                token=self.user_complete_token, event_id=event.id
             )
 
     def test__given_user_with_all_the_information_and_existing_event__when_create_application__then_the_application_is_created(
