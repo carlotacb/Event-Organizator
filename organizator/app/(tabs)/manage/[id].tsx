@@ -10,7 +10,6 @@ import LoadingPage from "../../../components/LodingPage";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
 import {
   attendApplication,
-  confirmApplication,
   getParticipants,
   updateApplicationStatus,
 } from "../../../utils/api/axiosApplications";
