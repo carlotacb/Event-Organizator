@@ -16,8 +16,12 @@ from app.applications.domain.exceptions import (
     ApplicationIsNotFromUser,
     ApplicationCanNotBeCancelled,
     ApplicationCanNotBeConfirmed,
+    ApplicationCanNotBeAttended,
 )
 from app.applications.domain.models.application import ApplicationStatus
+from app.applications.domain.usecases.attended_application_use_case import (
+    AttendedApplicationUseCase,
+)
 from app.applications.domain.usecases.cancel_application_use_case import (
     CancelApplicationUseCase,
 )
@@ -264,3 +268,30 @@ def confirm_application(
         return HttpResponse(status=422, content="Application can not be confirmed")
 
     return HttpResponse(status=200, content="Application is correctly confirmed")
+
+
+@require_http_methods(["POST"])
+def attend_application(request: HttpRequest, application_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        AttendedApplicationUseCase().execute(
+            application_id=application_id,
+            token=token_to_uuid,
+        )
+
+    except ApplicationNotFound:
+        return HttpResponse(status=404, content="Application not found")
+    except OnlyAuthorizedToOrganizer:
+        return HttpResponse(status=401, content="Only authorized to organizer")
+    except ApplicationCanNotBeAttended:
+        return HttpResponse(status=422, content="Application can not be confirmed")
+
+    return HttpResponse(status=200, content="Application is correctly attended")

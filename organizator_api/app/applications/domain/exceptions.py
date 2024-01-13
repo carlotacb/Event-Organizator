@@ -40,3 +40,7 @@ class ApplicationIsNotFromUser(Exception):
 
 class ApplicationCanNotBeConfirmed(Exception):
     pass
+
+
+class ApplicationCanNotBeAttended(Exception):
+    pass
