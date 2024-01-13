@@ -24,22 +24,6 @@ interface CardProps {
   isStudent?: boolean;
 }
 
-const PastTag = styled.View`
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  border: 4px solid #772323;
-  background-color: rgba(119, 35, 35, 0.8);
-  border-radius: 20px;
-  padding: 5px 15px;
-`;
-
-const PastText = styled.Text`
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-`;
-
 export default function CardHomePage(props: CardProps) {
   const { title, startDate, endDate, location, headerImage, isStudent } = props;
 
@@ -62,11 +46,6 @@ export default function CardHomePage(props: CardProps) {
           <FontAwesome5 name="map-marker-alt" size={16} />
           <CardText>{location}</CardText>
         </TextLine>
-        {isPast() && (
-          <PastTag>
-            <PastText>Past</PastText>
-          </PastTag>
-        )}
       </CardTextContainer>
       {isStudent && (
         <AbsoluteChip name="Students only" backgroundColor="#b3f3f5" />

@@ -28,8 +28,16 @@ export const CardTitle = styled.Text`
   text-align: center;
 `;
 
-export const CardText = styled.Text`
+export const CardSubtitle = styled.Text<{ color: string }>`
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+  color: ${(props: { color: string }) => props.color};
+`;
+
+export const CardText = styled.Text<{ color?: string }>`
   font-size: 16px;
+  color: ${(props: { color: string }) => props.color || "black"};
 `;
 
 export const TextLine = styled.View`
