@@ -1,6 +1,4 @@
 import { ScrollView, View } from "react-native";
-// @ts-ignore
-import styled from "styled-components/native";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { ConfirmDialog } from "react-native-simple-dialogs";
@@ -15,15 +13,7 @@ import { getToken } from "../../utils/sessionCalls";
 import LoadingPage from "./LodingPage";
 import CardMyEvents from "../componentsStyled/Cards/CardMyEvents";
 import { ApplicationInformationWithoutUser } from "../../utils/interfaces/Applications";
-
-const CardsContainer = styled(View)`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: row;
-  margin: 20px 0;
-`;
+import { CardsContainer } from "../componentsStyled/Shared/ContainerStyles";
 
 export default function MyEventsPage() {
   const [loading, setLoading] = useState(true);

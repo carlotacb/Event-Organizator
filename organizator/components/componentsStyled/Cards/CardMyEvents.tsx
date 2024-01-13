@@ -16,6 +16,12 @@ import {
   CardTitle,
   TextLine,
 } from "./Styles";
+import Button from "../Buttons/ButtonWithIcon";
+import { systemColors } from "../tokens";
+import {
+  ButtonsColumnContainer,
+  ButtonsRowContainer,
+} from "../Shared/ContainerStyles";
 
 interface CardProps {
   title: string;
@@ -95,31 +101,31 @@ export default function CardMyEvents(props: CardProps) {
           <FontAwesome5 name="calendar" size={16} />
           <CardText>{parseDate(startDate)}</CardText>
         </TextLine>
-        <ButtonsContainer>
+        <ButtonsRowContainer marginTop="25px">
           {status === "Invited" && !isPast() && (
-            <ConfirmButton
+            <Button
+              title="Confirm"
               onPress={() => {
                 setIdToConfirm(id);
                 setShowConfirmAlert(true);
               }}
-            >
-              <CancelButtonText>Confirm participation</CancelButtonText>
-            </ConfirmButton>
+              color={systemColors.accept}
+            />
           )}
           {status !== "Cancelled" &&
             status !== "Rejected" &&
             status !== "Invalid" &&
             !isPast() && (
-              <CancelButton
+              <Button
+                title="Cancel"
                 onPress={() => {
                   setIdToCancel(id);
                   setShowCancelAlert(true);
                 }}
-              >
-                <CancelButtonText>Cancel participation</CancelButtonText>
-              </CancelButton>
+                color={systemColors.destroy}
+              />
             )}
-        </ButtonsContainer>
+        </ButtonsRowContainer>
       </CardTextContainer>
       <AbsoluteChip
         name={status}

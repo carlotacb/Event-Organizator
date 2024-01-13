@@ -184,6 +184,7 @@ export default function EventPage() {
   };
 
   const applyToEvent = () => {
+    setLoading(true);
     const fetchData = async () => {
       const token = await getToken();
       // @ts-ignore
@@ -206,6 +207,7 @@ export default function EventPage() {
           text2: "You have applied to this event",
           visibilityTime: 2000,
         });
+        setLoading(false);
       }
     });
   };
