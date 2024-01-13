@@ -21,7 +21,7 @@ interface CardProps {
   endDate: string;
   location: string;
   headerImage: string;
-  students: boolean;
+  isStudent?: boolean;
 }
 
 const PastTag = styled.View`
@@ -41,7 +41,7 @@ const PastText = styled.Text`
 `;
 
 export default function CardHomePage(props: CardProps) {
-  const { title, startDate, endDate, location, headerImage, students } = props;
+  const { title, startDate, endDate, location, headerImage, isStudent } = props;
 
   const isPast = () => startDate < new Date().toISOString();
 
@@ -68,7 +68,7 @@ export default function CardHomePage(props: CardProps) {
           </PastTag>
         )}
       </CardTextContainer>
-      {students && (
+      {isStudent && (
         <AbsoluteChip name="Students only" backgroundColor="#b3f3f5" />
       )}
     </CardContainer>

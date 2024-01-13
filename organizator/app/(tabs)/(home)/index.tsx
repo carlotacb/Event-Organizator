@@ -165,7 +165,7 @@ export default function Home() {
                         location={event.location}
                         id={event.id}
                         headerImage={event.header_image}
-                        students={event.students_only}
+                        isStudent={event.students_only}
                       />
                     </Pressable>
                   ))}
