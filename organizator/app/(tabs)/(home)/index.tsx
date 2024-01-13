@@ -3,6 +3,7 @@ import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
+import { useIsFocused } from "@react-navigation/core";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import {
   getAllEvents,
@@ -40,6 +41,8 @@ export default function Home() {
     future: true,
   });
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
     const fetchData = async () => getAllUpcomingEvents();
     const fetchAllEvents = async () => getAllEvents();
@@ -62,7 +65,7 @@ export default function Home() {
     fetchAdminFunction().then((response) => {
       setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
     });
-  }, []);
+  }, [isFocused]);
 
   return (
     <Container>
