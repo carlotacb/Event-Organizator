@@ -45,10 +45,11 @@ interface EventFormProps {
     }>
   >;
   createTheEvent: () => void;
+  isUpdate?: boolean;
 }
 
 export default function EventForm(props: EventFormProps) {
-  const { inputs, setInputs, createTheEvent } = props;
+  const { inputs, setInputs, createTheEvent, isUpdate } = props;
   const [errors, setErrors] = React.useState({
     name: undefined,
     url: undefined,
@@ -372,14 +373,18 @@ export default function EventForm(props: EventFormProps) {
           </View>
         </View>
       </View>
-      <Input
-        label="Header image link"
-        iconName="image"
-        required
-        value={inputs.headerImage}
-        onChangeText={(text) => handleOnChange(text, "headerImage", setInputs)}
-        error={errors.headerImage}
-      />
+      {!isUpdate && (
+        <Input
+          label="Header image link"
+          iconName="image"
+          required
+          value={inputs.headerImage}
+          onChangeText={(text) =>
+            handleOnChange(text, "headerImage", setInputs)
+          }
+          error={errors.headerImage}
+        />
+      )}
       <Input
         label="Description"
         iconName="pencil"
@@ -435,7 +440,7 @@ export default function EventForm(props: EventFormProps) {
 
       <ButtonsRowContainer marginTop="30px">
         <Button
-          title="Create"
+          title={isUpdate ? "Save" : "Create"}
           onPress={validate}
           color="#58a659"
           iconName="save"

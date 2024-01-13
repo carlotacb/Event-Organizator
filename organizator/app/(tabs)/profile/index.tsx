@@ -35,6 +35,7 @@ import { Title } from "../../../components/componentsStyled/Shared/TextStyles";
 import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
 import {
   ButtonsRowContainer,
+  ButtonsRowContainerLeft,
   RadioButtonContainer,
 } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
@@ -47,16 +48,6 @@ import {
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
-`;
-
-const ContainerTags = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-  justify-content: flex-end;
-  gap: 30px;
-  margin-bottom: 30px;
 `;
 
 const TextRowLine = styled.View`
@@ -369,7 +360,7 @@ export default function Index() {
             <LoadingPage />
           ) : (
             <>
-              <ContainerTags>
+              <ButtonsRowContainerLeft>
                 {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
                   <Button
                     title="See all users"
@@ -385,7 +376,7 @@ export default function Index() {
                   color={systemColors.destroy}
                   iconName="sign-out"
                 />
-              </ContainerTags>
+              </ButtonsRowContainerLeft>
 
               <TextRowLine>
                 <Title>Hello, {userInformation?.username}</Title>

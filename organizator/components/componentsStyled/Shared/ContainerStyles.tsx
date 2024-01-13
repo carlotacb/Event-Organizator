@@ -18,6 +18,16 @@ export const ButtonsRowContainer = styled.View<{ marginTop?: string }>`
   margin-top: ${(props: { marginTop?: string }) => props.marginTop || "0px"};
 `;
 
+export const ButtonsRowContainerLeft = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 25px;
+`;
+
 export const ButtonsColumnContainer = styled.View<{ marginTop?: string }>`
   display: flex;
   flex-direction: column;
