@@ -126,7 +126,7 @@ class TestViewAttendApplication(ApiTests):
 
         # Then
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.content, b"Application can not be confirmed")
+        self.assertEqual(response.content, b"Application should be in confirmed status")
 
     def test__given_a_valid_organizer_token_and_a_application_in_confirmed_status__when_attend_application__then_application_is_attended(
         self,

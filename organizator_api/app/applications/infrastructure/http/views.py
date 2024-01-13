@@ -292,6 +292,6 @@ def attend_application(request: HttpRequest, application_id: uuid.UUID) -> HttpR
     except OnlyAuthorizedToOrganizer:
         return HttpResponse(status=401, content="Only authorized to organizer")
     except ApplicationCanNotBeAttended:
-        return HttpResponse(status=422, content="Application can not be confirmed")
+        return HttpResponse(status=422, content="Application should be in confirmed status")
 
     return HttpResponse(status=200, content="Application is correctly attended")
