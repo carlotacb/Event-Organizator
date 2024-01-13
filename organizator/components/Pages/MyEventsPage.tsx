@@ -170,6 +170,13 @@ export default function MyEventsPage() {
           setShowCancelAlert(false);
           setIdToCancel("");
         }}
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
       />
 
       <ConfirmDialog
@@ -201,8 +208,14 @@ export default function MyEventsPage() {
           setShowConfirmAlert(false);
           setIdToConfirm("");
         }}
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
       />
-      <Toast />
     </View>
   );
 }

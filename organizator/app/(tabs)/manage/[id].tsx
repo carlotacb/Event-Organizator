@@ -544,6 +544,13 @@ export default function Id() {
           setUserToUpdate(null);
         }}
         contentInsetAdjustmentBehavior="automatic"
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
       >
         <ButtonsColumnContainer>
           <Button
@@ -625,6 +632,13 @@ export default function Id() {
           setShowAttendAlert(false);
           setIdApplicationToAttend(null);
           setUserToAttend("");
+        }}
+        dialogStyle={{
+          width: 300,
+          marginRight: "auto",
+          marginLeft: "auto",
+          marginTop: 0,
+          marginBottom: 0,
         }}
       />
 
