@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Link, router, useLocalSearchParams } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
@@ -33,11 +33,11 @@ import {
 } from "../../../utils/api/axiosApplications";
 import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
-import { Title } from "../../../components/componentsStyled/TextStyles";
+import { Title } from "../../../components/componentsStyled/Shared/TextStyles";
 import {
   BottomScreenContainer,
   ButtonsRowContainer,
-} from "../../../components/componentsStyled/ContainerStyles";
+} from "../../../components/componentsStyled/Shared/ContainerStyles";
 import { systemColors } from "../../../components/componentsStyled/tokens";
 
 const Container = styled(SafeAreaView)`
