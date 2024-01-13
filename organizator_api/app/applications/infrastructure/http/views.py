@@ -16,7 +16,8 @@ from app.applications.domain.exceptions import (
     ApplicationIsNotFromUser,
     ApplicationCanNotBeCancelled,
     ApplicationCanNotBeConfirmed,
-    ApplicationCanNotBeAttended, EventAlreadyStarted,
+    ApplicationCanNotBeAttended,
+    EventAlreadyStarted,
 )
 from app.applications.domain.models.application import ApplicationStatus
 from app.applications.domain.usecases.attended_application_use_case import (

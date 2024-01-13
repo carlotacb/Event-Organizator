@@ -6,7 +6,8 @@ from app.applications.domain.exceptions import (
     ApplicationAlreadyExists,
     UserIsNotAParticipant,
     UserIsTooYoung,
-    UserIsNotStudent, EventAlreadyStarted,
+    UserIsNotStudent,
+    EventAlreadyStarted,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -152,7 +153,10 @@ class TestCreateNewApplicationUseCase(ApiTests):
         self,
     ) -> None:
         # Given
-        event = EventFactory().create(name="HackUPC 2024", start_date=datetime(2023, 5, 12, 16, 0, tzinfo=timezone.utc))
+        event = EventFactory().create(
+            name="HackUPC 2024",
+            start_date=datetime(2023, 5, 12, 16, 0, tzinfo=timezone.utc),
+        )
         self.event_repository.create(event)
 
         # When / Then

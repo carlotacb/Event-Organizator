@@ -5,7 +5,8 @@ from app.applications.domain.exceptions import (
     ProfileNotComplete,
     UserIsNotAParticipant,
     UserIsNotStudent,
-    UserIsTooYoung, EventAlreadyStarted,
+    UserIsTooYoung,
+    EventAlreadyStarted,
 )
 from app.applications.domain.models.application import Application, ApplicationStatus
 from app.applications.infrastructure.repository_factories import (
