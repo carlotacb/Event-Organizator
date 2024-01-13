@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  View,
+} from "react-native";
 
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -83,7 +89,7 @@ export default function RegisterPage() {
         router.replace("/");
       }
     });
-  });
+  }, []);
 
   const validate = () => {
     let isValid = true;
@@ -241,200 +247,208 @@ export default function RegisterPage() {
 
   return (
     <Container>
-      <ScrollView
-        contentContainerStyle={{ paddingVertical: 30, paddingHorizontal: 20 }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={100}
       >
-        {loading ? (
-          <LoadingPage />
-        ) : (
-          <MaxWidthUseScreen>
-            <Title>Welcome on board</Title>
-            <SubTitle>
-              To be able to register in our events we need some information
-              about you!
-            </SubTitle>
-            <Input
-              label="Username"
-              iconName="user"
-              required
-              value={inputs.username}
-              onChangeText={(text) =>
-                handleOnChange(text, "username", setInputs)
-              }
-              error={errors.username}
-            />
-            <Input
-              label="Email"
-              iconName="at"
-              required
-              value={inputs.email}
-              onChangeText={(text) => handleOnChange(text, "email", setInputs)}
-              error={errors.email}
-              keyboardType="email-address"
-            />
-            <Input
-              label="Password"
-              iconName="lock"
-              required
-              value={inputs.password}
-              onChangeText={(text) =>
-                handleOnChange(text, "password", setInputs)
-              }
-              error={errors.password}
-              password
-            />
-            <Input
-              label="Confirm your password"
-              iconName="lock"
-              required
-              value={inputs.passwordConfirm}
-              onChangeText={(text) =>
-                handleOnChange(text, "passwordConfirm", setInputs)
-              }
-              error={errors.passwordConfirm}
-              password
-            />
-            <Input
-              label="First Name"
-              iconName="id-badge"
-              required
-              value={inputs.firstName}
-              onChangeText={(text) =>
-                handleOnChange(text, "firstName", setInputs)
-              }
-              error={errors.firstName}
-            />
-            <Input
-              label="Last Name"
-              iconName="id-badge"
-              required
-              value={inputs.lastName}
-              onChangeText={(text) =>
-                handleOnChange(text, "lastName", setInputs)
-              }
-              error={errors.lastName}
-            />
-            <Input
-              label="Date of birth"
-              iconName="calendar"
-              required
-              value={inputs.dateOfBirth}
-              onChangeText={(text) =>
-                handleOnChange(text, "dateOfBirth", setInputs)
-              }
-              placeholder="DD/MM/YYYY"
-              placeholderTextColor="#969696"
-              error={errors.dateOfBirth}
-            />
-            <Input
-              label="Biography"
-              iconName="pencil"
-              required
-              multiline
-              numberOfLines={3}
-              value={inputs.bio}
-              onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
-              error={errors.bio}
-            />
-
-            <InputLabel
-              label="Currently I'm... (select one of the options)"
-              required
-            />
-            <ButtonsWSContainer>
-              <FilterButton
-                title="Studying"
-                onPress={() => {
-                  setActive({ study: true, work: false, nothing: false });
-                  setIsStudying(true);
-                  setIsWorking(false);
-                }}
-                color="dimgray"
-                active={active.study}
-              />
-              <FilterButton
-                title="Working"
-                onPress={() => {
-                  setActive({ study: false, work: true, nothing: false });
-                  setIsStudying(false);
-                  setIsWorking(true);
-                }}
-                color="dimgray"
-                active={active.work}
-              />
-              <FilterButton
-                title="Another thing"
-                onPress={() => {
-                  setActive({ study: false, work: false, nothing: true });
-                  setIsStudying(false);
-                  setIsWorking(false);
-                }}
-                color="dimgray"
-                active={active.nothing}
-              />
-            </ButtonsWSContainer>
-
-            {isWorking && (
+        <ScrollView
+          contentContainerStyle={{
+            paddingVertical: 30,
+            paddingHorizontal: 20,
+          }}
+        >
+          {loading ? (
+            <LoadingPage />
+          ) : (
+            <MaxWidthUseScreen>
+              <Title>Welcome on board</Title>
+              <SubTitle>
+                To be able to register in our events we need some information
+                about you!
+              </SubTitle>
               <Input
-                label="Current Job Role"
-                iconName="briefcase"
+                label="Username"
+                iconName="user"
                 required
-                value={inputs.currentJobRole}
+                value={inputs.username}
                 onChangeText={(text) =>
-                  handleOnChange(text, "currentJobRole", setInputs)
+                  handleOnChange(text, "username", setInputs)
                 }
-                error={errors.currentJobRole}
+                error={errors.username}
               />
-            )}
+              <Input
+                label="Email"
+                iconName="at"
+                required
+                value={inputs.email}
+                onChangeText={(text) =>
+                  handleOnChange(text, "email", setInputs)
+                }
+                error={errors.email}
+                keyboardType="email-address"
+              />
+              <Input
+                label="Password"
+                iconName="lock"
+                required
+                value={inputs.password}
+                onChangeText={(text) =>
+                  handleOnChange(text, "password", setInputs)
+                }
+                error={errors.password}
+                password
+              />
+              <Input
+                label="Confirm your password"
+                iconName="lock"
+                required
+                value={inputs.passwordConfirm}
+                onChangeText={(text) =>
+                  handleOnChange(text, "passwordConfirm", setInputs)
+                }
+                error={errors.passwordConfirm}
+                password
+              />
+              <Input
+                label="First Name"
+                iconName="id-badge"
+                required
+                value={inputs.firstName}
+                onChangeText={(text) =>
+                  handleOnChange(text, "firstName", setInputs)
+                }
+                error={errors.firstName}
+              />
+              <Input
+                label="Last Name"
+                iconName="id-badge"
+                required
+                value={inputs.lastName}
+                onChangeText={(text) =>
+                  handleOnChange(text, "lastName", setInputs)
+                }
+                error={errors.lastName}
+              />
+              <Input
+                label="Date of birth"
+                iconName="calendar"
+                required
+                value={inputs.dateOfBirth}
+                onChangeText={(text) =>
+                  handleOnChange(text, "dateOfBirth", setInputs)
+                }
+                placeholder="DD/MM/YYYY"
+                placeholderTextColor="#969696"
+                error={errors.dateOfBirth}
+              />
+              <Input
+                label="Biography"
+                iconName="pencil"
+                required
+                multiline
+                numberOfLines={3}
+                value={inputs.bio}
+                onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
+                error={errors.bio}
+              />
 
-            {isStudying && (
-              <>
-                <Input
-                  label="University"
-                  iconName="university"
-                  required
-                  value={inputs.university}
-                  onChangeText={(text) =>
-                    handleOnChange(text, "university", setInputs)
-                  }
-                  error={errors.university}
+              <InputLabel
+                label="Currently I'm... (select one of the options)"
+                required
+              />
+              <ButtonsWSContainer>
+                <FilterButton
+                  title="Studying"
+                  onPress={() => {
+                    setActive({ study: true, work: false, nothing: false });
+                    setIsStudying(true);
+                    setIsWorking(false);
+                  }}
+                  color="dimgray"
+                  active={active.study}
                 />
-                <Input
-                  label="Degree"
-                  iconName="book"
-                  required
-                  value={inputs.degree}
-                  onChangeText={(text) =>
-                    handleOnChange(text, "degree", setInputs)
-                  }
-                  error={errors.degree}
+                <FilterButton
+                  title="Working"
+                  onPress={() => {
+                    setActive({ study: false, work: true, nothing: false });
+                    setIsStudying(false);
+                    setIsWorking(true);
+                  }}
+                  color="dimgray"
+                  active={active.work}
                 />
-                <Input
-                  label="Graduation year"
-                  iconName="graduation-cap"
-                  required
-                  value={inputs.graduationYear}
-                  onChangeText={(text) =>
-                    handleOnChange(text, "graduationYear", setInputs)
-                  }
-                  placeholder="DD/MM/YYYY"
-                  placeholderTextColor="#969696"
-                  error={errors.graduationYear}
+                <FilterButton
+                  title="Another thing"
+                  onPress={() => {
+                    setActive({ study: false, work: false, nothing: true });
+                    setIsStudying(false);
+                    setIsWorking(false);
+                  }}
+                  color="dimgray"
+                  active={active.nothing}
                 />
-              </>
-            )}
-          </MaxWidthUseScreen>
-        )}
-      </ScrollView>
+              </ButtonsWSContainer>
+
+              {isWorking && (
+                <Input
+                  label="Current Job Role"
+                  iconName="briefcase"
+                  required
+                  value={inputs.currentJobRole}
+                  onChangeText={(text) =>
+                    handleOnChange(text, "currentJobRole", setInputs)
+                  }
+                  error={errors.currentJobRole}
+                />
+              )}
+
+              {isStudying && (
+                <>
+                  <Input
+                    label="University"
+                    iconName="university"
+                    required
+                    value={inputs.university}
+                    onChangeText={(text) =>
+                      handleOnChange(text, "university", setInputs)
+                    }
+                    error={errors.university}
+                  />
+                  <Input
+                    label="Degree"
+                    iconName="book"
+                    required
+                    value={inputs.degree}
+                    onChangeText={(text) =>
+                      handleOnChange(text, "degree", setInputs)
+                    }
+                    error={errors.degree}
+                  />
+                  <Input
+                    label="Graduation year"
+                    iconName="graduation-cap"
+                    required
+                    value={inputs.graduationYear}
+                    onChangeText={(text) =>
+                      handleOnChange(text, "graduationYear", setInputs)
+                    }
+                    placeholder="DD/MM/YYYY"
+                    placeholderTextColor="#969696"
+                    error={errors.graduationYear}
+                  />
+                </>
+              )}
+              <Button
+                title="Register"
+                onPress={validate}
+                color="#58a659"
+                iconName="check-square-o"
+              />
+            </MaxWidthUseScreen>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Toast />
-      <BottomScreenContainer>
-        <Button
-          title="Register"
-          onPress={validate}
-          color="#58a659"
-          iconName="check-square-o"
-        />
-      </BottomScreenContainer>
     </Container>
   );
 }
