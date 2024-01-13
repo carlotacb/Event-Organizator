@@ -24,10 +24,7 @@ import {
   SubTitle,
   Title,
 } from "../components/componentsStyled/Shared/TextStyles";
-import {
-  BottomScreenContainer,
-  MaxWidthUseScreen,
-} from "../components/componentsStyled/Shared/ContainerStyles";
+import { MaxWidthUseScreen } from "../components/componentsStyled/Shared/ContainerStyles";
 import {
   handleError,
   handleOnChange,
