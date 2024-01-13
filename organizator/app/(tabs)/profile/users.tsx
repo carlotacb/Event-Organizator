@@ -11,10 +11,10 @@ import {
   updateRoleForUser,
 } from "../../../utils/api/axiosUsers";
 import { UserRoleInformation } from "../../../utils/interfaces/Users";
-import LoadingPage from "../../../components/LodingPage";
-import Button from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
-import FilterButton from "../../../components/FilterButtons";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;

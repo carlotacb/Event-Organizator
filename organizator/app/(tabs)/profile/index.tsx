@@ -12,10 +12,10 @@ import {
 } from "../../../utils/api/axiosUsers";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
 import { UserInformation, UserRoles } from "../../../utils/interfaces/Users";
-import Input from "../../../components/Input";
-import LoadingPage from "../../../components/LodingPage";
-import InputLabel from "../../../components/InputLabel";
-import FilterButton from "../../../components/FilterButtons";
+import Input from "../../../components/componentsStyled/Forms/Input";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import InputLabel from "../../../components/componentsStyled/Forms/InputLabel";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 import {
   checkDateBirth,
   checkDateGraduation,

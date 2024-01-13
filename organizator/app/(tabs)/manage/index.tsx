@@ -5,9 +5,9 @@ import styled from "styled-components/native";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
-import EmptyPage from "../../../components/EmptyPage";
-import MyEventsPage from "../../../components/MyEventsPage";
-import OrganizersEventsPage from "../../../components/OrganizersEventsPage";
+import EmptyPage from "../../../components/Pages/EmptyPage";
+import MyEventsPage from "../../../components/Pages/MyEventsPage";
+import OrganizersEventsPage from "../../../components/Pages/OrganizersEventsPage";
 
 const Container = styled(SafeAreaView)`
   background-color: white;

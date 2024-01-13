@@ -6,7 +6,16 @@ import { Pressable } from "react-native";
 import {
   getColorForApplicationStatus,
   parseDate,
-} from "../utils/util-functions";
+} from "../../../utils/util-functions";
+import AbsoluteChip from "../Chips/AbsoluteChip";
+import {
+  CardContainer,
+  CardImage,
+  CardText,
+  CardTextContainer,
+  CardTitle,
+  TextLine,
+} from "./Styles";
 
 interface CardProps {
   title: string;
@@ -19,69 +28,6 @@ interface CardProps {
   setShowConfirmAlert: (showConfirmAlert: boolean) => void;
   setIdToConfirm: (idToConfirm: string) => void;
 }
-
-const CardContainer = styled.View<{ isPast: boolean }>`
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-  margin: 10px;
-  width: 300px;
-  opacity: ${(props: { isPast: boolean }) => (props.isPast ? 0.5 : 1)};
-`;
-
-const CardImage = styled.Image`
-  height: 200px;
-  border-radius: 20px;
-`;
-
-const CardTextContainer = styled.View`
-  padding: 25px 25px 20px;
-`;
-
-const CardTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-align: center;
-`;
-
-const CardText = styled.Text`
-  font-size: 16px;
-`;
-
-const TextLine = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-`;
-
-const TagContainer = styled.View`
-  display: flex;
-  width: 100%;
-  margin-top: 20px;
-  align-items: flex-end;
-  position: absolute;
-  right: 15px;
-`;
-
-const TagStatus = styled.View<{ backgroundColor: string }>`
-  border: 2px solid
-    ${(props: { backgroundColor: string }) => props.backgroundColor};
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-  padding: 5px 10px;
-  border-radius: 20px;
-  text-align: center;
-`;
-
-const TagText = styled.Text`
-  font-weight: bold;
-  font-size: 16px;
-`;
 
 const ButtonsContainer = styled.View`
   display: flex;
@@ -175,11 +121,10 @@ export default function CardMyEvents(props: CardProps) {
             )}
         </ButtonsContainer>
       </CardTextContainer>
-      <TagContainer>
-        <TagStatus backgroundColor={getColorForApplicationStatus(status)}>
-          <TagText>{status}</TagText>
-        </TagStatus>
-      </TagContainer>
+      <AbsoluteChip
+        name={status}
+        backgroundColor={getColorForApplicationStatus(status)}
+      />
     </CardContainer>
   );
 }

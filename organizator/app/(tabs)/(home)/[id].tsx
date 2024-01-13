@@ -20,10 +20,10 @@ import {
   getColorForApplicationStatus,
   parseDate,
 } from "../../../utils/util-functions";
-import LoadingPage from "../../../components/LodingPage";
-import EmptyPage from "../../../components/EmptyPage";
-import Input from "../../../components/Input";
-import Button from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import EmptyPage from "../../../components/Pages/EmptyPage";
+import Input from "../../../components/componentsStyled/Forms/Input";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
@@ -31,7 +31,9 @@ import {
   getApplicationStatus,
   createNewApplication,
 } from "../../../utils/api/axiosApplications";
-import FilterButton from "../../../components/FilterButtons";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
+import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
+import { Title } from "../../../components/componentsStyled/TextStyles";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -44,12 +46,6 @@ const ImageHeader = styled.Image`
 
 const InformationContainer = styled.View`
   padding: 30px 20px;
-`;
-
-const Title = styled.Text`
-  text-align: center;
-  font-weight: bold;
-  font-size: 30px;
 `;
 
 const Description = styled.Text`
@@ -126,17 +122,6 @@ const ApplicationStatus = styled.Text`
   font-size: 18px;
   color: dimgray;
   font-weight: bold;
-`;
-
-const TagStatus = styled.View<{ backgroundColor: string }>`
-  border: 2px solid
-    ${(props: { backgroundColor: string }) => props.backgroundColor};
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-  padding: 5px 10px;
-  border-radius: 20px;
-  color: white;
-  text-align: center;
 `;
 
 const AppliedContainer = styled.View`
@@ -724,13 +709,12 @@ export default function EventPage() {
             <AppliedContainer>
               <TextLine>
                 <ApplicationStatus>Your application is:</ApplicationStatus>
-                <TagStatus
+                <InformativeChip
+                  name={applicationStatus}
                   backgroundColor={getColorForApplicationStatus(
                     applicationStatus,
                   )}
-                >
-                  <Text>{applicationStatus}</Text>
-                </TagStatus>
+                />
               </TextLine>
             </AppliedContainer>
           ) : (

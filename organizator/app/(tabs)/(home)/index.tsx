@@ -9,13 +9,13 @@ import {
   getAllEvents,
   getAllUpcomingEvents,
 } from "../../../utils/api/axiosEvents";
-import CardHomePage from "../../../components/CardHomePage";
-import LoadingPage from "../../../components/LodingPage";
-import EmptyPage from "../../../components/EmptyPage";
+import CardHomePage from "../../../components/componentsStyled/Cards/CardHomePage";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import EmptyPage from "../../../components/Pages/EmptyPage";
 import { getToken } from "../../../utils/sessionCalls";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
-import FilterButton from "../../../components/FilterButtons";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;

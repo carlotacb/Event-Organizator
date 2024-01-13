@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import { router, useLocalSearchParams } from "expo-router";
 import { ConfirmDialog, Dialog } from "react-native-simple-dialogs";
-import LoadingPage from "../../../components/LodingPage";
+import LoadingPage from "../../../components/Pages/LodingPage";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
 import {
   attendApplication,
@@ -14,9 +14,9 @@ import {
   updateApplicationStatus,
 } from "../../../utils/api/axiosApplications";
 import { ParticipantsInformation } from "../../../utils/interfaces/Applications";
-import EmptyPage from "../../../components/EmptyPage";
-import FilterButton from "../../../components/FilterButtons";
-import Button from "../../../components/ButtonWithIcon";
+import EmptyPage from "../../../components/Pages/EmptyPage";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import { getColorForApplicationStatus } from "../../../utils/util-functions";

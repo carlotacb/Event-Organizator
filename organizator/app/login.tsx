@@ -5,31 +5,18 @@ import { SafeAreaView, Text, ScrollView, View, Pressable } from "react-native";
 
 import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
-import Input from "../components/Input";
-import Button from "../components/ButtonWithIcon";
+import Input from "../components/componentsStyled/Forms/Input";
+import Button from "../components/componentsStyled/Buttons/ButtonWithIcon";
 import { loginUser } from "../utils/api/axiosUsers";
 import { LoginResponse } from "../utils/interfaces/Users";
 import { getToken, storeToken } from "../utils/sessionCalls";
-import FilterButton from "../components/FilterButtons";
+import FilterButton from "../components/componentsStyled/Buttons/FilterButtons";
+import { SubTitle, Title } from "../components/componentsStyled/TextStyles";
 
 const Container = styled(SafeAreaView)`
   padding: 50px 40px;
   background-color: white;
   flex: 1;
-`;
-
-const Title = styled(Text)`
-  font-size: 40px;
-  font-weight: bold;
-  color: black;
-  text-align: center;
-`;
-
-const SubTitle = styled(Text)`
-  font-size: 18px;
-  color: gray;
-  margin: 5px 0 20px 0;
-  text-align: center;
 `;
 
 const ButtonContainer = styled(View)`

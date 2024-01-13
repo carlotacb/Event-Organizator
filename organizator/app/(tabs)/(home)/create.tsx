@@ -4,9 +4,9 @@ import styled from "styled-components/native";
 import { SafeAreaView, ScrollView, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
-import LoadingPage from "../../../components/LodingPage";
-import Input from "../../../components/Input";
-import Button from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import Input from "../../../components/componentsStyled/Forms/Input";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { createEvent } from "../../../utils/api/axiosEvents";
 import {
   checkDateWithTime,
@@ -15,7 +15,7 @@ import {
   dateToPlainString,
 } from "../../../utils/util-functions";
 import { getToken } from "../../../utils/sessionCalls";
-import FilterButton from "../../../components/FilterButtons";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
 
 const Container = styled(SafeAreaView)`
   background-color: white;

@@ -9,12 +9,12 @@ import {
   cancelApplication,
   confirmApplication,
   getMyApplications,
-} from "../utils/api/axiosApplications";
+} from "../../utils/api/axiosApplications";
 import EmptyPage from "./EmptyPage";
-import { getToken } from "../utils/sessionCalls";
+import { getToken } from "../../utils/sessionCalls";
 import LoadingPage from "./LodingPage";
-import CardMyEvents from "./CardMyEvents";
-import { ApplicationInformationWithoutUser } from "../utils/interfaces/Applications";
+import CardMyEvents from "../componentsStyled/Cards/CardMyEvents";
+import { ApplicationInformationWithoutUser } from "../../utils/interfaces/Applications";
 
 const CardsContainer = styled(View)`
   display: flex;
@@ -115,7 +115,7 @@ export default function MyEventsPage() {
             <EmptyPage
               title="You have no events"
               subtitle="Go back to homepage to see all our available events!"
-              image={require("../assets/empty.png")}
+              image={require("../../assets/empty.png")}
             />
           ) : (
             <CardsContainer>

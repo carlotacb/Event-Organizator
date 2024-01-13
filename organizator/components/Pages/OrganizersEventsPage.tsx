@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
-import { getToken } from "../utils/sessionCalls";
-import { getUpcomingEventsWithApplicationsInfo } from "../utils/api/axiosEvents";
-import { EventsSimpleInformationWithParticipants } from "../utils/interfaces/Events";
+import { getToken } from "../../utils/sessionCalls";
+import { getUpcomingEventsWithApplicationsInfo } from "../../utils/api/axiosEvents";
+import { EventsSimpleInformationWithParticipants } from "../../utils/interfaces/Events";
 import LoadingPage from "./LodingPage";
 import EmptyPage from "./EmptyPage";
-import CardManageEvents from "./CardManageEvents";
+import CardManageEvents from "../componentsStyled/Cards/CardManageEvents";
 
 const CardsContainer = styled(View)`
   display: flex;
@@ -47,7 +47,7 @@ export default function OrganizersEventsPage() {
             <EmptyPage
               title="You have no events"
               subtitle="Go back to homepage to see all our available events!"
-              image={require("../assets/empty.png")}
+              image={require("../../assets/empty.png")}
             />
           ) : (
             <CardsContainer>
