@@ -44,21 +44,17 @@ interface ButtonProps {
 }
 
 export default function FilterButton(props: ButtonProps) {
-  const { title, onPress, iconName, color, active, width = "auto" } = props;
+  const { title, onPress, iconName, color, active, width } = props;
 
   return (
     <ButtonContainer
       onPress={onPress}
       color={color}
       active={active}
-      width={width}
+      width={width || "auto"}
     >
       {iconName && (
-        <InputIcon
-          name={iconName}
-          size={18}
-          color={active ? "white" : "black"}
-        />
+        <InputIcon name={iconName} color={active ? "white" : color} />
       )}
       {title && (
         <ButtonText active={active} color={color}>

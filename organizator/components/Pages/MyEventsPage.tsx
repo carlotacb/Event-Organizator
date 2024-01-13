@@ -1,6 +1,4 @@
 import { ScrollView, View } from "react-native";
-// @ts-ignore
-import styled from "styled-components/native";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { ConfirmDialog } from "react-native-simple-dialogs";
@@ -9,21 +7,13 @@ import {
   cancelApplication,
   confirmApplication,
   getMyApplications,
-} from "../utils/api/axiosApplications";
+} from "../../utils/api/axiosApplications";
 import EmptyPage from "./EmptyPage";
-import { getToken } from "../utils/sessionCalls";
+import { getToken } from "../../utils/sessionCalls";
 import LoadingPage from "./LodingPage";
-import CardMyEvents from "./CardMyEvents";
-import { ApplicationInformationWithoutUser } from "../utils/interfaces/Applications";
-
-const CardsContainer = styled(View)`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: row;
-  margin: 20px 0;
-`;
+import CardMyEvents from "../componentsStyled/Cards/CardMyEvents";
+import { ApplicationInformationWithoutUser } from "../../utils/interfaces/Applications";
+import { CardsContainer } from "../componentsStyled/Shared/ContainerStyles";
 
 export default function MyEventsPage() {
   const [loading, setLoading] = useState(true);
@@ -115,7 +105,7 @@ export default function MyEventsPage() {
             <EmptyPage
               title="You have no events"
               subtitle="Go back to homepage to see all our available events!"
-              image={require("../assets/empty.png")}
+              image={require("../../assets/empty.png")}
             />
           ) : (
             <CardsContainer>

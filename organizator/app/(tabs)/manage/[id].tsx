@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { SafeAreaView, ScrollView, Text, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import { router, useLocalSearchParams } from "expo-router";
 import { ConfirmDialog, Dialog } from "react-native-simple-dialogs";
-import LoadingPage from "../../../components/LodingPage";
+import LoadingPage from "../../../components/Pages/LodingPage";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
 import {
   attendApplication,
@@ -14,47 +13,18 @@ import {
   updateApplicationStatus,
 } from "../../../utils/api/axiosApplications";
 import { ParticipantsInformation } from "../../../utils/interfaces/Applications";
-import EmptyPage from "../../../components/EmptyPage";
-import FilterButton from "../../../components/FilterButtons";
-import Button from "../../../components/ButtonWithIcon";
+import EmptyPage from "../../../components/Pages/EmptyPage";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
 import { getColorForApplicationStatus } from "../../../utils/util-functions";
+import { ButtonsColumnContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
+import ListLine from "../../../components/componentsStyled/Lists/ListLine";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
-`;
-
-const UserLine = styled(View)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e6e6e6;
-`;
-
-const Username = styled(Text)`
-  font-size: 15px;
-`;
-
-const ButtonAndRole = styled(View)`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-`;
-
-const TagStatus = styled(View)<{ backgroundColor: string }>`
-  border: 2px solid
-    ${(props: { backgroundColor: string }) => props.backgroundColor};
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-  padding: 5px 10px;
-  border-radius: 20px;
-  color: white;
 `;
 
 const ButtonsContainer = styled(View)`
@@ -104,6 +74,7 @@ export default function Id() {
     cancelled: 0,
     invalid: 0,
     waitList: 0,
+    attended: 0,
   });
   const [active, setActive] = useState({
     all: true,
@@ -114,6 +85,7 @@ export default function Id() {
     cancelled: false,
     invalid: false,
     waitList: false,
+    attended: false,
   });
 
   useEffect(() => {
@@ -161,6 +133,10 @@ export default function Id() {
         waitList:
           response.participants?.filter(
             (participant) => participant.status === "Wait list",
+          ).length || 0,
+        attended:
+          response.participants?.filter(
+            (participant) => participant.status === "Attended",
           ).length || 0,
       });
     });
@@ -219,6 +195,7 @@ export default function Id() {
           cancelled: false,
           invalid: false,
           waitList: false,
+          attended: false,
         }));
         setTrigger(!trigger);
       }
@@ -288,6 +265,7 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color="#040240"
@@ -310,6 +288,7 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Under review")}
@@ -332,6 +311,7 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Invited")}
@@ -355,17 +335,18 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Confirmed")}
                 active={active.confirmed}
               />
               <FilterButton
-                title={`Cancelled (${stats.cancelled})`}
+                title={`Attended (${stats.attended})`}
                 onPress={() => {
                   setApplications(
                     allApplications?.filter(
-                      (participant) => participant.status === "Cancelled",
+                      (participant) => participant.status === "Attended",
                     ) || [],
                   );
 
@@ -375,13 +356,14 @@ export default function Id() {
                     rejected: false,
                     underReview: false,
                     invited: false,
-                    cancelled: true,
+                    cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: true,
                   }));
                 }}
-                color={getColorForApplicationStatus("Cancelled")}
-                active={active.cancelled}
+                color={getColorForApplicationStatus("Attended")}
+                active={active.attended}
               />
               <FilterButton
                 title={`Rejected (${stats.rejected})`}
@@ -401,11 +383,37 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Rejected")}
                 active={active.rejected}
               />
+              <FilterButton
+                title={`Cancelled (${stats.cancelled})`}
+                onPress={() => {
+                  setApplications(
+                    allApplications?.filter(
+                      (participant) => participant.status === "Cancelled",
+                    ) || [],
+                  );
+
+                  setActive(() => ({
+                    all: false,
+                    confirmed: false,
+                    rejected: false,
+                    underReview: false,
+                    invited: false,
+                    cancelled: true,
+                    invalid: false,
+                    waitList: false,
+                    attended: false,
+                  }));
+                }}
+                color={getColorForApplicationStatus("Cancelled")}
+                active={active.cancelled}
+              />
+
               <FilterButton
                 title={`Invalid (${stats.rejected})`}
                 onPress={() => {
@@ -424,6 +432,7 @@ export default function Id() {
                     cancelled: false,
                     invalid: true,
                     waitList: false,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Invalid")}
@@ -447,6 +456,7 @@ export default function Id() {
                     cancelled: false,
                     invalid: false,
                     waitList: true,
+                    attended: false,
                   }));
                 }}
                 color={getColorForApplicationStatus("Wait list")}
@@ -466,48 +476,53 @@ export default function Id() {
             ) : (
               <View>
                 {applications?.map((application) => (
-                  <UserLine key={application.id}>
-                    <Username>
-                      {application.user.first_name} {application.user.last_name}
-                    </Username>
-                    <ButtonAndRole>
-                      <TagStatus
-                        backgroundColor={getColorForApplicationStatus(
-                          application.status,
-                        )}
-                      >
-                        <Text>{application.status}</Text>
-                      </TagStatus>
-                      {isAdmin &&
-                        (application.status === "Wait list" ||
-                          application.status === "Under review") && (
-                          <Pressable
-                            onPress={() => {
-                              setAlertVisible(true);
-                              setIdToUpdate(application.id);
-                              setUserToUpdate(
-                                `${application.user.first_name} ${application.user.last_name}`,
-                              );
-                            }}
-                          >
-                            <FontAwesome name="send" size={18} />
-                          </Pressable>
-                        )}
-                      {isOrganizer && application.status === "Confirmed" && (
-                        <Pressable
-                          onPress={() => {
-                            setUserToAttend(
-                              `${application.user.first_name} ${application.user.last_name}`,
-                            );
-                            setIdApplicationToAttend(application.id);
-                            setShowAttendAlert(true);
-                          }}
-                        >
-                          <FontAwesome name="sign-in" size={18} />
-                        </Pressable>
-                      )}
-                    </ButtonAndRole>
-                  </UserLine>
+                  <ListLine
+                    key={application.id}
+                    id={application.id}
+                    name={`${application.user.first_name} ${application.user.last_name}`}
+                    chipColor={getColorForApplicationStatus(application.status)}
+                    role={application.status}
+                    setAlertVisible={
+                      (isAdmin || isOrganizer) &&
+                      application.status === "Confirmed"
+                        ? setShowAttendAlert
+                        : isAdmin &&
+                            (application.status === "Wait list" ||
+                              application.status === "Under review")
+                          ? setAlertVisible
+                          : undefined
+                    }
+                    setIdLine={
+                      (isAdmin || isOrganizer) &&
+                      application.status === "Confirmed"
+                        ? setIdApplicationToAttend
+                        : isAdmin &&
+                            (application.status === "Wait list" ||
+                              application.status === "Under review")
+                          ? setIdToUpdate
+                          : undefined
+                    }
+                    setMoreInfoFromLine={
+                      (isAdmin || isOrganizer) &&
+                      application.status === "Confirmed"
+                        ? setUserToAttend
+                        : isAdmin &&
+                            (application.status === "Wait list" ||
+                              application.status === "Under review")
+                          ? setUserToUpdate
+                          : undefined
+                    }
+                    iconName={
+                      (isAdmin || isOrganizer) &&
+                      application.status === "Confirmed"
+                        ? "sign-in"
+                        : isAdmin &&
+                            (application.status === "Wait list" ||
+                              application.status === "Under review")
+                          ? "send"
+                          : undefined
+                    }
+                  />
                 ))}
               </View>
             )}
@@ -530,7 +545,7 @@ export default function Id() {
         }}
         contentInsetAdjustmentBehavior="automatic"
       >
-        <View>
+        <ButtonsColumnContainer>
           <Button
             title="Invite"
             iconName="send"
@@ -563,7 +578,7 @@ export default function Id() {
             }}
             color={getColorForApplicationStatus("Invalid")}
           />
-        </View>
+        </ButtonsColumnContainer>
       </Dialog>
 
       <ConfirmDialog

@@ -1,7 +1,7 @@
 import * as React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import renderer from "react-test-renderer";
-import Input from "../components/Input";
+import Input from "../components/componentsStyled/Forms/Input";
 
 it(`renders correctly a input with only label`, () => {
   const tree = renderer.create(<Input label="username" />).toJSON();

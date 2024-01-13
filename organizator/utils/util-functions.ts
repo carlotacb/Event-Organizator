@@ -1,3 +1,5 @@
+import { UserRoles } from "./interfaces/Users";
+
 export function formatDate(inputDate: string): string {
   const date = new Date(inputDate);
 
@@ -12,10 +14,10 @@ export function formatDate(inputDate: string): string {
 
 export function parseDate(dateAsString: string) {
   const date = new Date(dateAsString);
-  return `${date.getDate().toString().padStart(2, "0")}-${date
+  return `${date.getDate().toString().padStart(2, "0")}/${date
     .getMonth()
     .toString()
-    .padStart(2, "0")}-${date.getFullYear()} at ${date
+    .padStart(2, "0")}/${date.getFullYear()} at ${date
     .getHours()
     .toString()
     .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")} h`;
@@ -238,3 +240,66 @@ export function getColorForApplicationStatus(st: string): string {
 
   return "#000000";
 }
+
+export function getBackGroundColorForRole(role: string): string {
+  switch (role) {
+    case UserRoles.ORGANIZER_ADMIN:
+      return "#cea6aa";
+    case UserRoles.ORGANIZER:
+      return "#aba6ce";
+    default:
+      return "#a6cea6";
+  }
+}
+
+export const parseRole = (role: string): string => {
+  switch (role) {
+    case UserRoles.ORGANIZER_ADMIN:
+      return "ADMIN";
+    case UserRoles.ORGANIZER:
+      return "Organizer";
+    default:
+      return "User";
+  }
+};
+
+export const parseDegreeStatus = (status: string): string => {
+  switch (status) {
+    case "study":
+      return "Studying";
+    case "work":
+      return "Working";
+    default:
+      return "Another thing";
+  }
+};
+
+export const parseGender = (gender: string): string => {
+  switch (gender) {
+    case "FEMALE":
+      return "Female";
+    case "MALE":
+      return "Male";
+    case "NO_BINARY":
+      return "Non binary";
+    case "PREFER_NOT_TO_SAY":
+      return "Won't say";
+    default:
+      return "Other";
+  }
+};
+
+export const parseDiet = (diet: string): string => {
+  switch (diet) {
+    case "VEGAN":
+      return "Vegan";
+    case "VEGETARIAN":
+      return "Vegetarian";
+    case "GLUTEN_FREE":
+      return "Gluten free";
+    case "OTHER":
+      return "Other";
+    default:
+      return "Nothing";
+  }
+};

@@ -3,17 +3,11 @@ import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: { backgroundColor: "#10101E" },
-        headerTintColor: "#FFF",
-        headerTitleStyle: { fontWeight: "bold" },
-      }}
-    >
+    <Stack>
       <Stack.Screen
         name="register"
         options={{
-          headerTitle: "Create account",
+          headerTitle: "Register form",
         }}
       />
       <Stack.Screen
@@ -23,7 +17,6 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs2)" options={{ headerShown: false }} />
     </Stack>
   );
 }

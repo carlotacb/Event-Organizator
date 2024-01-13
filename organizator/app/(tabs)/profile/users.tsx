@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, SafeAreaView, Pressable } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { ScrollView, SafeAreaView } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
@@ -11,44 +10,22 @@ import {
   updateRoleForUser,
 } from "../../../utils/api/axiosUsers";
 import { UserRoleInformation } from "../../../utils/interfaces/Users";
-import LoadingPage from "../../../components/LodingPage";
-import Button from "../../../components/ButtonWithIcon";
+import LoadingPage from "../../../components/Pages/LodingPage";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
-import FilterButton from "../../../components/FilterButtons";
+import FilterButton from "../../../components/componentsStyled/Buttons/FilterButtons";
+import {
+  ButtonsColumnContainer,
+  FiltersContainer,
+  MaxWidthUseScreenForList,
+} from "../../../components/componentsStyled/Shared/ContainerStyles";
+import { getBackGroundColorForRole } from "../../../utils/util-functions";
+import { ListContainer } from "../../../components/componentsStyled/Lists/Styles";
+import ListLine from "../../../components/componentsStyled/Lists/ListLine";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
-`;
-
-const UserLine = styled(View)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e6e6e6;
-`;
-
-const Username = styled(Text)`
-  font-weight: bold;
-  font-size: 15px;
-`;
-
-const ButtonAndRole = styled(View)`
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  align-items: center;
-`;
-
-const ButtonsContainer = styled(View)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 5px;
-  margin-bottom: 20px;
 `;
 
 export default function AllUsers() {
@@ -131,10 +108,10 @@ export default function AllUsers() {
         {loading ? (
           <LoadingPage />
         ) : (
-          <View>
-            <ButtonsContainer>
+          <MaxWidthUseScreenForList>
+            <FiltersContainer>
               <FilterButton
-                title="All"
+                title="All users"
                 onPress={() => {
                   setUsers(allUsers);
                   setActive(() => ({
@@ -164,7 +141,7 @@ export default function AllUsers() {
                     participant: false,
                   }));
                 }}
-                color="#040240"
+                color={getBackGroundColorForRole("Organizer admin")}
                 iconName="star"
                 active={active.organizerAdmin}
               />
@@ -181,7 +158,7 @@ export default function AllUsers() {
                     participant: false,
                   }));
                 }}
-                color="#040240"
+                color={getBackGroundColorForRole("Organizer")}
                 iconName="user-secret"
                 active={active.organizer}
               />
@@ -199,29 +176,27 @@ export default function AllUsers() {
                     participant: true,
                   }));
                 }}
-                color="#040240"
+                color={getBackGroundColorForRole("Participant")}
                 iconName="user"
                 active={active.participant}
               />
-            </ButtonsContainer>
-            {users?.map((user) => (
-              <UserLine key={user.id}>
-                <Username>{user.username}</Username>
-                <ButtonAndRole>
-                  <Text>{user.role}</Text>
-                  <Pressable
-                    onPress={() => {
-                      setAlertVisible(true);
-                      setIdToUpdate(user.id);
-                      setUserToUpdate(user.username);
-                    }}
-                  >
-                    <FontAwesome name="edit" size={18} />
-                  </Pressable>
-                </ButtonAndRole>
-              </UserLine>
-            ))}
-          </View>
+            </FiltersContainer>
+            <ListContainer>
+              {users?.map((user) => (
+                <ListLine
+                  key={user.id}
+                  id={user.id}
+                  name={user.username}
+                  chipColor={getBackGroundColorForRole(user.role)}
+                  role={user.role}
+                  setAlertVisible={setAlertVisible}
+                  setIdLine={setIdToUpdate}
+                  setMoreInfoFromLine={setUserToUpdate}
+                  iconName="edit"
+                />
+              ))}
+            </ListContainer>
+          </MaxWidthUseScreenForList>
         )}
 
         <Dialog
@@ -239,14 +214,15 @@ export default function AllUsers() {
           }}
           contentInsetAdjustmentBehavior="automatic"
         >
-          <View>
+          <ButtonsColumnContainer>
             <Button
               title="Participant"
               iconName="user"
               onPress={() => {
                 updateRole("PARTICIPANT");
               }}
-              color="#040240"
+              color={getBackGroundColorForRole("Participant")}
+              fontBlack
             />
             <Button
               title="Organizer"
@@ -254,7 +230,8 @@ export default function AllUsers() {
               onPress={() => {
                 updateRole("ORGANIZER");
               }}
-              color="#040240"
+              color={getBackGroundColorForRole("Organizer")}
+              fontBlack
             />
             <Button
               title="Admin"
@@ -262,9 +239,10 @@ export default function AllUsers() {
               onPress={() => {
                 updateRole("ORGANIZER_ADMIN");
               }}
-              color="#040240"
+              color={getBackGroundColorForRole("Organizer admin")}
+              fontBlack
             />
-          </View>
+          </ButtonsColumnContainer>
         </Dialog>
       </ScrollView>
       <Toast />

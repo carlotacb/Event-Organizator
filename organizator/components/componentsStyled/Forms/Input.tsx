@@ -1,33 +1,14 @@
 import React from "react";
-import { View, Text, TextInput, TextInputProps, Platform } from "react-native";
+import { View, TextInput, TextInputProps, Platform } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import InputLabel from "./InputLabel";
+import InputError from "./InputError";
 
 const Container = styled(View)<{ width: string }>`
   margin-bottom: 20px;
   width: ${(props: { width: string }) => props.width};
-`;
-
-const TextError = styled(Text)`
-  margin-top: 7px;
-  color: red;
-  font-size: 12px;
-`;
-
-const ErrorIcon = styled(FontAwesome)`
-  margin-top: 8px;
-  font-size: 12px;
-  color: red;
-`;
-
-const TextContainerRow = styled(View)`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
 `;
 
 const TextInputContainer = styled(View)<{
@@ -124,12 +105,7 @@ export default function Input(props: InputProps) {
           />
         )}
       </TextInputContainer>
-      {error && (
-        <TextContainerRow>
-          <ErrorIcon name="warning" />
-          <TextError>{error}</TextError>
-        </TextContainerRow>
-      )}
+      {error && <InputError error={error} />}
     </Container>
   );
 }
