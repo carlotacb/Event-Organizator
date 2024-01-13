@@ -32,9 +32,9 @@ interface ListLineProps {
   name: string;
   chipColor: string;
   role: string;
-  setAlertVisible: (alertVisible: boolean) => void;
-  setIdLine: (idToUpdate: string | null) => void;
-  setMoreInfoFromLine: (userToUpdate: string | null) => void;
+  setAlertVisible: any;
+  setIdLine: any;
+  setMoreInfoFromLine: any;
   iconName?: any;
 }
 
