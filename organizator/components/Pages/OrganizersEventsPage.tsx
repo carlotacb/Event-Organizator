@@ -1,29 +1,22 @@
 import { Pressable, View } from "react-native";
 import React, { useEffect, useState } from "react";
-// @ts-ignore
-import styled from "styled-components/native";
 import { router } from "expo-router";
+import { useIsFocused } from "@react-navigation/core";
 import { getToken } from "../../utils/sessionCalls";
 import { getUpcomingEventsWithApplicationsInfo } from "../../utils/api/axiosEvents";
 import { EventsSimpleInformationWithParticipants } from "../../utils/interfaces/Events";
 import LoadingPage from "./LodingPage";
 import EmptyPage from "./EmptyPage";
 import CardManageEvents from "../componentsStyled/Cards/CardManageEvents";
-
-const CardsContainer = styled(View)`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  flex-direction: row;
-  margin: 20px 0;
-`;
+import { CardsContainer } from "../componentsStyled/Shared/ContainerStyles";
 
 export default function OrganizersEventsPage() {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<
     EventsSimpleInformationWithParticipants[]
   >([]);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +28,7 @@ export default function OrganizersEventsPage() {
       setLoading(false);
       setEvents(response.events || []);
     });
-  }, []);
+  }, [isFocused]);
 
   return (
     <View>

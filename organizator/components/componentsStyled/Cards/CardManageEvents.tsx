@@ -8,6 +8,7 @@ import {
   CardTitle,
   TextLine,
 } from "./Styles";
+import { systemColors } from "../tokens";
 
 interface CardProps {
   title: string;
@@ -29,14 +30,10 @@ export default function CardManageEvents(props: CardProps) {
       <CardTextContainer>
         <CardTitle>{title}</CardTitle>
         <TextLine>
-          <CardText color="black">
-            Registered: {participants} participants
-          </CardText>
+          <CardText>Registered: {participants} participants</CardText>
         </TextLine>
         <TextLine>
-          <CardText color="black">
-            Remaining: {spots - participants} spots
-          </CardText>
+          <CardText>Remaining: {spots - participants} spots</CardText>
         </TextLine>
         <TextLine>
           <Progress.Bar
@@ -44,20 +41,22 @@ export default function CardManageEvents(props: CardProps) {
             height={15}
             color={progress > expectedAttrition ? "green" : "lightcoral"}
           />
-          <CardText color="black">{progressPercentage} %</CardText>
+          <CardText>{progressPercentage} %</CardText>
         </TextLine>
 
-        <CardSubtitle color="#233B77">Expected</CardSubtitle>
+        <CardSubtitle color={systemColors.subtitleColor}>Expected</CardSubtitle>
         <TextLine>
-          <CardText color="dimgray">{maxParticipants} participants</CardText>
+          <CardText color={systemColors.subtitleColor}>
+            {maxParticipants} participants
+          </CardText>
         </TextLine>
         <TextLine>
-          <CardText color="dimgray">
+          <CardText color={systemColors.subtitleColor}>
             {expectedAttrition * 100}% attrition rate
           </CardText>
         </TextLine>
         <TextLine>
-          <CardText color="dimgray">
+          <CardText color={systemColors.subtitleColor}>
             {spots} participants available spots
           </CardText>
         </TextLine>

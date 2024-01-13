@@ -3,6 +3,9 @@ export const systemColors = {
   edit: "#5860a6",
   accept: "#58a659",
   action: "#102275",
+  black: "#000000",
+  white: "#ffffff",
+  subtitleColor: "#737373",
 };
 
 const breakpoints = {
