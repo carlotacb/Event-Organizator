@@ -5,10 +5,11 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
 import { router, useLocalSearchParams } from "expo-router";
-import { Dialog } from "react-native-simple-dialogs";
+import { ConfirmDialog, Dialog } from "react-native-simple-dialogs";
 import LoadingPage from "../../../components/LodingPage";
 import { getToken, removeToken } from "../../../utils/sessionCalls";
 import {
+  attendApplication,
   getParticipants,
   updateApplicationStatus,
 } from "../../../utils/api/axiosApplications";
@@ -42,7 +43,7 @@ const Username = styled(Text)`
 const ButtonAndRole = styled(View)`
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
 `;
 
@@ -80,6 +81,7 @@ export default function Id() {
   const [userToUpdate, setUserToUpdate] = useState<string | null>(null);
   const [idToUpdate, setIdToUpdate] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isOrganizer, setIsOrganizer] = useState(false);
   const [applications, setApplications] = useState<
     ParticipantsInformation[] | null
   >(null);
@@ -88,6 +90,11 @@ export default function Id() {
     ParticipantsInformation[] | null
   >(null);
   const [trigger, setTrigger] = useState(false);
+  const [showAttendAlert, setShowAttendAlert] = useState(false);
+  const [userToAttend, setUserToAttend] = useState("");
+  const [idApplicationToAttend, setIdApplicationToAttend] = useState<
+    string | null
+  >(null);
   const [stats, setStats] = useState({
     all: 0,
     confirmed: 0,
@@ -159,6 +166,10 @@ export default function Id() {
     });
     fetchAdminFunction().then((response) => {
       setIsAdmin(response.role === UserRoles.ORGANIZER_ADMIN);
+      setIsOrganizer(
+        response.role === UserRoles.ORGANIZER ||
+          response.role === UserRoles.ORGANIZER_ADMIN,
+      );
     });
   }, [trigger]);
 
@@ -209,6 +220,48 @@ export default function Id() {
           invalid: false,
           waitList: false,
         }));
+        setTrigger(!trigger);
+      }
+    });
+  };
+
+  const attendEvent = () => {
+    const fetchData = async () => {
+      const token = await getToken();
+      return attendApplication(token || "", idApplicationToAttend || "");
+    };
+
+    fetchData().then((response) => {
+      if (response.error) {
+        if (
+          response.error === "Unauthorized" ||
+          response.error === "Invalid token"
+        ) {
+          removeToken();
+          router.replace("/login");
+        } else {
+          setShowAttendAlert(false);
+          setUserToAttend("");
+          setIdApplicationToAttend(null);
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: `${response.error}`,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        }
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Attended",
+          text2: `The user ${userToAttend} is attending`,
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+        setShowAttendAlert(false);
+        setUserToAttend("");
+        setIdApplicationToAttend(null);
         setTrigger(!trigger);
       }
     });
@@ -440,6 +493,19 @@ export default function Id() {
                             <FontAwesome name="send" size={18} />
                           </Pressable>
                         )}
+                      {isOrganizer && application.status === "Confirmed" && (
+                        <Pressable
+                          onPress={() => {
+                            setUserToAttend(
+                              `${application.user.first_name} ${application.user.last_name}`,
+                            );
+                            setIdApplicationToAttend(application.id);
+                            setShowAttendAlert(true);
+                          }}
+                        >
+                          <FontAwesome name="sign-in" size={18} />
+                        </Pressable>
+                      )}
                     </ButtonAndRole>
                   </UserLine>
                 ))}
@@ -499,6 +565,54 @@ export default function Id() {
           />
         </View>
       </Dialog>
+
+      <ConfirmDialog
+        title={`${userToAttend} is going to attend the event`}
+        message="Make sure you are marking the correct user, this action cannot be undone"
+        onTouchOutside={() => setShowAttendAlert(false)}
+        visible={showAttendAlert}
+        negativeButton={{
+          title: "Cancel",
+          onPress: () => {
+            setShowAttendAlert(false);
+            setIdApplicationToAttend(null);
+            setUserToAttend("");
+          },
+          titleStyle: {
+            color: "red",
+            fontSize: 20,
+          },
+          style: {
+            backgroundColor: "transparent",
+            paddingHorizontal: 10,
+          },
+        }}
+        positiveButton={{
+          title: "Confirm!",
+          onPress: () => {
+            attendEvent();
+            console.log("Attend event");
+            setShowAttendAlert(false);
+            setIdApplicationToAttend(null);
+            setUserToAttend("");
+          },
+          titleStyle: {
+            color: "blue",
+            fontSize: 20,
+          },
+          style: {
+            backgroundColor: "transparent",
+            paddingHorizontal: 10,
+          },
+        }}
+        contentInsetAdjustmentBehavior="automatic"
+        onRequestClose={() => {
+          setShowAttendAlert(false);
+          setIdApplicationToAttend(null);
+          setUserToAttend("");
+        }}
+      />
+
       <Toast />
     </Container>
   );

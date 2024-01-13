@@ -182,3 +182,25 @@ export async function confirmApplication(
     };
   }
 }
+
+export async function attendApplication(
+  token: string,
+  applicationId: string,
+): Promise<confirmApplicationResponse> {
+  try {
+    await axios({
+      method: "post",
+      url: `${applicationsAPI}/attend/${applicationId}`,
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return {
+      error: null,
+    };
+  } catch (error: any) {
+    return {
+      error: error.response.data,
+    };
+  }
+}
