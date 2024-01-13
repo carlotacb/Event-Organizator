@@ -3,7 +3,6 @@ import { Pressable, SafeAreaView, ScrollView, View } from "react-native";
 // @ts-ignore
 import styled from "styled-components/native";
 import { router } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { EventAllInformation } from "../../../utils/interfaces/Events";
 import {
   getAllEvents,
@@ -27,23 +26,6 @@ import { systemColors } from "../../../components/componentsStyled/tokens";
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
-`;
-
-const CreateButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 30px;
-  border-radius: 20px;
-  gap: 10px;
-  background-color: #58a659;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const CreateButtonText = styled.Text`
-  font-size: 18px;
-  color: white;
-  font-weight: bold;
 `;
 
 export default function Home() {
