@@ -6,6 +6,7 @@ interface InformativeChipProps {
   name: string;
   backgroundColor: string;
   width?: string;
+  fontSize?: string;
 }
 
 const Chip = styled.View<{ backgroundColor: string }>`
@@ -18,17 +19,17 @@ const Chip = styled.View<{ backgroundColor: string }>`
   text-align: center;
 `;
 
-const TagText = styled.Text`
+const TagText = styled.Text<{ fontSize: string }>`
   font-weight: bold;
-  font-size: 18px;
+  font-size: ${(props: { fontSize: string }) => props.fontSize || "18px"};
 `;
 
 export default function InformativeChip(props: InformativeChipProps) {
-  const { name, backgroundColor, width } = props;
+  const { name, backgroundColor, width, fontSize } = props;
 
   return (
     <Chip backgroundColor={backgroundColor} width={width || "auto"}>
-      <TagText>{name}</TagText>
+      <TagText fontSize={fontSize}>{name}</TagText>
     </Chip>
   );
 }

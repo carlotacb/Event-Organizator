@@ -6,6 +6,7 @@ export const systemColors = {
   black: "#000000",
   white: "#ffffff",
   subtitleColor: "#737373",
+  backgroundGrey: "#f2f2f2",
 };
 
 const breakpoints = {

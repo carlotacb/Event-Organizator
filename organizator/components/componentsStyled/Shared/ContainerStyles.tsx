@@ -36,6 +36,15 @@ export const FiltersContainer = styled.View`
   margin-right: 10px;
 `;
 
+export const RadioButtonContainer = styled.View<{ withoutMargin: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: ${(props: { withoutMargin: boolean }) =>
+    props.withoutMargin ? "0px" : "20px"};
+`;
+
 export const CardsContainer = styled.View`
   display: flex;
   flex-wrap: wrap;

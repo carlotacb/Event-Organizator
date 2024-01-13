@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  View,
+} from "react-native";
 import { router } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";
 import Toast from "react-native-toast-message";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useIsFocused } from "@react-navigation/core";
 import {
   getMyInformation,
   logout,
@@ -19,98 +25,47 @@ import FilterButton from "../../../components/componentsStyled/Buttons/FilterBut
 import {
   checkDateBirth,
   checkDateGraduation,
+  getBackGroundColorForRole,
+  parseDegreeStatus,
+  parseDiet,
+  parseGender,
+  parseRole,
 } from "../../../utils/util-functions";
+import { Title } from "../../../components/componentsStyled/Shared/TextStyles";
+import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
+import {
+  ButtonsRowContainer,
+  RadioButtonContainer,
+} from "../../../components/componentsStyled/Shared/ContainerStyles";
+import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
+import { systemColors } from "../../../components/componentsStyled/tokens";
+import {
+  handleError,
+  handleOnChange,
+} from "../../../components/componentsStyled/Forms/utilFunctions";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
   flex: 1;
 `;
 
-const TitleContainer = styled(View)`
+const ContainerTags = styled.View`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-end;
+  gap: 30px;
+  margin-bottom: 30px;
+`;
+
+const TextRowLine = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-`;
-
-const Title = styled(Text)`
-  font-size: 30px;
-  font-weight: bold;
-  color: black;
-`;
-
-const InputsContainer = styled(View)`
-  margin-top: 30px;
-`;
-
-const TagsContainer = styled(View)`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-`;
-
-const Tag = styled(View)<{ backgroundColor: string }>`
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-  border: 2px solid #233277;
-  border-radius: 100px;
-  padding: 5px 15px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-`;
-
-const CreateButtonContainer = styled(View)`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   gap: 20px;
-`;
-
-const CreateButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 30px;
-  border-radius: 20px;
-  gap: 10px;
-  background-color: #233277;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const UpgradeButton = styled(Pressable)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 30px;
-  border-radius: 20px;
-  gap: 10px;
-  background-color: #58a659;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-`;
-
-const CreateButtonText = styled.Text`
-  font-size: 18px;
-  color: white;
-  font-weight: bold;
-`;
-
-const ButtonsWSContainer = styled(View)<{ withoutMargin: boolean }>`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-bottom: ${(props: { withoutMargin: boolean }) =>
-    props.withoutMargin ? "0px" : "20px"};
 `;
 
 export default function Index() {
@@ -152,6 +107,16 @@ export default function Index() {
     expectedGraduation: undefined,
     currentJobRole: undefined,
   });
+
+  const [activeStatus, setActiveStatus] = React.useState({
+    study: true,
+    work: false,
+    nothing: false,
+  });
+  const careerStatus = ["study", "work", "nothing"];
+  const [isWorking, setIsWorking] = React.useState(false);
+  const [isStudying, setIsStudying] = React.useState(true);
+
   const [activeTShirtSize, setActiveTShirtSize] = useState({
     XS: false,
     S: false,
@@ -160,12 +125,16 @@ export default function Index() {
     XL: false,
     XXL: false,
   });
+  const sizeButtons = ["XS", "S", "M", "L", "XL", "XXL"];
+
   const [activeGender, setActiveGender] = useState({
     FEMALE: false,
     MALE: false,
     NO_BINARY: false,
     PREFER_NOT_TO_SAY: false,
   });
+  const genderButtons = ["FEMALE", "MALE", "NO_BINARY", "PREFER_NOT_TO_SAY"];
+
   const [activeDiet, setActiveDiet] = useState({
     VEGAN: false,
     VEGETARIAN: false,
@@ -173,13 +142,15 @@ export default function Index() {
     OTHER: false,
     NOTHING: false,
   });
-  const [isWorking, setIsWorking] = React.useState(false);
-  const [isStudying, setIsStudying] = React.useState(true);
-  const [activeStatus, setActiveStatus] = React.useState({
-    study: true,
-    work: false,
-    nothing: false,
-  });
+  const dietButtons = [
+    "VEGAN",
+    "VEGETARIAN",
+    "GLUTEN_FREE",
+    "NOTHING",
+    "OTHER",
+  ];
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -253,42 +224,42 @@ export default function Index() {
         });
       }
     });
-  }, []);
+  }, [isFocused]);
 
   const validate = () => {
     let isValid = true;
 
     if (inputs.firstName === "") {
-      handleError("First name is required", "firstName");
+      handleError("First name is required", "firstName", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "firstName");
+      handleError(undefined, "firstName", setErrors);
     }
 
     if (inputs.lastName === "") {
-      handleError("Last name is required", "lastName");
+      handleError("Last name is required", "lastName", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "lastName");
+      handleError(undefined, "lastName", setErrors);
     }
 
     if (inputs.bio === "") {
-      handleError("Biography is required", "bio");
+      handleError("Biography is required", "bio", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "bio");
+      handleError(undefined, "bio", setErrors);
     }
 
     if (!inputs.dateOfBirth) {
-      handleError("Please enter your date birth", "dateOfBirth");
+      handleError("Please enter your date birth", "dateOfBirth", setErrors);
       isValid = false;
     } else {
       const dateChecker = checkDateBirth(inputs.dateOfBirth);
       if (!dateChecker.valid) {
-        handleError(dateChecker.error, "dateOfBirth");
+        handleError(dateChecker.error, "dateOfBirth", setErrors);
         isValid = false;
       } else {
-        handleError(undefined, "dateOfBirth");
+        handleError(undefined, "dateOfBirth", setErrors);
       }
     }
 
@@ -296,44 +267,53 @@ export default function Index() {
       handleError(
         "Please enter your alimentary restrictions",
         "alimentaryRestrictions",
+        setErrors,
       );
       isValid = false;
     } else {
-      handleError(undefined, "alimentaryRestrictions");
+      handleError(undefined, "alimentaryRestrictions", setErrors);
     }
 
     if (!inputs.expectedGraduation && isStudying) {
-      handleError("Please enter your graduation year", "expectedGraduation");
+      handleError(
+        "Please enter your graduation year",
+        "expectedGraduation",
+        setErrors,
+      );
       isValid = false;
     } else {
       const dateChecker = checkDateGraduation(inputs.expectedGraduation);
       if (!dateChecker.valid && isStudying) {
-        handleError(dateChecker.error, "expectedGraduation");
+        handleError(dateChecker.error, "expectedGraduation", setErrors);
         isValid = false;
       } else {
-        handleError(undefined, "expectedGraduations");
+        handleError(undefined, "expectedGraduations", setErrors);
       }
     }
 
     if (!inputs.currentJobRole && isWorking) {
-      handleError("Please enter your current job role", "currentJobRole");
+      handleError(
+        "Please enter your current job role",
+        "currentJobRole",
+        setErrors,
+      );
       isValid = false;
     } else {
-      handleError(undefined, "currentJobRole");
+      handleError(undefined, "currentJobRole", setErrors);
     }
 
     if (!inputs.university && isStudying) {
-      handleError("Please enter your university", "university");
+      handleError("Please enter your university", "university", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "university");
+      handleError(undefined, "university", setErrors);
     }
 
     if (!inputs.degree && isStudying) {
-      handleError("Please enter your degree", "degree");
+      handleError("Please enter your degree", "degree", setErrors);
       isValid = false;
     } else {
-      handleError(undefined, "degree");
+      handleError(undefined, "degree", setErrors);
     }
 
     if (isValid) editProfile();
@@ -379,68 +359,66 @@ export default function Index() {
     router.replace("/login");
   };
 
-  const handleOnChange = (text: string, input: string) => {
-    setInputs((prevState) => ({ ...prevState, [input]: text }));
-  };
-  const handleError = (text: string | undefined, input: string) => {
-    setErrors((prevState) => ({ ...prevState, [input]: text }));
-  };
-
-  const parseRole = (role: string): string => {
-    switch (role) {
-      case UserRoles.ORGANIZER_ADMIN:
-        return "ADMIN";
-      case UserRoles.ORGANIZER:
-        return "Organizer";
-      default:
-        return "User";
-    }
-  };
-
-  const getBackGroundColorForRole = (role: string): string => {
-    switch (role) {
-      case UserRoles.ORGANIZER_ADMIN:
-        return "#cea6aa";
-      case UserRoles.ORGANIZER:
-        return "#aba6ce";
-      default:
-        return "#a6cea6";
-    }
-  };
-
   return (
     <Container>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        {loading ? (
-          <LoadingPage />
-        ) : (
-          <>
-            <TitleContainer>
-              <Title>Hi, {userInformation?.username} 👋🏼</Title>
-              <Pressable onPress={loggingOut}>
-                <FontAwesome name="sign-out" size={30} color="red" />
-              </Pressable>
-            </TitleContainer>
-            <TagsContainer>
-              <Tag
-                backgroundColor={getBackGroundColorForRole(
-                  userInformation?.role || "",
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
+          {loading ? (
+            <LoadingPage />
+          ) : (
+            <>
+              <ContainerTags>
+                {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
+                  <Button
+                    title="See all users"
+                    iconName="users"
+                    onPress={() => router.push("/profile/users")}
+                    color={systemColors.action}
+                  />
                 )}
+
+                <Button
+                  title="Logout"
+                  onPress={loggingOut}
+                  color={systemColors.destroy}
+                  iconName="sign-out"
+                />
+              </ContainerTags>
+
+              <TextRowLine>
+                <Title>Hello, {userInformation?.username}</Title>
+                <InformativeChip
+                  fontSize="15px"
+                  name={parseRole(userInformation?.role || "")}
+                  backgroundColor={getBackGroundColorForRole(
+                    userInformation?.role || "",
+                  )}
+                />
+              </TextRowLine>
+              <View
+                style={{
+                  marginTop: 10,
+                  alignItems: "baseline",
+                  marginBottom: 30,
+                }}
               >
-                <Text>{parseRole(userInformation?.role || "")}</Text>
-              </Tag>
-              <Tag backgroundColor="transparent">
-                <FontAwesome name="at" size={15} color="#233277" />
-                <Text>{userInformation?.email}</Text>
-              </Tag>
-            </TagsContainer>
-            <InputsContainer>
+                <InformativeChip
+                  name={userInformation?.email || ""}
+                  backgroundColor={systemColors.backgroundGrey}
+                  fontSize="15px"
+                />
+              </View>
+
               <Input
                 label="First Name"
                 iconName="id-badge"
                 required
                 value={inputs.firstName}
-                onChangeText={(text) => handleOnChange(text, "firstName")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "firstName", setInputs)
+                }
                 error={errors.firstName}
               />
               <Input
@@ -448,7 +426,9 @@ export default function Index() {
                 iconName="id-badge"
                 required
                 value={inputs.lastName}
-                onChangeText={(text) => handleOnChange(text, "lastName")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "lastName", setInputs)
+                }
                 error={errors.lastName}
               />
               <Input
@@ -456,7 +436,9 @@ export default function Index() {
                 iconName="calendar"
                 required
                 value={inputs.dateOfBirth}
-                onChangeText={(text) => handleOnChange(text, "dateOfBirth")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "dateOfBirth", setInputs)
+                }
                 placeholder="DD/MM/YYYY"
                 placeholderTextColor="#969696"
                 error={errors.dateOfBirth}
@@ -468,54 +450,30 @@ export default function Index() {
                 numberOfLines={4}
                 required
                 value={inputs.bio}
-                onChangeText={(text) => handleOnChange(text, "bio")}
+                onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
                 error={errors.bio}
               />
-              <InputLabel label="Currently I'm..." />
-              <ButtonsWSContainer>
-                <FilterButton
-                  title="Study"
-                  onPress={() => {
-                    setActiveStatus({
-                      study: true,
-                      work: false,
-                      nothing: false,
-                    });
-                    setIsStudying(true);
-                    setIsWorking(false);
-                  }}
-                  color="dimgray"
-                  active={activeStatus.study}
-                />
-                <FilterButton
-                  title="Work"
-                  onPress={() => {
-                    setActiveStatus({
-                      study: false,
-                      work: true,
-                      nothing: false,
-                    });
-                    setIsStudying(false);
-                    setIsWorking(true);
-                  }}
-                  color="dimgray"
-                  active={activeStatus.work}
-                />
-                <FilterButton
-                  title="Nothing"
-                  onPress={() => {
-                    setActiveStatus({
-                      study: false,
-                      work: false,
-                      nothing: true,
-                    });
-                    setIsStudying(false);
-                    setIsWorking(false);
-                  }}
-                  color="dimgray"
-                  active={activeStatus.nothing}
-                />
-              </ButtonsWSContainer>
+              <InputLabel label="Currently I'm... (select one of the options)" />
+              <RadioButtonContainer>
+                {careerStatus.map((status) => (
+                  <FilterButton
+                    key={parseDegreeStatus(status)}
+                    title={status}
+                    onPress={() => {
+                      setActiveStatus({
+                        study: status === "study",
+                        work: status === "work",
+                        nothing: status === "nothing",
+                      });
+                      setIsStudying(status === "study");
+                      setIsWorking(status === "work");
+                    }}
+                    color="dimgray"
+                    // @ts-ignore
+                    active={activeStatus[status]}
+                  />
+                ))}
+              </RadioButtonContainer>
 
               {isWorking && (
                 <Input
@@ -524,7 +482,7 @@ export default function Index() {
                   required
                   value={inputs.currentJobRole}
                   onChangeText={(text) =>
-                    handleOnChange(text, "currentJobRole")
+                    handleOnChange(text, "currentJobRole", setInputs)
                   }
                   error={errors.currentJobRole}
                 />
@@ -537,7 +495,9 @@ export default function Index() {
                     iconName="university"
                     required
                     value={inputs.university}
-                    onChangeText={(text) => handleOnChange(text, "university")}
+                    onChangeText={(text) =>
+                      handleOnChange(text, "university", setInputs)
+                    }
                     error={errors.university}
                   />
                   <Input
@@ -545,7 +505,9 @@ export default function Index() {
                     iconName="book"
                     required
                     value={inputs.degree}
-                    onChangeText={(text) => handleOnChange(text, "degree")}
+                    onChangeText={(text) =>
+                      handleOnChange(text, "degree", setInputs)
+                    }
                     error={errors.degree}
                   />
                   <Input
@@ -554,7 +516,7 @@ export default function Index() {
                     required
                     value={inputs.expectedGraduation}
                     onChangeText={(text) =>
-                      handleOnChange(text, "expectedGraduation")
+                      handleOnChange(text, "expectedGraduation", setInputs)
                     }
                     placeholder="DD/MM/YYYY"
                     placeholderTextColor="#969696"
@@ -564,247 +526,82 @@ export default function Index() {
               )}
 
               <InputLabel label="T-shirt size" />
-              <ButtonsWSContainer>
-                <FilterButton
-                  title="XS"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: true,
-                      S: false,
-                      M: false,
-                      L: false,
-                      XL: false,
-                      XXL: false,
-                    });
-                    handleOnChange("XS", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.XS}
-                />
-                <FilterButton
-                  title="S"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: false,
-                      S: true,
-                      M: false,
-                      L: false,
-                      XL: false,
-                      XXL: false,
-                    });
-                    handleOnChange("S", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.S}
-                />
-                <FilterButton
-                  title="M"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: false,
-                      S: false,
-                      M: true,
-                      L: false,
-                      XL: false,
-                      XXL: false,
-                    });
-                    handleOnChange("M", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.M}
-                />
-                <FilterButton
-                  title="L"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: false,
-                      S: false,
-                      M: false,
-                      L: true,
-                      XL: false,
-                      XXL: false,
-                    });
-                    handleOnChange("L", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.L}
-                />
-                <FilterButton
-                  title="XL"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: false,
-                      S: false,
-                      M: false,
-                      L: false,
-                      XL: true,
-                      XXL: false,
-                    });
-                    handleOnChange("XL", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.XL}
-                />
-                <FilterButton
-                  title="XXL"
-                  onPress={() => {
-                    setActiveTShirtSize({
-                      XS: false,
-                      S: false,
-                      M: false,
-                      L: false,
-                      XL: false,
-                      XXL: true,
-                    });
-                    handleOnChange("XXL", "tShirtSize");
-                  }}
-                  color="dimgray"
-                  active={activeTShirtSize.XXL}
-                />
-              </ButtonsWSContainer>
+              <RadioButtonContainer>
+                {sizeButtons.map((size) => (
+                  <FilterButton
+                    key={size}
+                    title={size}
+                    onPress={() => {
+                      setActiveTShirtSize({
+                        XS: size === "XS",
+                        S: size === "S",
+                        M: size === "M",
+                        L: size === "L",
+                        XL: size === "XL",
+                        XXL: size === "XXL",
+                      });
+                      handleOnChange(size, "tShirtSize", setInputs);
+                    }}
+                    color="dimgray"
+                    // @ts-ignore
+                    active={activeTShirtSize[size]}
+                  />
+                ))}
+              </RadioButtonContainer>
               <InputLabel label="Gender" />
-              <ButtonsWSContainer>
-                <FilterButton
-                  title="Female"
-                  onPress={() => {
-                    setActiveGender({
-                      FEMALE: true,
-                      MALE: false,
-                      NO_BINARY: false,
-                      PREFER_NOT_TO_SAY: false,
-                    });
-                    handleOnChange("FEMALE", "gender");
-                  }}
-                  color="dimgray"
-                  active={activeGender.FEMALE}
-                />
-                <FilterButton
-                  title="Male"
-                  onPress={() => {
-                    setActiveGender({
-                      FEMALE: false,
-                      MALE: true,
-                      NO_BINARY: false,
-                      PREFER_NOT_TO_SAY: false,
-                    });
-                    handleOnChange("MALE", "gender");
-                  }}
-                  color="dimgray"
-                  active={activeGender.MALE}
-                />
-                <FilterButton
-                  title="Non-binary"
-                  onPress={() => {
-                    setActiveGender({
-                      FEMALE: false,
-                      MALE: false,
-                      NO_BINARY: true,
-                      PREFER_NOT_TO_SAY: false,
-                    });
-                    handleOnChange("NO_BINARY", "gender");
-                  }}
-                  color="dimgray"
-                  active={activeGender.NO_BINARY}
-                />
-                <FilterButton
-                  title="Won't say"
-                  onPress={() => {
-                    setActiveGender({
-                      FEMALE: false,
-                      MALE: false,
-                      NO_BINARY: false,
-                      PREFER_NOT_TO_SAY: true,
-                    });
-                    handleOnChange("PREFER_NOT_TO_SAY", "gender");
-                  }}
-                  color="dimgray"
-                  active={activeGender.PREFER_NOT_TO_SAY}
-                />
-              </ButtonsWSContainer>
+              <RadioButtonContainer>
+                {genderButtons.map((gender) => (
+                  <FilterButton
+                    key={gender}
+                    title={parseGender(gender)}
+                    onPress={() => {
+                      setActiveGender({
+                        FEMALE: gender === "FEMALE",
+                        MALE: gender === "MALE",
+                        NO_BINARY: gender === "NO_BINARY",
+                        PREFER_NOT_TO_SAY: gender === "PREFER_NOT_TO_SAY",
+                      });
+                      handleOnChange(gender, "gender", setInputs);
+                    }}
+                    color="dimgray"
+                    // @ts-ignore
+                    active={activeGender[gender]}
+                  />
+                ))}
+              </RadioButtonContainer>
               <InputLabel label="Alimentary restriction" required />
-              <ButtonsWSContainer withoutMargin={activeDiet.OTHER}>
-                <FilterButton
-                  title="Vegan"
-                  onPress={() => {
-                    setActiveDiet({
-                      VEGAN: true,
-                      VEGETARIAN: false,
-                      GLUTEN_FREE: false,
-                      OTHER: false,
-                      NOTHING: false,
-                    });
-                    handleOnChange("Vegan", "alimentaryRestrictions");
-                  }}
-                  color="dimgray"
-                  active={activeDiet.VEGAN}
-                />
-                <FilterButton
-                  title="Vegetarian"
-                  onPress={() => {
-                    setActiveDiet({
-                      VEGAN: false,
-                      VEGETARIAN: true,
-                      GLUTEN_FREE: false,
-                      OTHER: false,
-                      NOTHING: false,
-                    });
-                    handleOnChange("Vegeterian", "alimentaryRestrictions");
-                  }}
-                  color="dimgray"
-                  active={activeDiet.VEGETARIAN}
-                />
-                <FilterButton
-                  title="Gluten free"
-                  onPress={() => {
-                    setActiveDiet({
-                      VEGAN: false,
-                      VEGETARIAN: false,
-                      GLUTEN_FREE: true,
-                      OTHER: false,
-                      NOTHING: false,
-                    });
-                    handleOnChange("Gluten free", "alimentaryRestrictions");
-                  }}
-                  color="dimgray"
-                  active={activeDiet.GLUTEN_FREE}
-                />
-                <FilterButton
-                  title="Nothing"
-                  onPress={() => {
-                    setActiveDiet({
-                      VEGAN: false,
-                      VEGETARIAN: false,
-                      GLUTEN_FREE: false,
-                      NOTHING: true,
-                      OTHER: false,
-                    });
-                    handleOnChange("No restrictions", "alimentaryRestrictions");
-                  }}
-                  color="dimgray"
-                  active={activeDiet.NOTHING}
-                />
-                <FilterButton
-                  title="Other"
-                  onPress={() => {
-                    setActiveDiet({
-                      VEGAN: false,
-                      VEGETARIAN: false,
-                      GLUTEN_FREE: false,
-                      NOTHING: false,
-                      OTHER: true,
-                    });
-                    handleOnChange("", "alimentaryRestrictions");
-                  }}
-                  color="dimgray"
-                  active={activeDiet.OTHER}
-                />
-              </ButtonsWSContainer>
+
+              <RadioButtonContainer withoutMargin={activeDiet.OTHER}>
+                {dietButtons.map((diet) => (
+                  <FilterButton
+                    key={diet}
+                    title={parseDiet(diet)}
+                    onPress={() => {
+                      setActiveDiet({
+                        VEGAN: diet === "VEGAN",
+                        VEGETARIAN: diet === "VEGETARIAN",
+                        GLUTEN_FREE: diet === "GLUTEN_FREE",
+                        NOTHING: diet === "NOTHING",
+                        OTHER: diet === "OTHER",
+                      });
+                      handleOnChange(
+                        parseDiet(diet) === "Other" ? "" : parseDiet(diet),
+                        "alimentaryRestrictions",
+                        setInputs,
+                      );
+                    }}
+                    color="dimgray"
+                    // @ts-ignore
+                    active={activeDiet[diet]}
+                  />
+                ))}
+              </RadioButtonContainer>
               {activeDiet.OTHER ? (
                 <Input
                   iconName="cutlery"
                   value={inputs.alimentaryRestrictions}
                   onChangeText={(text) =>
-                    handleOnChange(text, "alimentaryRestrictions")
+                    handleOnChange(text, "alimentaryRestrictions", setInputs)
                   }
                   error={errors.alimentaryRestrictions}
                 />
@@ -814,48 +611,51 @@ export default function Index() {
                 label="GitHub"
                 iconName="github-square"
                 value={inputs.github}
-                onChangeText={(text) => handleOnChange(text, "github")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "github", setInputs)
+                }
                 error={errors.github}
               />
               <Input
                 label="LinkedIn"
                 iconName="linkedin-square"
                 value={inputs.linkedin}
-                onChangeText={(text) => handleOnChange(text, "linkedin")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "linkedin", setInputs)
+                }
                 error={errors.linkedin}
               />
               <Input
                 label="Devpost"
                 iconName="code"
                 value={inputs.devpost}
-                onChangeText={(text) => handleOnChange(text, "devpost")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "devpost", setInputs)
+                }
                 error={errors.devpost}
               />
               <Input
                 label="Webpage"
                 iconName="link"
                 value={inputs.webpage}
-                onChangeText={(text) => handleOnChange(text, "webpage")}
+                onChangeText={(text) =>
+                  handleOnChange(text, "webpage", setInputs)
+                }
                 error={errors.webpage}
               />
-            </InputsContainer>
-          </>
-        )}
-        <Toast />
-      </ScrollView>
-
-      <CreateButtonContainer>
-        <UpgradeButton onPress={validate}>
-          <FontAwesome name="save" size={20} color="white" />
-          <CreateButtonText>Update</CreateButtonText>
-        </UpgradeButton>
-        {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
-          <CreateButton onPress={() => router.push("/profile/users")}>
-            <FontAwesome name="user" size={20} color="white" />
-            <CreateButtonText>All users</CreateButtonText>
-          </CreateButton>
-        )}
-      </CreateButtonContainer>
+              <ButtonsRowContainer>
+                <Button
+                  title="Update profile"
+                  onPress={validate}
+                  color={systemColors.accept}
+                  iconName="save"
+                />
+              </ButtonsRowContainer>
+            </>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <Toast />
     </Container>
   );
 }
