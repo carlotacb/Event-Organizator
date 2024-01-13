@@ -14,7 +14,6 @@ import {
   Title,
 } from "../components/componentsStyled/Shared/TextStyles";
 import { systemColors } from "../components/componentsStyled/tokens";
-import { MaxWidthUseScreen } from "../components/componentsStyled/Shared/ContainerStyles";
 import LoginForm from "../components/componentsStyled/Forms/LoginForm";
 
 const Container = styled(SafeAreaView)`
@@ -88,7 +87,7 @@ export default function LoginPage() {
         {loading ? (
           <LoginPage />
         ) : (
-          <MaxWidthUseScreen>
+          <View>
             <Title>Welcome back!</Title>
             <SubTitle>Please enter your credentials to log in.</SubTitle>
             <LoginForm login={login} inputs={inputs} setInputs={setInputs} />
@@ -111,7 +110,7 @@ export default function LoginPage() {
                 fontSize="14px"
               />
             </RegisterTextContainer>
-          </MaxWidthUseScreen>
+          </View>
         )}
       </ScrollView>
     </Container>
