@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import React from "react";
 import { Link } from "expo-router";
@@ -8,7 +8,6 @@ import { EventInformation } from "../../utils/interfaces/Events";
 import {
   Description,
   FirstHeader,
-  SubTitleBasic,
   TextLinePlain,
   TextLineText,
   Title,
@@ -21,27 +20,6 @@ interface EventDetailsProps {
 
 const InformationContainer = styled.View`
   padding: 0 20px;
-`;
-
-const BasicInfoContainer = styled.View`
-  margin-top: 30px;
-  background-color: rgba(164, 164, 164, 0.38);
-  border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const RestrictionContainer = styled.View`
-  margin-top: 30px;
-  background-color: rgba(138, 159, 243, 0.2);
-  border: 2px solid rgb(138, 159, 243);
-  border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 `;
 
 const StyledLink = styled(Link)`

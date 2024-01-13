@@ -32,10 +32,7 @@ import {
   createNewApplication,
 } from "../../../utils/api/axiosApplications";
 import InformativeChip from "../../../components/componentsStyled/Chips/InformativeChip";
-import {
-  ButtonsRowContainer,
-  ButtonsRowContainerLeft,
-} from "../../../components/componentsStyled/Shared/ContainerStyles";
+import { ButtonsRowContainerLeft } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import { systemColors } from "../../../components/componentsStyled/tokens";
 import EventForm from "../../../components/componentsStyled/Forms/EventForm";
 import EventDetails from "../../../components/componentsStyled/EventDetails";

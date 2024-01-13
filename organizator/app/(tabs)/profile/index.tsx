@@ -449,8 +449,8 @@ export default function Index() {
               <RadioButtonContainer>
                 {careerStatus.map((status) => (
                   <FilterButton
-                    key={parseDegreeStatus(status)}
-                    title={status}
+                    key={status}
+                    title={parseDegreeStatus(status)}
                     onPress={() => {
                       setActiveStatus({
                         study: status === "study",
