@@ -212,6 +212,11 @@ export default function EventPage() {
     });
   };
 
+  const isPast = () =>
+    events?.startDate ? events.startDate < new Date().toISOString() : true;
+
+  console.log(isPast());
+
   return (
     <Container>
       <KeyboardAvoidingView
@@ -254,56 +259,58 @@ export default function EventPage() {
                       </View>
                     ) : (
                       <View style={{ padding: 30 }}>
-                        <ButtonsRowContainerLeft>
-                          {isParticipant ? (
-                            applied ? (
-                              <AppliedContainer>
-                                <TextLine>
-                                  <ApplicationStatus>
-                                    Your application is:
-                                  </ApplicationStatus>
-                                  <InformativeChip
-                                    name={applicationStatus}
-                                    backgroundColor={getColorForApplicationStatus(
-                                      applicationStatus,
-                                    )}
+                        {!isPast() && (
+                          <ButtonsRowContainerLeft>
+                            {isParticipant ? (
+                              applied ? (
+                                <AppliedContainer>
+                                  <TextLine>
+                                    <ApplicationStatus>
+                                      Your application is:
+                                    </ApplicationStatus>
+                                    <InformativeChip
+                                      name={applicationStatus}
+                                      backgroundColor={getColorForApplicationStatus(
+                                        applicationStatus,
+                                      )}
+                                    />
+                                  </TextLine>
+                                </AppliedContainer>
+                              ) : (
+                                <Button
+                                  title="Apply now"
+                                  onPress={() => {
+                                    applyToEvent();
+                                  }}
+                                  color={systemColors.action}
+                                />
+                              )
+                            ) : isEditable ? null : (
+                              <>
+                                {(isOrganizer || isOrganizerAdmin) && (
+                                  <Button
+                                    title="Edit"
+                                    onPress={() => {
+                                      setIsEditable(true);
+                                    }}
+                                    color={systemColors.edit}
+                                    iconName="pencil"
                                   />
-                                </TextLine>
-                              </AppliedContainer>
-                            ) : (
-                              <Button
-                                title="Apply now"
-                                onPress={() => {
-                                  applyToEvent();
-                                }}
-                                color={systemColors.action}
-                              />
-                            )
-                          ) : isEditable ? null : (
-                            <>
-                              {(isOrganizer || isOrganizerAdmin) && (
-                                <Button
-                                  title="Edit"
-                                  onPress={() => {
-                                    setIsEditable(true);
-                                  }}
-                                  color={systemColors.edit}
-                                  iconName="pencil"
-                                />
-                              )}
-                              {isOrganizerAdmin && (
-                                <Button
-                                  title="Delete"
-                                  onPress={() => {
-                                    setShowAlert(true);
-                                  }}
-                                  color={systemColors.destroy}
-                                  iconName="trash"
-                                />
-                              )}
-                            </>
-                          )}
-                        </ButtonsRowContainerLeft>
+                                )}
+                                {isOrganizerAdmin && (
+                                  <Button
+                                    title="Delete"
+                                    onPress={() => {
+                                      setShowAlert(true);
+                                    }}
+                                    color={systemColors.destroy}
+                                    iconName="trash"
+                                  />
+                                )}
+                              </>
+                            )}
+                          </ButtonsRowContainerLeft>
+                        )}
                         <EventDetails event={events} />
                       </View>
                     )}
