@@ -39,7 +39,9 @@ class ORMApplicationRepository(ApplicationRepository):
 
         return [
             self._to_domain_model(application)
-            for application in ORMEventApplication.objects.filter(user=user_orm)
+            for application in ORMEventApplication.objects.filter(
+                user=user_orm
+            ).order_by("-event__start_date")
         ]
 
     def get_by_event(self, event_id: uuid.UUID) -> List[Application]:
