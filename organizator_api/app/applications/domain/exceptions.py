@@ -44,3 +44,7 @@ class ApplicationCanNotBeConfirmed(Exception):
 
 class ApplicationCanNotBeAttended(Exception):
     pass
+
+
+class EventAlreadyStarted(Exception):
+    pass

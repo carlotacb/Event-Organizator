@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.applications.domain.exceptions import (
     ProfileNotComplete,
@@ -7,6 +7,7 @@ from app.applications.domain.exceptions import (
     UserIsNotAParticipant,
     UserIsTooYoung,
     UserIsNotStudent,
+    EventAlreadyStarted,
 )
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
@@ -146,6 +147,22 @@ class TestCreateNewApplicationUseCase(ApiTests):
         with self.assertRaises(ApplicationAlreadyExists):
             CreateNewApplicationUseCase().execute(
                 token=self.user_complete_token, event_id=self.event_id
+            )
+
+    def test__given_a_user_with_all_the_information_and_a_existing_event__when_create_application_to_a_already_started_event__then_event_already_started_is_raised(
+        self,
+    ) -> None:
+        # Given
+        event = EventFactory().create(
+            name="HackUPC 2024",
+            start_date=datetime(2023, 5, 12, 16, 0),
+        )
+        self.event_repository.create(event)
+
+        # When / Then
+        with self.assertRaises(EventAlreadyStarted):
+            CreateNewApplicationUseCase().execute(
+                token=self.user_complete_token, event_id=event.id
             )
 
     def test__given_user_with_all_the_information_and_existing_event__when_create_application__then_the_application_is_created(
