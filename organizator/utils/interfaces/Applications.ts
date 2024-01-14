@@ -44,6 +44,9 @@ export interface ParticipantsInformation {
     expected_graduation: string;
   };
   status: string;
+  event_name: string;
+  event_start_date: string;
+  event_end_date: string;
   created_at: string;
   updated_at: string;
 }
