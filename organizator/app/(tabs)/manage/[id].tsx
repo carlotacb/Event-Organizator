@@ -18,9 +18,16 @@ import FilterButton from "../../../components/componentsStyled/Buttons/FilterBut
 import Button from "../../../components/componentsStyled/Buttons/ButtonWithIcon";
 import { getUserRole } from "../../../utils/api/axiosUsers";
 import { UserRoles } from "../../../utils/interfaces/Users";
-import { getColorForApplicationStatus } from "../../../utils/util-functions";
+import {
+  getColorForApplicationStatus,
+  parseDate,
+} from "../../../utils/util-functions";
 import { ButtonsColumnContainer } from "../../../components/componentsStyled/Shared/ContainerStyles";
 import ListLine from "../../../components/componentsStyled/Lists/ListLine";
+import {
+  SubTitle,
+  Title,
+} from "../../../components/componentsStyled/Shared/TextStyles";
 
 const Container = styled(SafeAreaView)`
   background-color: white;
@@ -244,6 +251,20 @@ export default function Id() {
     });
   };
 
+  const isInRange = (startDate: string, endDate: string): boolean => {
+    const today = new Date().toISOString();
+    console.log(today, startDate, endDate);
+    return today >= startDate && today <= endDate;
+  };
+
+  const isInValidRange = (endDate: string): boolean => {
+    const today = new Date().toISOString();
+    console.log(today, endDate);
+    return today <= endDate;
+  };
+
+  console.log(applications);
+
   return (
     <Container>
       <ScrollView contentContainerStyle={{ padding: 25 }}>
@@ -251,6 +272,19 @@ export default function Id() {
           <LoadingPage />
         ) : (
           <View>
+            <Title>
+              {allApplications ? allApplications[0].event_name : ""}
+            </Title>
+            <SubTitle>
+              From{" "}
+              {allApplications
+                ? parseDate(allApplications[0].event_start_date)
+                : "undef"}{" "}
+              to{" "}
+              {allApplications
+                ? parseDate(allApplications[0].event_end_date)
+                : "undef"}{" "}
+            </SubTitle>
             <ButtonsContainer>
               <FilterButton
                 title={`All (${stats.all})`}
@@ -514,11 +548,16 @@ export default function Id() {
                     }
                     iconName={
                       (isAdmin || isOrganizer) &&
-                      application.status === "Confirmed"
+                      application.status === "Confirmed" &&
+                      isInRange(
+                        application.event_start_date,
+                        application.event_end_date,
+                      )
                         ? "sign-in"
                         : isAdmin &&
                             (application.status === "Wait list" ||
-                              application.status === "Under review")
+                              application.status === "Under review") &&
+                            isInValidRange(application.event_end_date)
                           ? "send"
                           : undefined
                     }

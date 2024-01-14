@@ -40,6 +40,9 @@ class ApplicationResponse:
 
     def to_dict_without_event(self) -> dict[str, Any]:
         return {
+            "event_name": self.event.name,
+            "event_start_date": self.event.start_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "event_end_date": self.event.end_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "id": self.id,
             "user": UserResponse.from_user(self.user).to_dict(),
             "status": self.status.value,
