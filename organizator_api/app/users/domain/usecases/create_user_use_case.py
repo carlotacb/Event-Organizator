@@ -32,7 +32,7 @@ class CreateUserUseCase:
 
         user = User(
             id=uuid.uuid4(),
-            email=user_data.email,
+            email=user_data.email.lower(),
             password=hashed_password,
             first_name=user_data.first_name,
             last_name=user_data.last_name,
