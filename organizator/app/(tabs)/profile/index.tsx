@@ -189,10 +189,13 @@ export default function Index() {
               "Gluten free" &&
             response.userInformation?.alimentaryRestrictions !==
               "No restrictions" &&
-            response.userInformation?.alimentaryRestrictions !== null,
+            response.userInformation?.alimentaryRestrictions !== null &&
+            response.userInformation?.alimentaryRestrictions !== "",
           NOTHING:
             response.userInformation?.alimentaryRestrictions ===
-            "No restrictions",
+              "No restrictions" ||
+            response.userInformation?.alimentaryRestrictions === null ||
+            response.userInformation?.alimentaryRestrictions === "",
         });
         setInputs({
           firstName: response.userInformation?.firstName || "",
@@ -200,7 +203,8 @@ export default function Index() {
           bio: response.userInformation?.bio || "",
           tShirtSize: response.userInformation?.tShirtSize || "",
           alimentaryRestrictions:
-            response.userInformation?.alimentaryRestrictions || "",
+            response.userInformation?.alimentaryRestrictions ||
+            "No restrictions",
           dateOfBirth: response.userInformation?.dateOfBirth || "",
           gender: response.userInformation?.gender || "",
           github: response.userInformation?.github || "",
