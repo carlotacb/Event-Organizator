@@ -191,7 +191,7 @@ class TestViewCreateNewUser(ApiTests):
         self.assertEqual(user.work, False)
         self.assertEqual(user.university, "UPC")
         self.assertEqual(user.degree, "Computer Science")
-        self.assertEqual(user.expected_graduation, datetime(1996, 5, 7, 0, 0))
+        self.assertEqual(user.expected_graduation, datetime(2025, 5, 7, 0, 0))
         self.assertEqual(user.current_job_role, None)
 
     def test__given_a_json_body_with_a_worker_user__when_create_user__then_the_user_is_created_and_stored_in_db(
