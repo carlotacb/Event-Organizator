@@ -217,6 +217,14 @@ export default function Index() {
             response.userInformation?.expectedGraduation || "",
           currentJobRole: response.userInformation?.currentJobRole || "",
         });
+        setIsStudying(response.userInformation?.study || false);
+        setIsWorking(response.userInformation?.work || false);
+        setActiveStatus({
+          study: response.userInformation?.study || false,
+          work: response.userInformation?.work || false,
+          nothing:
+            !response.userInformation?.study && !response.userInformation?.work,
+        });
       }
     });
   }, [isFocused]);
