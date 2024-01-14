@@ -44,7 +44,9 @@ class CreateUserUseCase:
             work=user_data.work,
             university=user_data.university if user_data.university else None,
             degree=user_data.degree if user_data.degree else None,
-            expected_graduation=datetime.strptime(user_data.expected_graduation, "%d/%m/%Y")
+            expected_graduation=datetime.strptime(
+                user_data.expected_graduation, "%d/%m/%Y"
+            )
             if user_data.expected_graduation
             else None,
             current_job_role=user_data.current_job_role
