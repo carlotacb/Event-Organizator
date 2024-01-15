@@ -253,6 +253,28 @@ paths:
         '404':
           description: User not found
 
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get my information
+      operationId: getMyInformation
+      security:
+        - LoggedInToken: [ ]
+      description: |
+        Get all the information of my profile.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+
   /users/new:
     post:
       tags:
