@@ -69,7 +69,7 @@ export default function Home() {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
         {loading ? (
           <LoadingPage />
         ) : (

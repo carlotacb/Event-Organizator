@@ -48,7 +48,7 @@ export default function ListPage() {
           image={require("../../../assets/not-logged-in.png")}
         />
       ) : (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
           {isOrganizer && <OrganizersEventsPage />}
           {isParticipant && <MyEventsPage />}
         </ScrollView>
