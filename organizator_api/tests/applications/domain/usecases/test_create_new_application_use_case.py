@@ -149,7 +149,6 @@ class TestCreateNewApplicationUseCase(ApiTests):
                 token=self.user_complete_token, event_id=self.event_id
             )
 
-
     def test__given_user_with_all_the_information_and_existing_event__when_create_application__then_the_application_is_created(
         self,
     ) -> None:
