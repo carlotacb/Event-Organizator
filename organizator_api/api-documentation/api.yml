@@ -286,6 +286,18 @@ paths:
       operationId: login
       description: |
         When user is logged in this have a token that will authenticate. This is the response of the call.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "carlota"
+                password:
+                  type: string
+                  example: "******"
       responses:
         '200':
           description: Success
@@ -474,7 +486,7 @@ paths:
         - LoggedInToken: []
       operationId: getMyEvents
       description: |
-        Get the list of the applications with the events information
+        Get the list of the applications with the events information, the events are ordered by start_date in descending order.
       responses:
         '200':
           description: Success
@@ -489,7 +501,7 @@ paths:
         '404':
           description: User not found
 
-  /applications/{event_id}:
+  /applications/participants/{event_id}:
     get:
       tags:
         - applications
@@ -521,6 +533,44 @@ paths:
         '404':
           description: Event not found
 
+  /applications/status/{event_id}:
+    get:
+      tags:
+        - applications
+      summary: Get the status for the application
+      security:
+        - LoggedInToken: []
+      operationId: getApplicationStatus
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      description: |
+        Get application status if the user have applied, if the user is participant and didn't apply it returns NotApplied
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [Pending, Invited, Confirmed, Cancelled, Invalid, Rejected, Waitlist]
+        '206':
+          description: Not applied
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not participant)
+        '404':
+          description: Event or User not found
+
   /applications/new:
     post:
       tags:
@@ -548,6 +598,8 @@ paths:
           description: Invalid token
         '401':
           description: Unauthorized or invalid user role or too young or not student
+        '403':
+          description: Event already started
         '404':
           description: Event not found or User not found
         '409':
@@ -555,6 +607,135 @@ paths:
         '422':
           description: Event id is required or Profile not completed
 
+  /applications/update/{application_id}:
+    post:
+      tags:
+        - applications
+      summary: Update status in application
+      security:
+        - LoggedInToken: []
+      operationId: updateStatusApplication
+      description: |
+        User with participant role can apply to an event.
+      parameters:
+      - name: application_id
+        in: path
+        description: Application id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [Pending, Invited, Confirmed, Cancelled, Invalid, Rejected, Waitlist]
+                  example: "Under review"
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (no token or user is not admin)
+        '404':
+          description: Application not found or User not found
+        '422':
+          description: Status is required
+
+  /applications/cancel/{application_id}:
+    post:
+      tags:
+        - applications
+      summary: Set application status to canceled
+      security:
+        - LoggedInToken: []
+      operationId: cancelApplication
+      description: |
+        User can cancel a application made by himself, the application can only be canceled if it's not rejected or invalid.
+      parameters:
+      - name: application_id
+        in: path
+        description: Application id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized or application is from another user
+        '404':
+          description: Application not found
+        '422':
+          description: Application can not be cancelled
+
+  /applications/confirm/{application_id}:
+    post:
+      tags:
+        - applications
+      summary: Set application status to confirmed
+      security:
+        - LoggedInToken: []
+      operationId: confirmApplication
+      description: |
+        User can confirm a application made by himself, only when the status of the eplication is Invited
+      parameters:
+      - name: application_id
+        in: path
+        description: Application id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized or application is from another user
+        '404':
+          description: Application not found
+        '422':
+          description: Application can not be confirmed
+
+  /applications/attend/{application_id}:
+    post:
+      tags:
+        - applications
+      summary: Set application status to attended
+      security:
+        - LoggedInToken: []
+      operationId: attendApplication
+      description: |
+        Organizers and organizers admins can set the status to a application to attended if the application is confirmed
+      parameters:
+      - name: application_id
+        in: path
+        description: Application id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid token
+        '401':
+          description: Unauthorized (o token or user is not organizer)
+        '404':
+          description: Application not found
+        '422':
+          description: Application should be in confirmed status
 
 components:
   schemas:
@@ -717,6 +898,10 @@ components:
       items:
         type: object
         properties:
+          event_id:
+            type: string
+            format: uuid
+            example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
           name:
             type: string
             example: "HackUPC 2023"
@@ -950,6 +1135,10 @@ components:
             example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
           event:
             $ref: '#/components/schemas/Event'
+          status:
+            type: string
+            enum: [Pending, Invited, Confirmed, Cancelled, Invalid, Rejected, Waitlist]
+            example: "Under review"
           created_at:
             type: string
             example: "2024-01-08T16:29:36Z"
@@ -968,6 +1157,10 @@ components:
             example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
           user:
             $ref: '#/components/schemas/User'
+          status:
+            type: string
+            enum: [Pending, Invited, Confirmed, Cancelled, Invalid, Rejected, Waitlist]
+            example: "Under review"
           created_at:
             type: string
             example: "2024-01-08T16:29:36Z"
