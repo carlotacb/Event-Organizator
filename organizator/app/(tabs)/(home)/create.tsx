@@ -60,22 +60,17 @@ export default function CreatePage() {
 
   return (
     <Container>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={100}
-      >
-        <ScrollView contentContainerStyle={{ padding: 30 }}>
-          {loading ? (
-            <LoadingPage />
-          ) : (
-            <EventForm
-              inputs={inputs}
-              setInputs={setInputs}
-              createTheEvent={createTheEvent}
-            />
-          )}
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <ScrollView contentContainerStyle={{ padding: 30 }}>
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <EventForm
+            inputs={inputs}
+            setInputs={setInputs}
+            createTheEvent={createTheEvent}
+          />
+        )}
+      </ScrollView>
       <Toast />
     </Container>
   );

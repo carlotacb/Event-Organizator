@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { handleError, handleOnChange } from "./utilFunctions";
 import {
   checkDateRange,
@@ -230,7 +230,9 @@ export default function EventForm(props: EventFormProps) {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Input
         label="Event name"
         iconName="tag"
@@ -446,6 +448,6 @@ export default function EventForm(props: EventFormProps) {
           iconName="save"
         />
       </ButtonsRowContainer>
-    </>
+    </KeyboardAvoidingView>
   );
 }

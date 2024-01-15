@@ -364,301 +364,300 @@ export default function Index() {
 
   return (
     <Container>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
-          {loading ? (
-            <LoadingPage />
-          ) : (
-            <>
-              <ButtonsRowContainerLeft>
-                {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
-                  <Button
-                    title="See all users"
-                    iconName="users"
-                    onPress={() => router.push("/profile/users")}
-                    color={systemColors.action}
-                  />
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <KeyboardAvoidingView
+            behavior="padding"
+            enabled={Platform.OS !== "web"}
+            keyboardVerticalOffset={-500}
+          >
+            <ButtonsRowContainerLeft>
+              {userInformation?.role === UserRoles.ORGANIZER_ADMIN && (
+                <Button
+                  title="See all users"
+                  iconName="users"
+                  onPress={() => router.push("/profile/users")}
+                  color={systemColors.action}
+                />
+              )}
+
+              <Button
+                title="Logout"
+                onPress={loggingOut}
+                color={systemColors.destroy}
+                iconName="sign-out"
+              />
+            </ButtonsRowContainerLeft>
+
+            <TextRowLine>
+              <Title>Hello, {userInformation?.username}</Title>
+              <InformativeChip
+                fontSize="15px"
+                name={parseRole(userInformation?.role || "")}
+                backgroundColor={getBackGroundColorForRole(
+                  userInformation?.role || "",
                 )}
+              />
+            </TextRowLine>
+            <View
+              style={{
+                marginTop: 10,
+                alignItems: "baseline",
+                marginBottom: 30,
+              }}
+            >
+              <InformativeChip
+                name={userInformation?.email || ""}
+                backgroundColor={systemColors.backgroundGrey}
+                fontSize="15px"
+                notBold
+              />
+            </View>
 
-                <Button
-                  title="Logout"
-                  onPress={loggingOut}
-                  color={systemColors.destroy}
-                  iconName="sign-out"
+            <Input
+              label="First Name"
+              iconName="id-badge"
+              required
+              value={inputs.firstName}
+              onChangeText={(text) =>
+                handleOnChange(text, "firstName", setInputs)
+              }
+              error={errors.firstName}
+            />
+            <Input
+              label="Last Name"
+              iconName="id-badge"
+              required
+              value={inputs.lastName}
+              onChangeText={(text) =>
+                handleOnChange(text, "lastName", setInputs)
+              }
+              error={errors.lastName}
+            />
+            <Input
+              label="Date of birth"
+              iconName="calendar"
+              required
+              value={inputs.dateOfBirth}
+              onChangeText={(text) =>
+                handleOnChange(text, "dateOfBirth", setInputs)
+              }
+              placeholder="DD/MM/YYYY"
+              placeholderTextColor="#969696"
+              error={errors.dateOfBirth}
+            />
+            <Input
+              label="Biography"
+              iconName="pencil"
+              multiline
+              numberOfLines={4}
+              required
+              value={inputs.bio}
+              onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
+              error={errors.bio}
+            />
+            <InputLabel label="Currently I'm... (select one of the options)" />
+            <RadioButtonContainer>
+              {careerStatus.map((status) => (
+                <FilterButton
+                  key={status}
+                  title={parseDegreeStatus(status)}
+                  onPress={() => {
+                    setActiveStatus({
+                      study: status === "study",
+                      work: status === "work",
+                      nothing: status === "nothing",
+                    });
+                    setIsStudying(status === "study");
+                    setIsWorking(status === "work");
+                  }}
+                  color="dimgray"
+                  // @ts-ignore
+                  active={activeStatus[status]}
                 />
-              </ButtonsRowContainerLeft>
+              ))}
+            </RadioButtonContainer>
 
-              <TextRowLine>
-                <Title>Hello, {userInformation?.username}</Title>
-                <InformativeChip
-                  fontSize="15px"
-                  name={parseRole(userInformation?.role || "")}
-                  backgroundColor={getBackGroundColorForRole(
-                    userInformation?.role || "",
-                  )}
-                />
-              </TextRowLine>
-              <View
-                style={{
-                  marginTop: 10,
-                  alignItems: "baseline",
-                  marginBottom: 30,
-                }}
-              >
-                <InformativeChip
-                  name={userInformation?.email || ""}
-                  backgroundColor={systemColors.backgroundGrey}
-                  fontSize="15px"
-                  notBold
-                />
-              </View>
+            {isWorking && (
+              <Input
+                label="Current Job Role"
+                iconName="briefcase"
+                required
+                value={inputs.currentJobRole}
+                onChangeText={(text) =>
+                  handleOnChange(text, "currentJobRole", setInputs)
+                }
+                error={errors.currentJobRole}
+              />
+            )}
 
-              <Input
-                label="First Name"
-                iconName="id-badge"
-                required
-                value={inputs.firstName}
-                onChangeText={(text) =>
-                  handleOnChange(text, "firstName", setInputs)
-                }
-                error={errors.firstName}
-              />
-              <Input
-                label="Last Name"
-                iconName="id-badge"
-                required
-                value={inputs.lastName}
-                onChangeText={(text) =>
-                  handleOnChange(text, "lastName", setInputs)
-                }
-                error={errors.lastName}
-              />
-              <Input
-                label="Date of birth"
-                iconName="calendar"
-                required
-                value={inputs.dateOfBirth}
-                onChangeText={(text) =>
-                  handleOnChange(text, "dateOfBirth", setInputs)
-                }
-                placeholder="DD/MM/YYYY"
-                placeholderTextColor="#969696"
-                error={errors.dateOfBirth}
-              />
-              <Input
-                label="Biography"
-                iconName="pencil"
-                multiline
-                numberOfLines={4}
-                required
-                value={inputs.bio}
-                onChangeText={(text) => handleOnChange(text, "bio", setInputs)}
-                error={errors.bio}
-              />
-              <InputLabel label="Currently I'm... (select one of the options)" />
-              <RadioButtonContainer>
-                {careerStatus.map((status) => (
-                  <FilterButton
-                    key={status}
-                    title={parseDegreeStatus(status)}
-                    onPress={() => {
-                      setActiveStatus({
-                        study: status === "study",
-                        work: status === "work",
-                        nothing: status === "nothing",
-                      });
-                      setIsStudying(status === "study");
-                      setIsWorking(status === "work");
-                    }}
-                    color="dimgray"
-                    // @ts-ignore
-                    active={activeStatus[status]}
-                  />
-                ))}
-              </RadioButtonContainer>
-
-              {isWorking && (
+            {isStudying && (
+              <>
                 <Input
-                  label="Current Job Role"
-                  iconName="briefcase"
+                  label="University"
+                  iconName="university"
                   required
-                  value={inputs.currentJobRole}
+                  value={inputs.university}
                   onChangeText={(text) =>
-                    handleOnChange(text, "currentJobRole", setInputs)
+                    handleOnChange(text, "university", setInputs)
                   }
-                  error={errors.currentJobRole}
+                  error={errors.university}
                 />
-              )}
-
-              {isStudying && (
-                <>
-                  <Input
-                    label="University"
-                    iconName="university"
-                    required
-                    value={inputs.university}
-                    onChangeText={(text) =>
-                      handleOnChange(text, "university", setInputs)
-                    }
-                    error={errors.university}
-                  />
-                  <Input
-                    label="Degree"
-                    iconName="book"
-                    required
-                    value={inputs.degree}
-                    onChangeText={(text) =>
-                      handleOnChange(text, "degree", setInputs)
-                    }
-                    error={errors.degree}
-                  />
-                  <Input
-                    label="Graduation year"
-                    iconName="graduation-cap"
-                    required
-                    value={inputs.expectedGraduation}
-                    onChangeText={(text) =>
-                      handleOnChange(text, "expectedGraduation", setInputs)
-                    }
-                    placeholder="DD/MM/YYYY"
-                    placeholderTextColor="#969696"
-                    error={errors.expectedGraduation}
-                  />
-                </>
-              )}
-
-              <InputLabel label="T-shirt size" />
-              <RadioButtonContainer>
-                {sizeButtons.map((size) => (
-                  <FilterButton
-                    key={size}
-                    title={size}
-                    onPress={() => {
-                      setActiveTShirtSize({
-                        XS: size === "XS",
-                        S: size === "S",
-                        M: size === "M",
-                        L: size === "L",
-                        XL: size === "XL",
-                        XXL: size === "XXL",
-                      });
-                      handleOnChange(size, "tShirtSize", setInputs);
-                    }}
-                    color="dimgray"
-                    // @ts-ignore
-                    active={activeTShirtSize[size]}
-                  />
-                ))}
-              </RadioButtonContainer>
-              <InputLabel label="Gender" />
-              <RadioButtonContainer>
-                {genderButtons.map((gender) => (
-                  <FilterButton
-                    key={gender}
-                    title={parseGender(gender)}
-                    onPress={() => {
-                      setActiveGender({
-                        FEMALE: gender === "FEMALE",
-                        MALE: gender === "MALE",
-                        NO_BINARY: gender === "NO_BINARY",
-                        PREFER_NOT_TO_SAY: gender === "PREFER_NOT_TO_SAY",
-                      });
-                      handleOnChange(gender, "gender", setInputs);
-                    }}
-                    color="dimgray"
-                    // @ts-ignore
-                    active={activeGender[gender]}
-                  />
-                ))}
-              </RadioButtonContainer>
-              <InputLabel label="Alimentary restriction" required />
-
-              <RadioButtonContainer withoutMargin={activeDiet.OTHER}>
-                {dietButtons.map((diet) => (
-                  <FilterButton
-                    key={diet}
-                    title={parseDiet(diet)}
-                    onPress={() => {
-                      setActiveDiet({
-                        VEGAN: diet === "VEGAN",
-                        VEGETARIAN: diet === "VEGETARIAN",
-                        GLUTEN_FREE: diet === "GLUTEN_FREE",
-                        NOTHING: diet === "NOTHING",
-                        OTHER: diet === "OTHER",
-                      });
-                      handleOnChange(
-                        parseDiet(diet) === "Other" ? "" : parseDiet(diet),
-                        "alimentaryRestrictions",
-                        setInputs,
-                      );
-                    }}
-                    color="dimgray"
-                    // @ts-ignore
-                    active={activeDiet[diet]}
-                  />
-                ))}
-              </RadioButtonContainer>
-              {activeDiet.OTHER ? (
                 <Input
-                  iconName="cutlery"
-                  value={inputs.alimentaryRestrictions}
+                  label="Degree"
+                  iconName="book"
+                  required
+                  value={inputs.degree}
                   onChangeText={(text) =>
-                    handleOnChange(text, "alimentaryRestrictions", setInputs)
+                    handleOnChange(text, "degree", setInputs)
                   }
-                  error={errors.alimentaryRestrictions}
+                  error={errors.degree}
                 />
-              ) : null}
+                <Input
+                  label="Graduation year"
+                  iconName="graduation-cap"
+                  required
+                  value={inputs.expectedGraduation}
+                  onChangeText={(text) =>
+                    handleOnChange(text, "expectedGraduation", setInputs)
+                  }
+                  placeholder="DD/MM/YYYY"
+                  placeholderTextColor="#969696"
+                  error={errors.expectedGraduation}
+                />
+              </>
+            )}
 
-              <Input
-                label="GitHub"
-                iconName="github-square"
-                value={inputs.github}
-                onChangeText={(text) =>
-                  handleOnChange(text, "github", setInputs)
-                }
-                error={errors.github}
-              />
-              <Input
-                label="LinkedIn"
-                iconName="linkedin-square"
-                value={inputs.linkedin}
-                onChangeText={(text) =>
-                  handleOnChange(text, "linkedin", setInputs)
-                }
-                error={errors.linkedin}
-              />
-              <Input
-                label="Devpost"
-                iconName="code"
-                value={inputs.devpost}
-                onChangeText={(text) =>
-                  handleOnChange(text, "devpost", setInputs)
-                }
-                error={errors.devpost}
-              />
-              <Input
-                label="Webpage"
-                iconName="link"
-                value={inputs.webpage}
-                onChangeText={(text) =>
-                  handleOnChange(text, "webpage", setInputs)
-                }
-                error={errors.webpage}
-              />
-              <ButtonsRowContainer>
-                <Button
-                  title="Update profile"
-                  onPress={validate}
-                  color={systemColors.accept}
-                  iconName="save"
+            <InputLabel label="T-shirt size" />
+            <RadioButtonContainer>
+              {sizeButtons.map((size) => (
+                <FilterButton
+                  key={size}
+                  title={size}
+                  onPress={() => {
+                    setActiveTShirtSize({
+                      XS: size === "XS",
+                      S: size === "S",
+                      M: size === "M",
+                      L: size === "L",
+                      XL: size === "XL",
+                      XXL: size === "XXL",
+                    });
+                    handleOnChange(size, "tShirtSize", setInputs);
+                  }}
+                  color="dimgray"
+                  // @ts-ignore
+                  active={activeTShirtSize[size]}
                 />
-              </ButtonsRowContainer>
-            </>
-          )}
-        </ScrollView>
-      </KeyboardAvoidingView>
+              ))}
+            </RadioButtonContainer>
+            <InputLabel label="Gender" />
+            <RadioButtonContainer>
+              {genderButtons.map((gender) => (
+                <FilterButton
+                  key={gender}
+                  title={parseGender(gender)}
+                  onPress={() => {
+                    setActiveGender({
+                      FEMALE: gender === "FEMALE",
+                      MALE: gender === "MALE",
+                      NO_BINARY: gender === "NO_BINARY",
+                      PREFER_NOT_TO_SAY: gender === "PREFER_NOT_TO_SAY",
+                    });
+                    handleOnChange(gender, "gender", setInputs);
+                  }}
+                  color="dimgray"
+                  // @ts-ignore
+                  active={activeGender[gender]}
+                />
+              ))}
+            </RadioButtonContainer>
+            <InputLabel label="Alimentary restriction" required />
+
+            <RadioButtonContainer withoutMargin={activeDiet.OTHER}>
+              {dietButtons.map((diet) => (
+                <FilterButton
+                  key={diet}
+                  title={parseDiet(diet)}
+                  onPress={() => {
+                    setActiveDiet({
+                      VEGAN: diet === "VEGAN",
+                      VEGETARIAN: diet === "VEGETARIAN",
+                      GLUTEN_FREE: diet === "GLUTEN_FREE",
+                      NOTHING: diet === "NOTHING",
+                      OTHER: diet === "OTHER",
+                    });
+                    handleOnChange(
+                      parseDiet(diet) === "Other" ? "" : parseDiet(diet),
+                      "alimentaryRestrictions",
+                      setInputs,
+                    );
+                  }}
+                  color="dimgray"
+                  // @ts-ignore
+                  active={activeDiet[diet]}
+                />
+              ))}
+            </RadioButtonContainer>
+            {activeDiet.OTHER ? (
+              <Input
+                iconName="cutlery"
+                value={inputs.alimentaryRestrictions}
+                onChangeText={(text) =>
+                  handleOnChange(text, "alimentaryRestrictions", setInputs)
+                }
+                error={errors.alimentaryRestrictions}
+              />
+            ) : null}
+
+            <Input
+              label="GitHub"
+              iconName="github-square"
+              value={inputs.github}
+              onChangeText={(text) => handleOnChange(text, "github", setInputs)}
+              error={errors.github}
+            />
+            <Input
+              label="LinkedIn"
+              iconName="linkedin-square"
+              value={inputs.linkedin}
+              onChangeText={(text) =>
+                handleOnChange(text, "linkedin", setInputs)
+              }
+              error={errors.linkedin}
+            />
+            <Input
+              label="Devpost"
+              iconName="code"
+              value={inputs.devpost}
+              onChangeText={(text) =>
+                handleOnChange(text, "devpost", setInputs)
+              }
+              error={errors.devpost}
+            />
+            <Input
+              label="Webpage"
+              iconName="link"
+              value={inputs.webpage}
+              onChangeText={(text) =>
+                handleOnChange(text, "webpage", setInputs)
+              }
+              error={errors.webpage}
+            />
+            <ButtonsRowContainer>
+              <Button
+                title="Update profile"
+                onPress={validate}
+                color={systemColors.accept}
+                iconName="save"
+              />
+            </ButtonsRowContainer>
+          </KeyboardAvoidingView>
+        )}
+      </ScrollView>
+
       <Toast />
     </Container>
   );

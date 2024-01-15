@@ -219,151 +219,146 @@ export default function EventPage() {
 
   return (
     <Container>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        enabled={isEditable}
-      >
-        <ScrollView>
-          {loading ? (
-            <LoadingPage />
-          ) : (
-            <View>
-              {events?.deleted ? (
-                <EmptyPage
-                  title={`The event ${events?.name} has been removed`}
-                  subtitle="To know more about it, contact the organizers"
-                  image={require("../../../assets/deleted.webp")}
-                />
-              ) : (
+      <ScrollView>
+        {loading ? (
+          <LoadingPage />
+        ) : (
+          <View>
+            {events?.deleted ? (
+              <EmptyPage
+                title={`The event ${events?.name} has been removed`}
+                subtitle="To know more about it, contact the organizers"
+                image={require("../../../assets/deleted.webp")}
+              />
+            ) : (
+              <View>
+                <ImageHeader source={{ uri: events?.headerImage }} />
                 <View>
-                  <ImageHeader source={{ uri: events?.headerImage }} />
-                  <View>
-                    {isEditable ? (
-                      <View style={{ padding: 30 }}>
-                        <ButtonsRowContainerLeft>
-                          <Button
-                            title="Close"
-                            onPress={() => {
-                              setIsEditable(false);
-                            }}
-                            color={systemColors.destroy}
-                            iconName="close"
-                          />
-                        </ButtonsRowContainerLeft>
-                        <EventForm
-                          inputs={inputs}
-                          setInputs={setInputs}
-                          createTheEvent={updateTheEvent}
-                          isUpdate
+                  {isEditable ? (
+                    <View style={{ padding: 30 }}>
+                      <ButtonsRowContainerLeft>
+                        <Button
+                          title="Close"
+                          onPress={() => {
+                            setIsEditable(false);
+                          }}
+                          color={systemColors.destroy}
+                          iconName="close"
                         />
-                      </View>
-                    ) : (
-                      <View style={{ padding: 30 }}>
-                        {!isPast() && (
-                          <ButtonsRowContainerLeft>
-                            {isParticipant ? (
-                              applied ? (
-                                <AppliedContainer>
-                                  <TextLine>
-                                    <ApplicationStatus>
-                                      Your application is:
-                                    </ApplicationStatus>
-                                    <InformativeChip
-                                      name={applicationStatus}
-                                      backgroundColor={getColorForApplicationStatus(
-                                        applicationStatus,
-                                      )}
-                                    />
-                                  </TextLine>
-                                </AppliedContainer>
-                              ) : (
+                      </ButtonsRowContainerLeft>
+                      <EventForm
+                        inputs={inputs}
+                        setInputs={setInputs}
+                        createTheEvent={updateTheEvent}
+                        isUpdate
+                      />
+                    </View>
+                  ) : (
+                    <View style={{ padding: 30 }}>
+                      {!isPast() && (
+                        <ButtonsRowContainerLeft>
+                          {isParticipant ? (
+                            applied ? (
+                              <AppliedContainer>
+                                <TextLine>
+                                  <ApplicationStatus>
+                                    Your application is:
+                                  </ApplicationStatus>
+                                  <InformativeChip
+                                    name={applicationStatus}
+                                    backgroundColor={getColorForApplicationStatus(
+                                      applicationStatus,
+                                    )}
+                                  />
+                                </TextLine>
+                              </AppliedContainer>
+                            ) : (
+                              <Button
+                                title="Apply now"
+                                onPress={() => {
+                                  applyToEvent();
+                                }}
+                                color={systemColors.action}
+                              />
+                            )
+                          ) : isEditable ? null : (
+                            <>
+                              {(isOrganizer || isOrganizerAdmin) && (
                                 <Button
-                                  title="Apply now"
+                                  title="Edit"
                                   onPress={() => {
-                                    applyToEvent();
+                                    setIsEditable(true);
                                   }}
-                                  color={systemColors.action}
+                                  color={systemColors.edit}
+                                  iconName="pencil"
                                 />
-                              )
-                            ) : isEditable ? null : (
-                              <>
-                                {(isOrganizer || isOrganizerAdmin) && (
-                                  <Button
-                                    title="Edit"
-                                    onPress={() => {
-                                      setIsEditable(true);
-                                    }}
-                                    color={systemColors.edit}
-                                    iconName="pencil"
-                                  />
-                                )}
-                                {isOrganizerAdmin && (
-                                  <Button
-                                    title="Delete"
-                                    onPress={() => {
-                                      setShowAlert(true);
-                                    }}
-                                    color={systemColors.destroy}
-                                    iconName="trash"
-                                  />
-                                )}
-                              </>
-                            )}
-                          </ButtonsRowContainerLeft>
-                        )}
-                        <EventDetails event={events} />
-                      </View>
-                    )}
-                  </View>
+                              )}
+                              {isOrganizerAdmin && (
+                                <Button
+                                  title="Delete"
+                                  onPress={() => {
+                                    setShowAlert(true);
+                                  }}
+                                  color={systemColors.destroy}
+                                  iconName="trash"
+                                />
+                              )}
+                            </>
+                          )}
+                        </ButtonsRowContainerLeft>
+                      )}
+                      <EventDetails event={events} />
+                    </View>
+                  )}
                 </View>
-              )}
-            </View>
-          )}
-          <ConfirmDialog
-            title={`Delete ${events?.name}`}
-            message="Are you sure about that? This action will not be undone"
-            onTouchOutside={() => setShowAlert(false)}
-            visible={showAlert}
-            negativeButton={{
-              title: "Cancel",
-              onPress: () => {
-                setShowAlert(false);
-              },
-              titleStyle: {
-                color: "red",
-                fontSize: 20,
-              },
-              style: {
-                backgroundColor: "transparent",
-                paddingHorizontal: 10,
-              },
-            }}
-            positiveButton={{
-              title: "Delete!",
-              onPress: () => {
-                deleteThisEvent();
-              },
-              titleStyle: {
-                color: "blue",
-                fontSize: 20,
-              },
-              style: {
-                backgroundColor: "transparent",
-                paddingHorizontal: 10,
-              },
-            }}
-            contentInsetAdjustmentBehavior="automatic"
-            onRequestClose={() => setShowAlert(false)}
-            dialogStyle={{
-              width: 300,
-              marginRight: "auto",
-              marginLeft: "auto",
-              marginTop: 0,
-              marginBottom: 0,
-            }}
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
+              </View>
+            )}
+          </View>
+        )}
+        <ConfirmDialog
+          title={`Delete ${events?.name}`}
+          message="Are you sure about that? This action will not be undone"
+          onTouchOutside={() => setShowAlert(false)}
+          visible={showAlert}
+          negativeButton={{
+            title: "Cancel",
+            onPress: () => {
+              setShowAlert(false);
+            },
+            titleStyle: {
+              color: "red",
+              fontSize: 20,
+            },
+            style: {
+              backgroundColor: "transparent",
+              paddingHorizontal: 10,
+            },
+          }}
+          positiveButton={{
+            title: "Delete!",
+            onPress: () => {
+              deleteThisEvent();
+            },
+            titleStyle: {
+              color: "blue",
+              fontSize: 20,
+            },
+            style: {
+              backgroundColor: "transparent",
+              paddingHorizontal: 10,
+            },
+          }}
+          contentInsetAdjustmentBehavior="automatic"
+          onRequestClose={() => setShowAlert(false)}
+          dialogStyle={{
+            width: 300,
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginTop: 0,
+            marginBottom: 0,
+          }}
+        />
+      </ScrollView>
       <Toast />
     </Container>
   );

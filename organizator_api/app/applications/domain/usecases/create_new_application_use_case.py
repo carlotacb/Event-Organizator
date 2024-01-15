@@ -51,9 +51,6 @@ class CreateNewApplicationUseCase:
         if age < event.age_restrictions:
             raise UserIsTooYoung
 
-        if event.start_date < datetime.now():
-            raise EventAlreadyStarted
-
         application = Application(
             id=uuid.uuid4(),
             user=user,

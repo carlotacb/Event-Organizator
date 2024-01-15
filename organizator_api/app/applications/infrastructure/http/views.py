@@ -91,8 +91,6 @@ def create_new_application(request: HttpRequest) -> HttpResponse:
         return HttpResponse(status=401, content="You should be student to apply")
     except UserIsTooYoung:
         return HttpResponse(status=401, content="You are too young to apply")
-    except EventAlreadyStarted:
-        return HttpResponse(status=403, content="Event already started")
 
     return HttpResponse(status=201, content="Application created correctly")
 
