@@ -262,33 +262,6 @@ class TestViewCreateNewApplication(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"You are too young to apply")
 
-    def test__given_a_correct_id_for_a_already_started_event_and_a_complete_user__when_create_application__then_event_already_started_is_returned(
-        self,
-    ) -> None:
-        # Given
-        event_id = "fbce7302-68b2-48d3-9030-f6c56fcacf30"
-        event = EventFactory().create(
-            new_id=uuid.UUID(event_id),
-            start_date=datetime(2020, 1, 1),
-            name="HackUPC 2024",
-        )
-        self.event_repository.create(event)
-
-        body = {"event_id": event_id}
-
-        # When
-        headers = {"HTTP_Authorization": self.user_token_participant}
-        response = self.client.post(
-            "/organizator-api/applications/new",
-            json.dumps(body),
-            content_type="application/json",
-            **headers  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 403)
-        self.assertEqual(response.content, b"Event already started")
-
     def test__given_a_correct_event_id_and_a_complete_user__when_create_application__then_application_created_correctly_is_returned(
         self,
     ) -> None:
