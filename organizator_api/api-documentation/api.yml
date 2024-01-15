@@ -310,6 +310,10 @@ paths:
                     type: string
                     format: "uuid"
                     example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+        '401':
+          description: Invalid password
+        '404':
+          description: User not found
 
   /users/new:
     post:
