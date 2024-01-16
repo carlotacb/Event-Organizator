@@ -9,7 +9,7 @@ servers:
     url: https://event-organizator-api-c6wz5mj4uq-ew.a.run.app/organizator-api
 info:
   description: API for organizator app
-  version: "0.0.1"
+  version: "0.0.2"
   title: Organizator API
   contact:
     name: Carlota Catot
@@ -70,6 +70,22 @@ paths:
                 $ref: '#/components/schemas/Event'
         '404':
           description: Event not found
+
+  /events/upcoming:
+    get:
+      tags:
+        - events
+      summary: Gets all the upcoming events of the system
+      operationId: allUpcomingEvents
+      description: |
+        Get all the upcoming events that are not deleted of the system with all the information
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
 
   /events/new:
     post:
@@ -458,90 +474,96 @@ components:
       items:
         $ref: '#/components/schemas/Event'
 
-  UserCreateItem:
-    type: object
-    required:
-      - email
-      - password
-      - first_name
-      - last_name
-      - username
-      - bio
-      - profile_image
-    properties:
-      email:
-        type: string
-        format: email
-        example: "carlota@hackupc.com"
-      password:
-        type: string
-        example: "123456asdf"
-      first_name:
-        type: string
-        example: "Carlota"
-      last_name:
-        type: string
-        example: "Catot Bragós"
-      username:
-        type: string
-        example: "carlotacb"
-      bio:
-        type: string
-        example: "This is Carlota here! A HackUPC organizer"
-      profile_image:
-        type: string
-        format: url
-        example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+    UserCreateItem:
+      type: object
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+        - username
+        - bio
+        - profile_image
+      properties:
+        email:
+          type: string
+          format: email
+          example: "carlota@hackupc.com"
+        password:
+          type: string
+          example: "123456asdf"
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        username:
+          type: string
+          example: "carlotacb"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
 
-  UserUpdateItem:
-    type: object
-    properties:
-      username:
-        type: string
-        example: "carlotacb"
-      first_name:
-        type: string
-        example: "Carlota"
-      last_name:
-        type: string
-        example: "Catot Bragós"
-      bio:
-        type: string
-        example: "This is Carlota here! A HackUPC organizer"
-      profile_image:
-        type: string
-        format: url
-        example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+    UserUpdateItem:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "carlotacb"
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
 
-  User:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uuid
-        example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
-      username:
-        type: string
-        example: "carlotacb"
-      email:
-        type: string
-        format: email
-        example: "carlota@hackupc.com"
-      first_name:
-        type: string
-        example: "Carlota"
-      last_name:
-        type: string
-        example: "Catot Bragós"
-      bio:
-        type: string
-        example: "This is Carlota here! A HackUPC organizer"
-      profile_image:
-        type: string
-        format: url
-        example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"
+        username:
+          type: string
+          example: "carlotacb"
+        email:
+          type: string
+          format: email
+          example: "carlota@hackupc.com"
+        first_name:
+          type: string
+          example: "Carlota"
+        last_name:
+          type: string
+          example: "Catot Bragós"
+        bio:
+          type: string
+          example: "This is Carlota here! A HackUPC organizer"
+        profile_image:
+          type: string
+          format: url
+          example: "https://cdn.vectorstock.com/i/preview-1x/15/40/blank-profile-picture-image-holder-with-a-crown-vector-42411540.jpg"
 
-  UserList:
-    type: array
-    items:
-      $ref: '#/components/schemas/User'
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+
+  securitySchemes:
+    LoggedInToken:
+      type: apiKey
+      in: header
+      name: Authorization
