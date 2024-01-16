@@ -28,8 +28,7 @@ npm start
 
 This will open print a QR code in the terminal. You can use the Expo app in your phone to scan the QR code and run the application in your phone. You can also run the application in an emulator. Also you can run it in your browser.
 
-
-### ✒️  Styling
+### ✒️ Styling
 
 For the styling we are using prettier, to format your code correctly, run the following command.
 
@@ -42,5 +41,3 @@ Also, we are using eslint to check the code style. To check the code style, run 
 ```sh
 npm run lint
 ```
-
-
