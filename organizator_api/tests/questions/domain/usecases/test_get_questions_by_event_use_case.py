@@ -6,6 +6,7 @@ from app.questions.domain.usecases.get_questions_by_event_use_case import (
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 from tests.questions.domain.QuestionFactory import QuestionFactory
+from tests.users.domain.UserFactory import UserFactory
 
 
 class TestGetQuestionsByEventUseCase(ApiTests):
@@ -30,6 +31,11 @@ class TestGetQuestionsByEventUseCase(ApiTests):
         )
         self.question_repository.create(question2)
 
+        self.token = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
+        user_complete = UserFactory().create(
+            token=self.token,
+        )
+        self.user_repository.create(user_complete)
     def test__given_a_non_existing_event__when_get_questions__then_a_empty_list_is_returned(
         self,
     ) -> None:
@@ -37,7 +43,7 @@ class TestGetQuestionsByEventUseCase(ApiTests):
         event_id = uuid.uuid4()
 
         # When
-        questions = GetQuestionsByEventUseCase().execute(event_id=event_id)
+        questions = GetQuestionsByEventUseCase().execute(event_id=event_id, token=self.token)
 
         # Then
         self.assertEqual([], questions)
@@ -49,7 +55,7 @@ class TestGetQuestionsByEventUseCase(ApiTests):
         event_id = self.event_id
 
         # When
-        questions = GetQuestionsByEventUseCase().execute(event_id=event_id)
+        questions = GetQuestionsByEventUseCase().execute(event_id=event_id, token=self.token)
 
         # Then
         self.assertEqual(2, len(questions))
