@@ -11,9 +11,7 @@ from app.questions.infrastructure.persistence.model.orm_question import ORMQuest
 
 class ORMQuestionRepository(QuestionRepository):
     def get_all(self) -> List[Question]:
-        return [
-            self._to_domain(question) for question in ORMQuestion.objects.all()
-        ]
+        return [self._to_domain(question) for question in ORMQuestion.objects.all()]
 
     def get(self, question_id: uuid.UUID) -> Question:
         try:
@@ -98,4 +96,3 @@ class ORMQuestionRepository(QuestionRepository):
             created_at=question.created_at,
             updated_at=question.updated_at,
         )
-

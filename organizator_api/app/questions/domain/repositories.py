@@ -1,5 +1,6 @@
 import uuid
 from abc import ABC, abstractmethod
+from typing import List
 
 from app.questions.domain.models.question import Question
 
@@ -10,7 +11,7 @@ class QuestionRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> Question:
+    def get_all(self) -> List[Question]:
         pass
 
     @abstractmethod
