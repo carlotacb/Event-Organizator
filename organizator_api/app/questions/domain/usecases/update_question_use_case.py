@@ -25,9 +25,9 @@ class UpdateQuestionUseCase:
             raise OnlyAuthorizedToOrganizerAdmin
 
         question = self.question_repository.get(question_id)
-        question.question = question_data.question
-        question.question_type = QuestionType[question_data.question_type]
-        question.options = question_data.options
+        question.question = question_data.question if question_data.question else question.question
+        question.question_type = QuestionType[question_data.question_type] if question_data.question_type else question.question_type
+        question.options = question_data.options if question_data.options else question.options
         question.updated_at = datetime.now(tz=timezone.utc)
 
         self.question_repository.update(question)

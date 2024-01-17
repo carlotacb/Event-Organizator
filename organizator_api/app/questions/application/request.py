@@ -1,5 +1,6 @@
 import uuid
 from dataclasses import dataclass
+from typing import Optional
 
 from app.questions.domain.models.question import QuestionType
 
@@ -14,6 +15,6 @@ class CreateQuestionRequest:
 
 @dataclass
 class UpdateQuestionRequest:
-    question: str
-    question_type: str
-    options: str
+    question: Optional[str]
+    question_type: Optional[str] = None
+    options: Optional[str] = None

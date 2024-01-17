@@ -64,8 +64,6 @@ class TestUpdateQuestionUseCase(ApiTests):
         self.user_repository.create(user_complete)
         question_data = UpdateQuestionRequest(
             question="Question is updated",
-            question_type="TEXT",
-            options="",
         )
 
         # When
