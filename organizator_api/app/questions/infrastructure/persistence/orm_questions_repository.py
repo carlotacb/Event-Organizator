@@ -2,6 +2,7 @@ import uuid
 
 from django.db import IntegrityError
 
+from app.events.domain.models.event import Event
 from app.events.infrastructure.persistence.models.orm_event import ORMEvent
 from app.questions.domain.exceptions import QuestionDoesNotExist
 from app.questions.domain.models.question import Question, QuestionType
@@ -42,7 +43,24 @@ class ORMQuestionRepository(QuestionRepository):
                 question=orm_question.question,
                 question_type=QuestionType[orm_question.question_type],
                 options=orm_question.options,
-                event=orm_question.event,
+                event=Event(
+                    id=orm_question.event.id,
+                    name=orm_question.event.name,
+                    url=orm_question.event.url,
+                    description=orm_question.event.description,
+                    start_date=orm_question.event.start_date,
+                    end_date=orm_question.event.end_date,
+                    location=orm_question.event.location,
+                    header_image=orm_question.event.header_image,
+                    created_at=orm_question.event.created_at,
+                    updated_at=orm_question.event.updated_at,
+                    open_for_participants=orm_question.event.open_for_participants,
+                    max_participants=orm_question.event.max_participants,
+                    expected_attrition_rate=orm_question.event.expected_attrition_rate,
+                    students_only=orm_question.event.students_only,
+                    age_restrictions=orm_question.event.age_restrictions,
+                    deleted_at=orm_question.event.deleted_at,
+                ),
                 created_at=orm_question.created_at,
                 updated_at=orm_question.updated_at,
             )

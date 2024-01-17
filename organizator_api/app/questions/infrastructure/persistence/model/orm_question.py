@@ -10,7 +10,7 @@ class ORMQuestion(models.Model):
     id = models.UUIDField(primary_key=True)
     question = models.TextField()
     question_type = models.CharField(max_length=255, choices=QuestionType.choices())
-    options = models.CharField(max_length=255, null=True)
+    options = models.CharField(max_length=255)
     event = models.ForeignKey("ORMEvent", on_delete=models.CASCADE)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
