@@ -4,6 +4,10 @@ from unittest import mock
 
 from django.test import TestCase
 
+from app.applications.domain.models.application import Application
+from app.applications.infrastructure.persistence.orm_applications_respository import (
+    ORMApplicationRepository,
+)
 from app.events.domain.models.event import Event
 from app.events.infrastructure.persistence.orm_event_repository import (
     ORMEventRepository,
@@ -111,3 +115,23 @@ class ApiTests(TestCase):
         ORMEventRepository().create(event=event)
 
         return event
+
+    def given_application_in_repository(
+        self,
+        new_id: uuid.UUID,
+    ) -> Application:
+        application = ApplicationFactory.create(
+            new_id=new_id,
+            user=self.given_user_in_repository(
+                new_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"),
+                email="email",
+                username="username",
+            ),
+            event=self.given_event_in_orm(
+                new_id=uuid.UUID("ef6f6fb3-ba12-43dd-a0da-95de8125b1cc"), name="event"
+            ),
+        )
+
+        ORMApplicationRepository().create(application=application)
+
+        return application
