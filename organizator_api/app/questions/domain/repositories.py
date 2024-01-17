@@ -7,3 +7,7 @@ class QuestionRepository(ABC):
     @abstractmethod
     def create(self, question: Question) -> None:
         pass
+
+    @abstractmethod
+    def get_all(self) -> Question:
+        pass
