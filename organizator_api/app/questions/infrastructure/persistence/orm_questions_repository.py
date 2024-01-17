@@ -10,7 +10,6 @@ from app.questions.infrastructure.persistence.model.orm_question import ORMQuest
 
 
 class ORMQuestionRepository(QuestionRepository):
-
     def update(self, question: Question) -> None:
         try:
             orm_question = ORMQuestion.objects.get(id=question.id)
