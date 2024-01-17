@@ -1,13 +1,24 @@
 from django.db import IntegrityError
 
 from app.events.infrastructure.persistence.models.orm_event import ORMEvent
-from app.questions.domain.exceptions import QuestionAlreadyExists
+from app.questions.domain.exceptions import QuestionDoesNotExist
 from app.questions.domain.models.question import Question
 from app.questions.domain.repositories import QuestionRepository
 from app.questions.infrastructure.persistence.model.orm_question import ORMQuestion
 
 
 class ORMQuestionRepository(QuestionRepository):
+    def update(self, question: Question) -> None:
+        try:
+            orm_question = ORMQuestion.objects.get(id=question.id)
+            orm_question.question = question.question
+            orm_question.question_type = question.question_type.name
+            orm_question.options = question.options
+            orm_question.updated_at = question.updated_at
+            orm_question.save()
+        except ORMQuestion.DoesNotExist:
+            raise QuestionDoesNotExist
+
     def create(self, question: Question) -> None:
         event = ORMEvent.objects.get(id=question.event.id)
 
