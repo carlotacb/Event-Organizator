@@ -18,6 +18,7 @@ from tests.applications.mocks.application_repository_mock import (
 )
 from tests.events.domain.EventFactory import EventFactory
 from tests.events.mocks.event_repository_mock import EventRepositoryMock
+from tests.questions.mocks.question_repository_mock import QuestionRepositoryMock
 from tests.users.domain.UserFactory import UserFactory
 from tests.users.mocks.user_repository_mock import UserRepositoryMock
 
@@ -50,11 +51,19 @@ class ApiTests(TestCase):
         )
         self.application_repository_patcher.start()
 
+        self.question_repository = QuestionRepositoryMock()
+        self.question_repository_patcher = mock.patch(
+            "app.questions.infrastructure.repository_factories.QuestionRepositoryFactory.create",
+            return_value=self.question_repository,
+        )
+        self.question_repository_patcher.start()
+
     def tearDown(self) -> None:
         super().tearDown()
         self.event_repository_patcher.stop()
         self.user_repository_patcher.stop()
         self.application_repository_patcher.stop()
+        self.question_repository_patcher.stop()
 
     def given_user_in_repository(
         self,
