@@ -10,6 +10,12 @@ from app.questions.infrastructure.persistence.model.orm_question import ORMQuest
 
 
 class ORMQuestionRepository(QuestionRepository):
+    def get_by_event_id(self, event_id: uuid.UUID) -> List[Question]:
+        return [
+            self._to_domain(question)
+            for question in ORMQuestion.objects.filter(event_id=event_id)
+        ]
+
     def get_all(self) -> List[Question]:
         return [self._to_domain(question) for question in ORMQuestion.objects.all()]
 

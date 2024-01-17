@@ -11,13 +11,17 @@ class QuestionRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> List[Question]:
-        pass
-
-    @abstractmethod
     def update(self, question: Question) -> None:
         pass
 
     @abstractmethod
     def get(self, question_id: uuid.UUID) -> Question:
+        pass
+
+    @abstractmethod
+    def get_by_event_id(self, event_id: uuid.UUID) -> List[Question]:
+        pass
+
+    @abstractmethod
+    def get_all(self) -> List[Question]:
         pass
