@@ -9,12 +9,16 @@ from app.questions.application.request import (
     CreateQuestionRequest,
     UpdateQuestionRequest,
 )
+from app.questions.application.responses import QuestionResponse
 from app.questions.domain.exceptions import QuestionDoesNotExist
 from app.questions.domain.usecases.create_new_question_use_case import (
     CreateNewQuestionUseCase,
 )
+from app.questions.domain.usecases.get_questions_by_event_use_case import (
+    GetQuestionsByEventUseCase,
+)
 from app.questions.domain.usecases.update_question_use_case import UpdateQuestionUseCase
-from app.users.domain.exceptions import OnlyAuthorizedToOrganizerAdmin
+from app.users.domain.exceptions import OnlyAuthorizedToOrganizerAdmin, UserNotFound
 
 
 @require_http_methods(["POST"])
@@ -96,3 +100,26 @@ def update_question(request: HttpRequest, question_id: uuid.UUID) -> HttpRespons
         return HttpResponse(status=404, content="Question does not exist")
 
     return HttpResponse(status=200, content="Question updated correctly")
+
+
+@require_http_methods(["GET"])
+def get_questions_by_event(request: HttpRequest, event_id: uuid.UUID) -> HttpResponse:
+    token = request.headers.get("Authorization")
+    if not token:
+        return HttpResponse(status=401, content="Unauthorized")
+
+    try:
+        token_to_uuid = uuid.UUID(token)
+    except ValueError:
+        return HttpResponse(status=400, content="Invalid token")
+
+    try:
+        questions = GetQuestionsByEventUseCase().execute(event_id, token_to_uuid)
+    except UserNotFound:
+        return HttpResponse(status=401, content="User not logged in")
+
+    questions_response = []
+    for question in questions:
+        questions_response.append(QuestionResponse.from_question(question).to_dict())
+
+    return HttpResponse(status=200, content=json.dumps(questions_response))

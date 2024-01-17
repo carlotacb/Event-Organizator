@@ -36,6 +36,7 @@ class TestGetQuestionsByEventUseCase(ApiTests):
             token=self.token,
         )
         self.user_repository.create(user_complete)
+
     def test__given_a_non_existing_event__when_get_questions__then_a_empty_list_is_returned(
         self,
     ) -> None:
@@ -43,7 +44,9 @@ class TestGetQuestionsByEventUseCase(ApiTests):
         event_id = uuid.uuid4()
 
         # When
-        questions = GetQuestionsByEventUseCase().execute(event_id=event_id, token=self.token)
+        questions = GetQuestionsByEventUseCase().execute(
+            event_id=event_id, token=self.token
+        )
 
         # Then
         self.assertEqual([], questions)
@@ -55,7 +58,9 @@ class TestGetQuestionsByEventUseCase(ApiTests):
         event_id = self.event_id
 
         # When
-        questions = GetQuestionsByEventUseCase().execute(event_id=event_id, token=self.token)
+        questions = GetQuestionsByEventUseCase().execute(
+            event_id=event_id, token=self.token
+        )
 
         # Then
         self.assertEqual(2, len(questions))
