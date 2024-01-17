@@ -20,6 +20,7 @@ from app.users.domain.models.user import User
 from app.users.domain.repositories import UserRepository
 from app.users.infrastructure.persistence.orm_user_repository import ORMUserRepository
 from app.users.infrastructure.repository_factories import UserRepositoryFactory
+from tests.answers.mocks.answer_repository_mock import AnswerRepositoryMock
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.applications.mocks.application_repository_mock import (
     ApplicationRepositoryMock,
@@ -67,12 +68,21 @@ class ApiTests(TestCase):
         )
         self.question_repository_patcher.start()
 
+        self.answer_repository = AnswerRepositoryMock()
+        self.answer_repository_patcher = mock.patch(
+            "app.answers.infrastructure.repository_factories.AnswerRepositoryFactory.create",
+            return_value=self.answer_repository,
+        )
+        self.answer_repository_patcher.start()
+
+
     def tearDown(self) -> None:
         super().tearDown()
         self.event_repository_patcher.stop()
         self.user_repository_patcher.stop()
         self.application_repository_patcher.stop()
         self.question_repository_patcher.stop()
+        self.answer_repository_patcher.stop()
 
     def given_user_in_repository(
         self,
