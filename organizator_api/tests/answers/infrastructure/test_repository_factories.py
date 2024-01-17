@@ -7,6 +7,6 @@ from app.answers.infrastructure.repository_factories import AnswerRepositoryFact
 class TestRepositoryFactories(TestCase):
     def test__given_answer_repository_factory__when_create__then_returns_answer_repository(
         self,
-    ):
+    ) -> None:
         repository = AnswerRepositoryFactory.create()
         assert isinstance(repository, AnswersRepository)
