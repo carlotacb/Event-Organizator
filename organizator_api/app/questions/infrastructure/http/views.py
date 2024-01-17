@@ -5,7 +5,10 @@ from django.http import HttpResponse, HttpRequest
 from django.views.decorators.http import require_http_methods
 
 from app.events.domain.exceptions import EventNotFound
-from app.questions.application.request import CreateQuestionRequest, UpdateQuestionRequest
+from app.questions.application.request import (
+    CreateQuestionRequest,
+    UpdateQuestionRequest,
+)
 from app.questions.domain.exceptions import QuestionDoesNotExist
 from app.questions.domain.usecases.create_new_question_use_case import (
     CreateNewQuestionUseCase,
@@ -59,6 +62,7 @@ def create_new_question(request: HttpRequest) -> HttpResponse:
 
     return HttpResponse(status=201, content="Question created correctly")
 
+
 @require_http_methods(["POST"])
 def update_question(request: HttpRequest, question_id: uuid.UUID) -> HttpResponse:
     token = request.headers.get("Authorization")
@@ -80,11 +84,9 @@ def update_question(request: HttpRequest, question_id: uuid.UUID) -> HttpRespons
         UpdateQuestionUseCase().execute(
             question_id=question_id,
             question_data=UpdateQuestionRequest(
-                question=question,
-                question_type=question_type,
-                options=options
+                question=question, question_type=question_type, options=options
             ),
-            token=token_to_uuid
+            token=token_to_uuid,
         )
     except OnlyAuthorizedToOrganizerAdmin:
         return HttpResponse(
