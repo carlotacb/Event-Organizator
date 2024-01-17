@@ -10,3 +10,10 @@ class CreateQuestionRequest:
     question_type: str
     options: str
     event_id: uuid.UUID
+
+
+@dataclass
+class UpdateQuestionRequest:
+    question: str
+    question_type: str
+    options: str
