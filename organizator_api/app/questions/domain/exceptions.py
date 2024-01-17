@@ -1,2 +1,2 @@
-class QuestionAlreadyExists(Exception):
+class QuestionDoesNotExist(Exception):
     pass

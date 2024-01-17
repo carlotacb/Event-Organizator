@@ -1,6 +1,7 @@
+import uuid
 from typing import List
 
-from app.questions.domain.exceptions import QuestionAlreadyExists
+from app.questions.domain.exceptions import QuestionDoesNotExist
 from app.questions.domain.models.question import Question
 from app.questions.domain.repositories import QuestionRepository
 
@@ -10,11 +11,23 @@ class QuestionRepositoryMock(QuestionRepository):
         self.questions: List[Question] = []
 
     def create(self, question: Question) -> None:
-        for q in self.questions:
-            if question.id == q.id:
-                raise QuestionAlreadyExists
-
         self.questions.append(question)
+
+    def update(self, question: Question) -> None:
+        for q in self.questions:
+            if q.id == question.id:
+                q.question = question.question
+                q.question_type = question.question_type
+                q.options = question.options
+                q.updated_at = question.updated_at
+                return
+        raise QuestionDoesNotExist()
+
+    def get(self, question_id: uuid.UUID) -> Question:
+        for question in self.questions:
+            if question.id == question_id:
+                return question
+        raise QuestionDoesNotExist()
 
     def get_all(self) -> List[Question]:
         return self.questions
