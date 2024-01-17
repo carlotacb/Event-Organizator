@@ -23,6 +23,14 @@ class QuestionRepositoryMock(QuestionRepository):
                 return
         raise QuestionDoesNotExist()
 
+    def get_by_event_id(self, event_id: uuid.UUID) -> List[Question]:
+        list = []
+        for question in self.questions:
+            if question.event.id == event_id:
+                list.append(question)
+
+        return list
+
     def get(self, question_id: uuid.UUID) -> Question:
         for question in self.questions:
             if question.id == question_id:
