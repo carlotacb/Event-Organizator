@@ -1,0 +1,2 @@
+class QuestionAlreadyExists(Exception):
+    pass
