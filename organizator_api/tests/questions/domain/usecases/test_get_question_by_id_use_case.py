@@ -1,6 +1,8 @@
 import uuid
 
-from app.questions.domain.usecases.get_question_by_id_use_case import GetQuestionsByIdUseCase
+from app.questions.domain.usecases.get_question_by_id_use_case import (
+    GetQuestionsByIdUseCase,
+)
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
 from tests.questions.domain.QuestionFactory import QuestionFactory
@@ -29,14 +31,14 @@ class TestGetQuestionByIdUseCase(ApiTests):
         )
         self.user_repository.create(user_complete)
 
-    def test__given_questions_in_db__when_get_question_by_id__then_question_is_returned(self) -> None:
+    def test__given_questions_in_db__when_get_question_by_id__then_question_is_returned(
+        self,
+    ) -> None:
         # Given
         question_id = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
 
         # When
-        question = GetQuestionsByIdUseCase().execute(
-            question_id=question_id
-        )
+        question = GetQuestionsByIdUseCase().execute(question_id=question_id)
 
         # Then
         self.assertEqual(question_id, question.id)

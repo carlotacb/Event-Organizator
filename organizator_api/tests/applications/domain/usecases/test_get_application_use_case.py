@@ -1,7 +1,9 @@
 import uuid
 
 from app.applications.domain.models.application import ApplicationStatus
-from app.applications.domain.usecases.get_application_use_case import GetApplicationUseCase
+from app.applications.domain.usecases.get_application_use_case import (
+    GetApplicationUseCase,
+)
 from tests.api_tests import ApiTests
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.events.domain.EventFactory import EventFactory
@@ -29,7 +31,9 @@ class TestGetApplicationUseCase(ApiTests):
         self.event = EventFactory().create(new_id=self.event_id, name="HackUPC 2024")
         self.event_repository.create(self.event)
 
-    def test__given_applications_in_db__when_get_application_using_the_id__then_returns_the_application_information(self) -> None:
+    def test__given_applications_in_db__when_get_application_using_the_id__then_returns_the_application_information(
+        self,
+    ) -> None:
         # Given
         application = ApplicationFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
@@ -44,7 +48,16 @@ class TestGetApplicationUseCase(ApiTests):
         )
 
         # Then
-        self.assertEqual(application_information.id, uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"))
-        self.assertEqual(application_information.user.id, uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"))
-        self.assertEqual(application_information.event.id, uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"))
+        self.assertEqual(
+            application_information.id,
+            uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+        )
+        self.assertEqual(
+            application_information.user.id,
+            uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+        )
+        self.assertEqual(
+            application_information.event.id,
+            uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
+        )
         self.assertEqual(application_information.status, ApplicationStatus.PENDING)

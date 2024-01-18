@@ -1,7 +1,9 @@
 import uuid
 
 from app.applications.domain.models.application import Application
-from app.applications.infrastructure.repository_factories import ApplicationRepositoryFactory
+from app.applications.infrastructure.repository_factories import (
+    ApplicationRepositoryFactory,
+)
 
 
 class GetApplicationUseCase:

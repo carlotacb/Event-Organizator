@@ -10,7 +10,6 @@ from tests.users.domain.UserFactory import UserFactory
 
 
 class TestCreateAnswerUseCase(ApiTests):
-
     def setUp(self) -> None:
         super().setUp()
         self.event_repository.clear()
@@ -44,7 +43,9 @@ class TestCreateAnswerUseCase(ApiTests):
         )
         self.application_repository.create(self.application)
 
-    def test__given_an_application_and_a_question__when_create_answer__then_answer_is_created(self) -> None:
+    def test__given_an_application_and_a_question__when_create_answer__then_answer_is_created(
+        self,
+    ) -> None:
         # Given
         answer_data = CreateAnswerRequest(
             application_id=self.application.id,
@@ -57,5 +58,3 @@ class TestCreateAnswerUseCase(ApiTests):
 
         # Then
         self.assertEqual(1, len(self.answer_repository.get_all()))
-
-

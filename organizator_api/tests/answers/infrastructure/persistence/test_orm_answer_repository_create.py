@@ -71,4 +71,3 @@ class TestORMAnswerRepositoryCreate(ApiTests):
         # When / Then
         with self.assertRaises(AnswerAlreadyExists):
             ORMAnswersRepository().create(answer=answer2)
-
