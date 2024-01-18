@@ -8,6 +8,7 @@ from app.users.domain.models.user import User
 
 
 class ApplicationStatus(Enum):
+    IN_PROGRESS = "In progress"
     PENDING = "Under review"
     INVITED = "Invited"
     CONFIRMED = "Confirmed"
