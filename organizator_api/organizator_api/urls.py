@@ -28,5 +28,6 @@ urlpatterns = [
         include("app.applications.infrastructure.http.urls"),
     ),
     path(f"{base_path}/questions/", include("app.questions.infrastructure.http.urls")),
+    path(f"{base_path}/answers/", include("app.answers.infrastructure.http.urls")),
     path("api-auth/", include("rest_framework.urls")),
 ]
