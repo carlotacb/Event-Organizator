@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 from app.applications.domain.exceptions import (
     ProfileNotComplete,
@@ -7,8 +7,8 @@ from app.applications.domain.exceptions import (
     UserIsNotAParticipant,
     UserIsTooYoung,
     UserIsNotStudent,
-    EventAlreadyStarted,
 )
+from app.applications.domain.models.application import ApplicationStatus
 from app.applications.domain.usecases.create_new_application_use_case import (
     CreateNewApplicationUseCase,
 )
@@ -17,6 +17,7 @@ from app.users.domain.exceptions import UserNotFound
 from app.users.domain.models.user import UserRoles, TShirtSizes, GenderOptions
 from tests.api_tests import ApiTests
 from tests.events.domain.EventFactory import EventFactory
+from tests.questions.domain.QuestionFactory import QuestionFactory
 from tests.users.domain.UserFactory import UserFactory
 
 
@@ -40,8 +41,9 @@ class TestCreateNewApplicationUseCase(ApiTests):
         self.user_repository.create(user_complete)
 
         self.event_id = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
-        event = EventFactory().create(new_id=self.event_id)
-        self.event_repository.create(event)
+        self.event = EventFactory().create(new_id=self.event_id)
+        self.event_repository.create(self.event)
+        self.question_repository.clear()
 
     def test__given_a_user_with_all_the_information_and_non_existing_event__when_create_application__then_event_not_found_is_raised(
         self,
@@ -160,3 +162,23 @@ class TestCreateNewApplicationUseCase(ApiTests):
         # Then
         applications = self.application_repository.get_all()
         self.assertEqual(len(applications), 1)
+
+    def test__given_a_event_with_multiple_questions__when_create_application__then_the_application_is_created_with_the_status_in_progress(
+        self,
+    ) -> None:
+        # Given
+        question = QuestionFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8946-7a91ccb00686"),
+            event=self.event,
+            question="Question",
+        )
+        self.question_repository.create(question)
+
+        # When
+        CreateNewApplicationUseCase().execute(
+            token=self.user_complete_token, event_id=self.event_id
+        )
+
+        # Then
+        application = self.application_repository.get_all()[0]
+        self.assertEqual(application.status, ApplicationStatus.IN_PROGRESS)
