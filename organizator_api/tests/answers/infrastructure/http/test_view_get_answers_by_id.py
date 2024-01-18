@@ -105,7 +105,7 @@ class TestViewGetAnswersById(ApiTests):
             username="carlotaaaa",
             email="charliaaa@test.com",
         )
-        self.user_repository.create(self.user)
+        self.user_repository.create(user)
 
         # When
         headers = {"HTTP_Authorization": user_token}
