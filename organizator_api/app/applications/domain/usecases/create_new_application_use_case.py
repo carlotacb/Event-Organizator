@@ -13,7 +13,9 @@ from app.applications.infrastructure.repository_factories import (
     ApplicationRepositoryFactory,
 )
 from app.events.domain.usecases.get_event_use_case import GetEventUseCase
-from app.questions.domain.usecases.get_questions_by_event_use_case import GetQuestionsByEventUseCase
+from app.questions.domain.usecases.get_questions_by_event_use_case import (
+    GetQuestionsByEventUseCase,
+)
 from app.users.domain.models.user import UserRoles
 from app.users.domain.usecases.get_user_by_token_use_case import GetUserByTokenUseCase
 
@@ -53,7 +55,10 @@ class CreateNewApplicationUseCase:
             raise UserIsTooYoung
 
         status = ApplicationStatus.PENDING
-        if len(GetQuestionsByEventUseCase().execute(event_id=event_id, token=token)) > 0:
+        if (
+            len(GetQuestionsByEventUseCase().execute(event_id=event_id, token=token))
+            > 0
+        ):
             status = ApplicationStatus.IN_PROGRESS
 
         application = Application(
