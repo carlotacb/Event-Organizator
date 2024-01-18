@@ -18,7 +18,6 @@ from app.users.domain.models.user import User, UserRoles
 
 
 class ORMAnswersRepository(AnswersRepository):
-
     def create(self, answer: Answer) -> None:
         question = ORMQuestion.objects.get(id=answer.question.id)
         application = ORMEventApplication.objects.get(id=answer.application.id)
@@ -40,7 +39,6 @@ class ORMAnswersRepository(AnswersRepository):
             self._to_domain(answer)
             for answer in ORMAnswers.objects.filter(application_id=application_id)
         ]
-
 
     def _to_domain(self, answer: ORMAnswers) -> Answer:
         return Answer(

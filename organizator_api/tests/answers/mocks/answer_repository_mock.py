@@ -6,7 +6,6 @@ from app.answers.domain.repositories import AnswersRepository
 
 
 class AnswerRepositoryMock(AnswersRepository):
-
     def __init__(self) -> None:
         self.answer: List[Answer] = []
 

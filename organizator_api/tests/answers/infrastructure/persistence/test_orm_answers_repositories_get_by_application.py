@@ -2,7 +2,9 @@ import uuid
 from datetime import datetime, timezone
 
 from app.answers.domain.models.answer import Answer
-from app.answers.infrastructure.persistence.orm_answers_respository import ORMAnswersRepository
+from app.answers.infrastructure.persistence.orm_answers_respository import (
+    ORMAnswersRepository,
+)
 from tests.api_tests import ApiTests
 
 
@@ -12,9 +14,7 @@ class TestORMAnswersRepositoriesGetByApplication(ApiTests):
     ) -> None:
         # Given
         application_id = uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cc")
-        application = self.given_application_in_orm(
-            new_id=application_id
-        )
+        application = self.given_application_in_orm(new_id=application_id)
         question = self.given_question_in_orm(
             new_id=uuid.UUID("ef6f6fb3-ba46-43dd-a0da-95de8125b1cc")
         )
