@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 from app.answers.domain.models.answer import Answer
@@ -13,6 +14,14 @@ class AnswerRepositoryMock(AnswersRepository):
 
     def get_all(self) -> List[Answer]:
         return self.answer
+
+    def get_by_application_id(self, application_id: uuid.UUID) -> List[Answer]:
+        list = []
+        for answer in self.answer:
+            if answer.application.id == application_id:
+                list.append(answer)
+
+        return list
 
     def clear(self) -> None:
         self.answer = []

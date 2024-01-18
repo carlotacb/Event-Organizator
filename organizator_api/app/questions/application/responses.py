@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
-from app.questions.domain.models.question import QuestionType, Question
+from app.questions.domain.models.question import Question
 
 
 @dataclass

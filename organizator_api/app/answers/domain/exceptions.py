@@ -4,3 +4,7 @@ class AnswerDoesNotExist(Exception):
 
 class AnswerAlreadyExists(Exception):
     pass
+
+
+class UserIsNotAuthorOfAnswer(Exception):
+    pass
