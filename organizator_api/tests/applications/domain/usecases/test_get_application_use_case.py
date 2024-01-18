@@ -16,7 +16,6 @@ class TestGetApplicationUseCase(ApiTests):
         self.event_repository.clear()
 
         self.user_token_participant = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
-        self.user_token_organizer = uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00687")
 
         self.user_participant = UserFactory().create(
             new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"),
