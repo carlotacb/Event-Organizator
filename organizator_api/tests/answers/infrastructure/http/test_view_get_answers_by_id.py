@@ -1,6 +1,7 @@
 import uuid
 
-from app.users.domain.models.user import TShirtSizes, GenderOptions
+from app.users.domain.models.user import GenderOptions, TShirtSizes
+from tests.answers.domain.AnswerFactory import AnswerFactory
 from tests.api_tests import ApiTests
 from tests.applications.domain.ApplicationFactory import ApplicationFactory
 from tests.events.domain.EventFactory import EventFactory
@@ -8,7 +9,7 @@ from tests.questions.domain.QuestionFactory import QuestionFactory
 from tests.users.domain.UserFactory import UserFactory
 
 
-class TestViewCreateNewAnswer(ApiTests):
+class TestViewGetAnswersById(ApiTests):
     def setUp(self) -> None:
         super().setUp()
         self.question_repository.clear()
@@ -47,12 +48,12 @@ class TestViewCreateNewAnswer(ApiTests):
         )
         self.application_repository.create(self.application)
 
-    def test__when_create_answer_without_header__then_unauthorized_is_returned(
+    def test__when_get_answers_by_id_without_header__then_unauthorized_is_returned(
         self,
     ) -> None:
         # When
-        response = self.client.post(
-            "/organizator-api/answers/new",
+        response = self.client.get(
+            "/organizator-api/answers/application/eb41b762-5988-4fa3-8942-7a91ccb00686",
             content_type="application/json",
         )
 
@@ -60,13 +61,13 @@ class TestViewCreateNewAnswer(ApiTests):
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.content, b"Unauthorized")
 
-    def test__when_create_answer_with_invalid_token__then_invalid_token_is_returned(
+    def test__when_get_answers_by_id_with_invalid_token__then_bad_request_is_returned(
         self,
     ) -> None:
         # When
         headers = {"HTTP_Authorization": "invalid_token"}
-        response = self.client.post(
-            "/organizator-api/answers/new",
+        response = self.client.get(
+            "/organizator-api/answers/application/eb41b762-5988-4fa3-8942-7a91ccb00686",
             content_type="application/json",
             **headers  # type: ignore
         )
@@ -75,41 +76,14 @@ class TestViewCreateNewAnswer(ApiTests):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"Invalid token")
 
-    def test__when_create_answer_with_invalid_body__then_bad_request_is_returned(
+    def test__when_get_answers_by_id_with_invalid_application_id__then_not_found_is_returned(
         self,
     ) -> None:
-        # Given
-        body = {"application_id": self.application_id}
-
         # When
         headers = {"HTTP_Authorization": self.user_token}
-        response = self.client.post(
-            "/organizator-api/answers/new",
+        response = self.client.get(
+            "/organizator-api/answers/application/eb41b762-5988-4fa3-8945-7a91ccb00686",
             content_type="application/json",
-            data=body,
-            **headers  # type: ignore
-        )
-
-        # Then
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, b"Unexpected body")
-
-    def test__when_create_answer_with_invalid_application_id__then_application_not_found_is_returned(
-        self,
-    ) -> None:
-        # Given
-        body = {
-            "application_id": uuid.uuid4(),
-            "question_id": self.question_id,
-            "answer": "answer",
-        }
-
-        # When
-        headers = {"HTTP_Authorization": self.user_token}
-        response = self.client.post(
-            "/organizator-api/answers/new",
-            content_type="application/json",
-            data=body,
             **headers  # type: ignore
         )
 
@@ -117,48 +91,56 @@ class TestViewCreateNewAnswer(ApiTests):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.content, b"Application not found")
 
-    def test__when_create_answer_with_invalid_question_id__then_question_not_found_is_returned(
+    def test__when_get_answers_by_id_from_a_user_that_is_not_the_author__then_user_not_author_is_returned(
         self,
     ) -> None:
         # Given
-        body = {
-            "application_id": self.application_id,
-            "question_id": uuid.uuid4(),
-            "answer": "answer",
-        }
+        user_token = "baad2fe5-0122-459b-9872-625c3351d6ac"
+        user = UserFactory().create(
+            new_id=uuid.UUID(user_token),
+            token=uuid.UUID(user_token),
+            tshirt=TShirtSizes.M,
+            gender=GenderOptions.FEMALE,
+            alimentary_restrictions="No restrictions",
+            username="carlotaaaa",
+            email="charliaaa@test.com",
+        )
+        self.user_repository.create(self.user)
 
         # When
-        headers = {"HTTP_Authorization": self.user_token}
-        response = self.client.post(
-            "/organizator-api/answers/new",
+        headers = {"HTTP_Authorization": user_token}
+        response = self.client.get(
+            "/organizator-api/answers/application/eb41b762-5988-4fa3-8942-7a91ccb00686",
             content_type="application/json",
-            data=body,
             **headers  # type: ignore
         )
 
         # Then
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.content, b"Question not found")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.content, b"User is not author of answer")
 
-    def test__when_create_answer_with_invalid_answer__then_answer_already_exists_is_returned(
+    def test__when_get_answers_by_id_with_valid_application_id__then_answers_are_returned(
         self,
     ) -> None:
         # Given
-        headers = {"HTTP_Authorization": self.user_token}
-        body = {
-            "application_id": self.application_id,
-            "question_id": self.question_id,
-            "answer": "answer",
-        }
+        answer = AnswerFactory().create(
+            application=self.application,
+            question=self.question,
+            answer="Answer",
+        )
+        self.answer_repository.create(answer)
 
         # When
-        response = self.client.post(
-            "/organizator-api/answers/new",
+        headers = {"HTTP_Authorization": self.user_token}
+        response = self.client.get(
+            "/organizator-api/answers/application/eb41b762-5988-4fa3-8942-7a91ccb00686",
             content_type="application/json",
-            data=body,
             **headers  # type: ignore
         )
 
         # Then
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.content, b"Answer created correctly")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            b'[{"id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "question_id": "eb41b762-5988-4fa3-8942-7a91ccb00686", "question": "Question", "answer": "Answer"}]',
+        )
