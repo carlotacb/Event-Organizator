@@ -10,7 +10,6 @@ from tests.users.domain.UserFactory import UserFactory
 
 
 class TestViewCreateNewAnswer(ApiTests):
-
     def setUp(self) -> None:
         super().setUp()
         self.question_repository.clear()
@@ -18,7 +17,9 @@ class TestViewCreateNewAnswer(ApiTests):
         self.event_repository.clear()
         self.application_repository.clear()
 
-        self.event = EventFactory().create(new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686"))
+        self.event = EventFactory().create(
+            new_id=uuid.UUID("eb41b762-5988-4fa3-8942-7a91ccb00686")
+        )
         self.event_repository.create(self.event)
 
         self.user_token = "baad2fe5-0122-459b-9572-625c3351d6ac"
@@ -79,7 +80,7 @@ class TestViewCreateNewAnswer(ApiTests):
         self,
     ) -> None:
         # Given
-        body = { "application_id": self.application_id }
+        body = {"application_id": self.application_id}
 
         # When
         headers = {"HTTP_Authorization": self.user_token}
@@ -101,7 +102,7 @@ class TestViewCreateNewAnswer(ApiTests):
         body = {
             "application_id": uuid.uuid4(),
             "question_id": self.question_id,
-            "answer": "answer"
+            "answer": "answer",
         }
 
         # When
@@ -124,7 +125,7 @@ class TestViewCreateNewAnswer(ApiTests):
         body = {
             "application_id": self.application_id,
             "question_id": uuid.uuid4(),
-            "answer": "answer"
+            "answer": "answer",
         }
 
         # When
@@ -148,7 +149,7 @@ class TestViewCreateNewAnswer(ApiTests):
         body = {
             "application_id": self.application_id,
             "question_id": self.question_id,
-            "answer": "answer"
+            "answer": "answer",
         }
 
         # When
@@ -162,5 +163,3 @@ class TestViewCreateNewAnswer(ApiTests):
         # Then
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.content, b"Answer created correctly")
-
-
