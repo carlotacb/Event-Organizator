@@ -2,9 +2,7 @@
 
 > 👩🏻‍💻 This project belongs to the development of my master thesis
 
-[Report](https://upcommons.upc.edu/handle/2117/408561)
-
-## Abstract of the project's final report
+## Abstract of the [project's final report](https://upcommons.upc.edu/handle/2117/408561)
 
 During my university years I was lucky to discover the hackathons world and ba part of an amazing team (Hackers@UPC) that organize every year the biggest student hackathon in Europe, HackUPC. Beeing part of these for so many years made me think that there is any software strong enought that helps us to manage everything and arround this, the idea of the project apears: How can we help to manage better a hackahton?
 
