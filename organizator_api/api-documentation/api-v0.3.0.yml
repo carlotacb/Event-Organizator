@@ -9,7 +9,7 @@ servers:
     url: https://event-organizator-api-c6wz5mj4uq-ew.a.run.app/organizator-api
 info:
   description: API for organizator app
-  version: "1.0.0"
+  version: "0.3.0"
   title: Organizator API
   contact:
     name: Carlota Catot

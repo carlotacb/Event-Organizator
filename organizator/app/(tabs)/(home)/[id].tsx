@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  View,
-} from "react-native";
+import { SafeAreaView, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 // @ts-ignore
 import styled from "styled-components/native";

@@ -1,0 +1,252 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/carlotacb/Organizator-API/1.0.0
+  - description: LocalHost
+    url: http://0.0.0.0:8000/organizator-api
+  - description: Production API
+    url: https://event-organizator-api-c6wz5mj4uq-ew.a.run.app/organizator-api
+info:
+  description: API for organizator app
+  version: "0.0.1"
+  title: Organizator API
+  contact:
+    name: Carlota Catot
+    email: carkbra@gmail.com
+    url: 'https://carlotacb.dev'
+  license:
+    name: MIT license
+    url: 'https://opensource.org/license/mit'
+
+tags:
+  - name: events
+    description: Everything about the events
+
+paths:
+
+  # EVENTS
+
+  /events/:
+    get:
+      tags:
+        - events
+      summary: Gets all the events of the system
+      operationId: allEvents
+      description: |
+        Get absolutely all the events of the system with all the information
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventList'
+
+  /events/{event_id}:
+    get:
+      tags:
+        - events
+      summary: Get event by id
+      operationId: eventById
+      description: |
+        Get all the information for an event given a ID, also marking if the event has been deleted or not.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found
+
+  /events/new:
+    post:
+      tags:
+        - events
+      summary: Creates a new event
+      operationId: newEvent
+      description: |
+        With the all the information for an event, be aware that the event name is unique and also the dates should be something logical.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCreateItem'
+        description: Event to add
+      responses:
+        '201':
+          description: Event created correctly
+        '409':
+          description: Event already exists
+
+  /events/update/{event_id}:
+    post:
+      tags:
+        - events
+      summary: Update event by id
+      operationId: updateById
+      description: |
+        With some event information, not all the information is necessary to update, the event is updated. If you are not setting some of the parameters, they will stay as it was in the original event. The name should be diferent as any event from the database.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventUpdateItem'
+        description: Event information to update
+      responses:
+        '202':
+          description: Event modified correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Event not found
+        '409':
+          description: Event already exist, there is some event with that name already
+
+  /events/delete/{event_id}:
+    post:
+      tags:
+        - events
+      summary: Delete event by id
+      operationId: deleteById
+      description: |
+        Given a event ID, the event is marked as deleted, the event is not deleted in the DB but the delete_at date is introduced with the current date, so the event is marked as deleted.
+      parameters:
+      - name: event_id
+        in: path
+        description: Event id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '202':
+          description: Event modified correctly
+        '404':
+          description: Event not found
+
+components:
+  schemas:
+    EventCreateItem:
+      type: object
+      required:
+        - name
+        - url
+        - description
+        - start_date
+        - end_date
+        - location
+        - header_image
+      properties:
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "12/05/2023 09:00"
+        end_date:
+          type: string
+          format: date-time
+          example: "14/05/2023 20:00"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+
+    EventUpdateItem:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "12/05/2023 09:00"
+        end_date:
+          type: string
+          format: date-time
+          example: "14/05/2023 20:00"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "c9d1d737-fdb5-4c38-b452-75dddfe5b414"
+        name:
+          type: string
+          example: "HackUPC 2023"
+        url:
+          type: string
+          format: url
+          example: "https://www.hackupc.com"
+        description:
+          type: string
+          example: "The biggest hackathon in Europe"
+        start_date:
+          type: string
+          format: date-time
+          example: "12/05/2023 09:00"
+        end_date:
+          type: string
+          format: date-time
+          example: "14/05/2023 20:00"
+        location:
+          type: string
+          example: "Campus Nord"
+        header_image:
+          type: string
+          example: "https://hackupc.com/ogimage.png"
+        deleted:
+          type: boolean
+          example: false
+
+    EventList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'

@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 // @ts-ignore
 import styled from "styled-components/native";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 import LoadingPage from "../../../components/Pages/LodingPage";
