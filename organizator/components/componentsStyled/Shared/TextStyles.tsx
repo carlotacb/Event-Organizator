@@ -11,7 +11,7 @@ export const Title = styled(Text)`
 `;
 
 export const SubTitle = styled(Text)`
-  font-size: 16px;
+  font-size: 15px;
   color: gray;
   margin: 10px 0 30px 0;
   text-align: center;
@@ -22,6 +22,7 @@ export const Description = styled(Text)`
   color: gray;
   margin-top: 10px;
   font-style: italic;
+  text-align: center;
 `;
 
 export const SubTitleBasic = styled(Text)`

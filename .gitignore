@@ -40,3 +40,5 @@ data/
 # Test API
 .coverage
 htmlcov/
+
+.env
